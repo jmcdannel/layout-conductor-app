@@ -1,3 +1,9 @@
+html,
+body,
+#root {
+	height: 100%;
+}
+
 .App {
   text-align: center;
 }
@@ -5,6 +11,15 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+#root .MuiAppBar-colorPrimary {
+  background-color: rgba(244, 67, 54, .2);
+  border-bottom: 1px solid rgba(244, 67, 54, 1);
+}
+
+.title {
+    flex-grow: 1;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -24,9 +39,36 @@
   color: white;
 }
 
+.App-content {
+  overflow: auto;
+}
+
 .App-link {
   color: #61dafb;
 }
+
+.grow {
+  flex: 1;
+}
+
+.flex {
+  display: flex;
+}
+.height100 {
+  height: 100%;
+}
+.width100 {
+  width: 100%;
+}
+
+.MuiIconButton-root { 
+  
+}
+
+/* .App-footer {
+  position: fixed;
+  bottom: 0;
+} */
 
 @keyframes App-logo-spin {
   from {

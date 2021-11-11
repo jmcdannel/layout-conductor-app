@@ -1,0 +1,325 @@
+
+$on: rgb(118, 255, 3);
+$off: rgba(0,0,0,.4);
+
+.chip {
+  margin: 0rem 0.5rem 0.5rem 0;
+}
+
+.turnouts {
+  // display: flex;
+  // justify-content: center;
+  // align-content: flex-start;
+
+  .turnout {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+    }
+
+    &__grid-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+
+    &__container {
+      padding: 0.25rem;
+    }
+
+    &__desc {
+      padding-left: 1rem;
+    }
+
+    &__link {
+      padding: 0.5rem 1.5rem;
+      background-color: rgba(0,0,0,.5);
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__layout {
+      position: relative;
+
+      &__switch {
+        position: absolute;
+        border: 0;
+        padding: 0;
+        background-color: transparent;
+        display: none;
+        &:active, &:focus {
+          outline: none;
+        }
+        .divergent {
+          visibility: visible;
+        }
+        &--divergent {
+          .straight {
+            visibility: visible;
+          }
+          .divergent {
+            visibility: visible;
+          }
+        }
+        &--tamarack-south {
+          path,
+          rect {
+            fill: rgb(0,	232,	220);
+          }
+        }
+        &--101 {  
+          display: block; 
+          transform: scale(0.24);
+          bottom: -18px;
+          left: -102px;
+        }
+        &--102 {  
+          display: block; 
+          transform: scale(0.24);
+          bottom: 0px;
+          left: -102px;
+        }
+        &--103 {  
+          display: block;     
+          transform: scale(0.24) scaleX(-1) rotate(15deg);
+          bottom: 0px;
+          left: -36px;
+        }
+      }
+    }
+
+  }
+
+  &.turnouts--compact {
+
+    .turnout {
+
+      flex-direction: column;
+      align-items: center;
+
+
+      .turnout__state {
+        order: 1;
+        display: flex;
+        background-color: #222;
+        padding: .5rem 2rem;
+      }
+
+      .turnout__id {
+        order: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+      }
+
+      .tournout__actions {
+        order: 2;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  &.turnouts--tiny {
+
+    .turnout {
+
+      flex-direction: column;
+      align-items: center;
+      .turnout__header {
+        justify-content: center;
+        padding: .5rem;
+        .chip {
+          margin: 0;
+        }
+      }
+      .turnout__state {
+        order: 1;
+        display: flex;
+        background-color: #222;
+        padding: .5rem 1.5rem;
+      }
+
+      .turnout__id {
+        order: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        &.MuiCardContent-root {
+          padding: 0.25rem;
+        }
+
+      }
+
+      
+      .svg-wrapper {
+        > svg {
+          width: 45px;
+        }
+      }
+
+      .tournout__actions,
+      .turnout__header__status {
+        display: none;
+      }
+    }
+  }
+
+  &.turnouts--comfy {
+    .turnout {
+      flex-direction: column;
+
+      height: 100%;
+      align-items: flex-start;
+
+      &__container {
+        flex: 1 0 33%;
+      }
+
+      .turnout__state {
+        display: flex;
+        padding: .5rem 2rem;
+        width: 90px;
+        flex: 0 1 90px;
+        
+      }
+
+      .turnout__id {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+
+      }
+
+      .tournout__actions {
+        align-self: flex-end;
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  
+  }
+
+
+  &.turnouts--pill {
+
+    .turnout {
+
+      background-color: transparent;
+      box-shadow: none;
+      flex-direction: column;
+      align-items: center;
+
+      &__container {
+        padding: 0;
+      }
+
+      .turnout__header {
+        justify-content: center;
+        padding: .25rem;
+        .chip {
+          margin: 0;
+          cursor: pointer;
+        }
+      }
+
+      .turnout__id,
+      .tournout__actions,
+      .turnout__state,
+      .turnout__header__status {
+        display: none;
+      }
+
+    }
+  }
+}
+
+.MuiButtonBase-root.media {
+  flex: 0 1;
+  padding: 1em;
+}
+
+.information {
+  flex: 1;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.media-container {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+}
+
+.loading .svg-wrapper {
+  opacity: 0.1;
+}
+
+.turnout-image {
+  
+  // text {
+  //   fill: #fff;
+  // }
+  // path {
+  //   stroke: $on;
+  // }
+  // #Label {
+  //   display: none; 
+  // }
+  // #divergent-inner,
+  // #divergent-outer {
+  //   stroke: $off;
+  // }
+
+  // &.divergent {
+  //   #straight-inner,
+  //   #straight-outer {
+  //     stroke: $off;
+  //   }
+  //   #divergent-inner,
+  //   #divergent-outer {
+  //     stroke: $on;
+  //   }
+  // }
+}
+
+.MuiTextField-root {
+  margin: 1rem;
+}
+.turnout--compact,
+.turnout-tiny {
+
+  .compact-hidden {
+    display: none;
+  }
+}
+
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.3; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.3; }
+}

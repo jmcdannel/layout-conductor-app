@@ -1,0 +1,58 @@
+
+// .react-transform-component {
+  
+//   // height: 100%;
+//   width: 100%;
+// }
+// .react-transform-element {
+  
+//   // height: 100%;
+//   width: 100%;
+// }
+
+.react-transform-component {
+  width: unset !important;
+  height: unset !important;
+}
+.filters {
+  padding: 1rem;
+}
+
+
+.line-toggle.MuiButtonBase-root  {
+  margin: 0 0.5rem 0.5rem 0;
+}
+
+.layout-img {
+  // height: 80vh;
+  // width: 80vh;
+  // height: 100%;
+  // 3338 x 3128
+  height: calc(100vh - 94px - 86px);
+  margin: 0 auto;
+  padding: 1rem;
+  z-index: 1;
+
+  position: relative;
+  .layout-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+
+  .layout-base-layer {
+    opacity: 0;
+  }
+
+  .switch-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+  }
+}
