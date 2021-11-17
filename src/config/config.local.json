@@ -1,32 +1,6 @@
 {
     "layoutId": "traincontrol",
     "name": "Emulator Junction",
-    "modules": [
-      "turnouts",
-      "throttles",
-      "locos",
-      "signals",
-      "sensors",
-      "effects"
-    ],
-    "api": "http://traincontrol:5000",
-    "apiHost": "0.0.0.0",
-    "jmri": "http://traincontrol:12080/json/",
-    "serial": "/dev/cu.usbmodem14601",
-    "turnouts": {
-        "device": "arduino",
-        "interface": "serial"
-    },
-    "signals": {
-        "device": "localhost",
-        "interface": "emulator"
-    },
-    "sensors": {
-        "device": "arduino",
-        "interface": "serial"
-    },
-    "effects": {
-        "arduino": ["serial"],
-        "pi": ["serial"]
-    }
+    "api": "http://localhost:5000",
+    "jmri": "http://traincontrol:12080/json/"
 }

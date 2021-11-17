@@ -1,9 +1,10 @@
-const Reducer=(state, action)=>{
+import api from '../Api';
+
+const Reducer = (state, action) => {
   switch(action.type) {
 
     case 'INIT_STATE':
-      // console.log('INIT_STATE', {...state, ...action.payload}, state, action.payload);
-      return {...state, ...action.payload};
+      return {...state, ...action.payload };
 
     case 'UPDATE_LOCO':
       const locos = state.locos.map(loco => 

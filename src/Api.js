@@ -7,7 +7,10 @@ import orangeLineImg from './Layout/images/IDAWANY-orangeline.png';
 import purpleLineImg from './Layout/images/IDAWANY-purpleline.png';
 import redLineImg from './Layout/images/IDAWANY-redline.png';
 import yellowLineImg from './Layout/images/IDAWANY-yellowline.png';
-import { getApi as getApiHostName, getConfig } from './config/config';
+// import { getApi as getApiHostName, getConfig } from './config/config';
+import { getAppConfig } from './config/config';
+
+const appConfig = getAppConfig();
 
 export const linesConfig = [
   { name: 'Red', color: Colors.red[500], img: redLineImg },
@@ -28,14 +31,16 @@ const locoDefaults = {
   forward: null
 };
 
-const appConfig = getConfig();
-let apiHost = getApiHostName();
+// const appConfig = getConfig();
+// let apiHost = getApiHostName();
 
-async function get(type, Id = null) {
+async function get(type = null, Id = null) {
   try {
-    const response = Id !== null
-      ? await fetch(`${apiHost}/${type}s/${Id}`)
-      : await fetch(`${apiHost}/${type}s`);
+    const response = type !== null
+      ? Id !== null
+        ? await fetch(`${appConfig.api}/${type}s/${Id}`)
+        : await fetch(`${appConfig.api}/${type}s`)
+      : await fetch(`${appConfig.api}/`);
     return response.json();
   } catch (err) {
     console.error(err);
@@ -44,18 +49,22 @@ async function get(type, Id = null) {
 }
 
 async function initialize() {
-  const getModules = appConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
+  const layoutConfig = await api.get();
+  console.log('appConfig', appConfig);
+  console.log('layoutConfig', layoutConfig);
+  const getModules = layoutConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
+  console.log('getModules', getModules);
   const results = await Promise.all(
     getModules.map(req => api[req].get()
       .then(resp => api[req].initialize ? api[req].initialize(resp) : resp))
   );
-  
-  return getModules.reduce((state, module, index) => ({ ...state, [module]: results[index] }), {});
+  const initialState = getModules.reduce((state, module, index) => ({ ...state, [module]: results[index] }), {});
+  return initialState
 }
 
 async function put(type, data) {
   try {
-    const response = await fetch(`${apiHost}/${type}s/${data[`${type}Id`]}`, {
+    const response = await fetch(`${appConfig.api}/${type}s/${data[`${type}Id`]}`, {
       method: 'PUT',
       cache: 'no-cache',
       crossDomain: true,
@@ -108,73 +117,3 @@ export const api = {
 }
 
 export default api;
-
-// async function readTurnout(turnoutId = null) {
-//   return read('turnouts', turnoutId);
-// }
-
-// async function updateTurnout(data) {
-//   return update('turnouts', data);
-//   try {
-//     const response = await fetch(`${apiHost}/turnouts/${data.turnoutId}`, {
-//       method: 'PUT',
-//       cache: 'no-cache',
-//       crossDomain: true,
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//     });
-//     return await response.json();
-//   } catch (err) {
-//     console.error(err)
-//     throw new Error('Unable to update Turnout', data);
-//   }
-// }
-
-// async function deleteTurnout(turnoutId) {
-//   throw new Error('Not implemented', turnoutId);
-// }
-
-// async function readSignal(signalId = null) {
-//   try {
-//     const response = signalId !== null
-//       ? await fetch(`${apiHost}/signals/${signalId}`)
-//       : await fetch(`${apiHost}/signals`);
-//     return response.json();
-//   } catch (err) {
-//     console.error(err);
-//     throw new Error('Unable to read Signal(s)', `signalId=${signalId}`);
-//   }
-// }
-
-// async function updateSignal(data) {
-//   try {
-//     const response = await fetch(`${apiHost}/signals/${data.signalId}`, {
-//       method: 'PUT',
-//       cache: 'no-cache',
-//       crossDomain: true,
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//     });
-//     return await response.json();
-//   } catch (err) {
-//     console.error(err)
-//     throw new Error('Unable to update Signal', data);
-//   }
-// }
-
-// async function readSensor(sensorId = null) {
-//   try {
-//     const response = sensorId !== null
-//       ? await fetch(`${apiHost}/sensors/${sensorId}`)
-//       : await fetch(`${apiHost}/sensors`);
-//     return response.json();
-//   } catch (err) {
-//     console.error(err);
-//     throw new Error('Unable to read Sensors(s)', `sensorId=${sensorId}`);
-//   }
-// }
-

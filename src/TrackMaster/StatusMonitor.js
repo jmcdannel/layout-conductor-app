@@ -3,11 +3,11 @@ import Chip from '@mui/material/Chip';
 // import CallSplit from '@mui/icons-material/CallSplit';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import Tooltip from '@mui/material/Tooltip';
-import { getConfig } from '../config/config';
+import { getAppConfig } from '../config/config';
 
 export const StatusMonitor = ({ jmriReady }) => {
 
-  const appConfig = getConfig();
+  const appConfig = getAppConfig();
 
   // const [ powerStatus, setPowerStatus ] = useState(powerStates.unknown);
   // const [ initialized, setInitialized ] = useState(false);
@@ -50,7 +50,7 @@ export const StatusMonitor = ({ jmriReady }) => {
     // TODO: allow user to modify api or jmri settings
   };
   const hasJmri = !!appConfig.jmri;
-  const hasApi = !!appConfig.apie;
+  const hasApi = !!appConfig.api;
 
   const jmriClassName = `status-monitor--${
     hasJmri && jmriReady

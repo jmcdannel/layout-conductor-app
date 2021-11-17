@@ -12,7 +12,7 @@ export const Throttles = props => {
   const [ state, dispatch ] = useContext(Context);
   const { locos } = state;
   
-  return (
+  return locos && locos.length  ? (
     <Box display="flex" flexDirection="column" flexGrow={1}>
       <Box 
         flexGrow={1} 
@@ -36,7 +36,7 @@ export const Throttles = props => {
         />
       </Box>
     </Box>
-  );
+  ) : null;
 
 }
 

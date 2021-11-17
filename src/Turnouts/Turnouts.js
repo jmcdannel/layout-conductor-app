@@ -30,7 +30,7 @@ export const Turnouts = props => {
     return acc;
   }, []);
 
-  return (
+  return turnouts ? (
     <Grid container className={`turnouts turnouts--${view}`}>
       <Grid item sm={12}>
         <TamSouth />
@@ -89,7 +89,7 @@ export const Turnouts = props => {
       ))}
     </Grid>
     
-  );
+  ) : null;
 
 }
 

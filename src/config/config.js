@@ -1,27 +1,12 @@
 import * as Colors from '@mui/material/colors';
 
-export const getConfig = () => {
+export const getAppConfig = () => {
     try {
         return require('./config.local.json');
     } catch (e) {
         console.warn('Loading default config');
         return require('./config.default.json');
     }
-}
-
-export const getApiHost = () => {
-    return getConfig().apiHost;
-}
-
-export const getApi = () => {
-    return getConfig().api;
-}
-
-export const getJmri = () => {
-    return getConfig().jmri;
-}
-export const getSerial = () => {
-    return getConfig().serial;
 }
 
 const defaultColor = Colors.grey[500];
@@ -62,4 +47,4 @@ export const getEffectColor = effectId => {
     return effect ? effect.color : defaultColor;
 }
 
-export default getConfig;
+export default getAppConfig;

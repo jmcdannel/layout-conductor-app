@@ -24,7 +24,7 @@ import { MenuContext, menuConfig } from '../Shared/Context/MenuContext';
 import { Context } from '../Store/Store';
 
 // APIs
-import { getJmri , getApiHost, getConfig } from '../config/config';
+import { getAppConfig } from '../config/config';
 import api, { apiStates } from '../Api';
 import jmriApi from '../Shared/jmri/jmriApi';
 
@@ -34,11 +34,12 @@ function TrackMaster(props) {
 
   let location = useLocation();
 
-  const appConfig = getConfig();
-  const layoutId = appConfig.layoutId;
+  const appConfig = getAppConfig();
+
+  console.log('appConfig', appConfig);
 
   const [ state, dispatch ] = useContext(Context);
-  const { signals, effects, sensors, turnouts } = state;
+  const { signals, effects, sensors, turnouts, modules } = state;
 
   const [page, setPage] = useState(location && location.pathname);
   const [menu, setMenu] = useState(menuConfig);
@@ -51,6 +52,7 @@ function TrackMaster(props) {
   useEffect(() => {
     const initialize = async function() {
       const apiInitState = await api.initialize();
+      console.log('apiInitState', apiInitState);
       await dispatch({ type: 'INIT_STATE', payload: apiInitState });
     };
     
@@ -61,7 +63,7 @@ function TrackMaster(props) {
   useEffect(() => {
     const initJmri = async () => {
       jmriApi.on('ready', 'TrackMaster', handleJmriReady.bind(this));
-      const isSetup = await jmriApi.setup(getJmri());
+      const isSetup = await jmriApi.setup(appConfig.jmri);
       setJmriInitialized(isSetup);
     }
     if (!jmriInitialized) {
@@ -71,7 +73,7 @@ function TrackMaster(props) {
 
 
   useEffect(() => {
-    if (!sensorsInitialized && jmriReady && sensors.length > 0) {
+    if (!sensorsInitialized && jmriReady && sensors && sensors.length > 0) {
       console.log('watchSensors', sensors);
       jmriApi.watchSensors([...sensors]);
       jmriApi.on('sensor', 'TrackMaster', handleSensor);
@@ -104,18 +106,6 @@ function TrackMaster(props) {
   //   setPage(newValue);
   //   history.push(newValue);
   // }
-
-  // Deprecate(d)
-  const handleSSLAuth = (event) => {
-      window.open(getApiHost());
-  }
-
-  const handleTurnoutChange = async data => {
-    // for (let item of data) {
-    //     let turnout = await api.turnouts.put(layoutId, item);
-    //     await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
-    // }
-  }
 
   const handleMenuClick = menuChange => {
     const m = {...menu, ...menuChange};
@@ -170,7 +160,6 @@ function TrackMaster(props) {
           <Box>
             <Header 
               page={page} 
-              onSSLAuth={handleSSLAuth} 
               handleMenuClick={handleMenuClick} 
               jmriApi={jmriApi}
               jmriReady={jmriReady}
@@ -180,15 +169,14 @@ function TrackMaster(props) {
           </Box>
           <Box flexGrow={1} display="flex" width="100%" height="100%" alignContent="center" className="App-content" mt={1}>
             <Routes>
-              <Route path="/" exact element={
-                <Conductor />
-              } />
-              {appConfig.modules.map(getRoutedModule)}
+              {/* <Route path="/" exact element={<div>conductor</div>} /> */}
+              <Route path="/" exact element={<Conductor />} />
+              {appConfig.modules && appConfig.modules.map(getRoutedModule)}
             </Routes>
           </Box>
           <Box mt={1}>
 
-            <Footer page={page} modules={appConfig.modules} />
+            <Footer page={page} modules={modules} />
 
           </Box>
         </Box>

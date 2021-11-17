@@ -36,7 +36,7 @@ export const Conductor = props => {
   }
 
   const filterTurnouts = turnouts => {
-    let filtered = [...turnouts];
+    let filtered = turnouts ? [...turnouts] : [];
     if (menu.lineFilters && menu.lineFilters.length > 0) {
       filtered = filtered.filter(t => menu.lineFilters.includes(t.line));
     }
