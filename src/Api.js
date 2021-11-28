@@ -27,6 +27,7 @@ const locoDefaults = {
   isAcquired: false,
   cruiseControl: false,
   autoStop: true,
+  maxSpeed: 100,
   speed: 0,
   forward: null
 };
@@ -53,18 +54,23 @@ async function initialize() {
   console.log('appConfig', appConfig);
   console.log('layoutConfig', layoutConfig);
   const getModules = layoutConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
-  console.log('getModules', getModules);
+  console.log('getModules', getModules, layoutConfig.modules);
   const results = await Promise.all(
     getModules.map(req => api[req].get()
       .then(resp => api[req].initialize ? api[req].initialize(resp) : resp))
   );
-  const initialState = getModules.reduce((state, module, index) => ({ ...state, [module]: results[index] }), {});
-  return initialState
+  const initialState = getModules.reduce((state, module, index) => ({ 
+    ...state, 
+    [module]: results[index] 
+  }), { modules: layoutConfig.modules });
+  console.log('initialState', initialState);
+  return initialState;
 }
 
-async function put(type, data) {
+async function put(type, data, idField) {
   try {
-    const response = await fetch(`${appConfig.api}/${type}s/${data[`${type}Id`]}`, {
+    const id = idField ? data[idField] : data[`${type}Id`];
+    const response = await fetch(`${appConfig.api}/${type}s/${id}`, {
       method: 'PUT',
       cache: 'no-cache',
       crossDomain: true,
@@ -81,7 +87,7 @@ async function put(type, data) {
 }
 
 function initializeLocos(locos) {
-  return locos.map(loco => ({...loco, ...locoDefaults }));
+  return locos.map(loco => ({ ...locoDefaults, ...loco }));
 }
 
 export const apiStates = {
@@ -108,7 +114,8 @@ export const api = {
     put: args => put('effect', args)
   },
   locos: {
-    get: args => get('loco', args),
+    get: args => get('loco', args, 'address'),
+    put: args => put('loco', args, 'address'),
     initialize: initializeLocos
   },
   sensors: {

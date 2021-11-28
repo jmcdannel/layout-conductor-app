@@ -14,6 +14,7 @@ export const Header = props => {
     page, 
     jmriApi, 
     jmriReady, 
+    apiReady,
     onSSLAuth: handleSSLAuth 
   } = props;
 
@@ -31,7 +32,7 @@ export const Header = props => {
         <Typography variant="h6" className="title">
           {navItem ? navItem.label : '[unknown]'}
         </Typography>
-        <StatusMonitor jmriReady={jmriReady} />
+        <StatusMonitor jmriReady={jmriReady} apiReady={apiReady} />
 
         <Power jmriApi={jmriApi} jmriReady={jmriReady} />
       </Toolbar>

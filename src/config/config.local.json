@@ -1,6 +1,6 @@
 {
-    "layoutId": "traincontrol",
-    "name": "Emulator Junction",
-    "api": "http://localhost:5000",
-    "jmri": "http://traincontrol:12080/json/"
+    "layoutId": "betatrack",
+    "name": "Beta Track",
+    "api": "http://tamarackpi:5000",
+    "jmri": "http://tamarackpi:12080/json/"
 }

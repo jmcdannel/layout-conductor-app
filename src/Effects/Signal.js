@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-// import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 export const Signal = props => {
 
@@ -23,18 +23,18 @@ export const Signal = props => {
         <ToggleButtonGroup 
           size="small" 
           orientation={isSmallView ? 'horizontal' : 'vertical'}
-          value={'red'} 
+          value={effect.state} 
           exclusive 
           onChange={handleChange}>
-          {/* <ToggleButton value="1">
-            <FiberManualRecordIcon style={{color: 'red', opacity: effect.state == 1 ? 1 : .1 }} />
+          <ToggleButton value="red">
+            <FiberManualRecordIcon style={{color: 'red', opacity: effect.state == 'red' ? 1 : .1 }} />
           </ToggleButton>
-          <ToggleButton value="2">
-            <FiberManualRecordIcon style={{color: 'yellow', opacity: effect.state == 2 ? 1 : .1 }} />
+          <ToggleButton value="yellow">
+            <FiberManualRecordIcon style={{color: 'yellow', opacity: effect.state == 'yellow' ? 1 : .1 }} />
           </ToggleButton>
-          <ToggleButton value="0" >
-            <FiberManualRecordIcon style={{color: 'green', opacity: effect.state == 0 ? 1 : .1 }} />
-          </ToggleButton> */}
+          <ToggleButton value="green" >
+            <FiberManualRecordIcon style={{color: 'green', opacity: effect.state == 'green' ? 1 : .1 }} />
+          </ToggleButton>
         </ToggleButtonGroup>
       </Grid>
     </Grid>  

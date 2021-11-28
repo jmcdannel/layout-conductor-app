@@ -40,6 +40,7 @@ import JmriThrottleController from './JmriThrottleController';
 import Functions from './Functions';
 import { Context } from '../Store/Store';
 import useDebounce from '../Shared/Hooks/useDebounce';
+import api from '../Api';
 import './Throttle.scss';
 
 /*
@@ -62,7 +63,8 @@ export const Throttle = props => {
     forward
   } } = props;
   
-  const initialMaxSpeed = 100;
+  const initialMaxSpeed = isNaN(loco.maxSpeed) ? 100 : loco.maxSpeed;
+  console.log('loco.maxSpeed', loco.address, loco.maxSpeed, initialMaxSpeed);
   const initialUiSpeed = speed * 100 * (forward === true ? 1 : -1);
 
   const [ state, dispatch ] = useContext(Context);
@@ -129,7 +131,10 @@ export const Throttle = props => {
 
   const handleStickyThrottleClick = async () => {
     try {
-      await dispatch({ type: 'UPDATE_LOCO', payload: { address, autoStop: !loco.autoStop} });
+      const newAutoStop = !loco.autoStop;
+      console.log('handleStickyThrottleClick', newAutoStop, loco);
+      await api.locos.put({ address, autoStop: newAutoStop });
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, autoStop: newAutoStop } });
     } catch (err) {
       console.error(err);
     }
@@ -143,10 +148,16 @@ export const Throttle = props => {
     setPrecisonDialog(false);
   }
   
-  const handlePrecisionChange = (event) => {
-    setMaxSpeed(event.target.value);
-    setMinSpeed(-event.target.value);
-    setPrecisonDialog(false);
+  const handlePrecisionChange = async (event) => {
+    try {
+      setMaxSpeed(event.target.value);
+      setMinSpeed(-event.target.value);
+      setPrecisonDialog(false);
+      await api.locos.put({ address, maxSpeed });
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, maxSpeed } });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const roadClassName = () => {

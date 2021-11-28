@@ -15,7 +15,7 @@ import Turnouts from '../Turnouts/Turnouts';
 // import Layout from '../Layout/Layout';
 import Throttles from '../Throttles/Throttles';
 // import Signals from '../Signals/Signals';
-// import Effects from '../Effects/Effects';
+import Effects from '../Effects/Effects';
 import MiniThrottles from '../Throttles/MiniThrottles';
 import LandingMenu from './LandingMenu';
 
@@ -47,13 +47,19 @@ function TrackMaster(props) {
   const [jmriInitialized, setJmriInitialized] = useState(false);
   const [sensorsInitialized, setSensorsInitialized] = useState(false);
   const [jmriReady, setJmriReady] = useState(false);
+  const [apiReady, setApiReady] = useState(false);
 
 
   useEffect(() => {
     const initialize = async function() {
-      const apiInitState = await api.initialize();
-      console.log('apiInitState', apiInitState);
-      await dispatch({ type: 'INIT_STATE', payload: apiInitState });
+      try {
+        const apiInitState = await api.initialize();
+        console.log('apiInitState', apiInitState);
+        await dispatch({ type: 'INIT_STATE', payload: apiInitState });
+        setApiReady(true);
+      } catch (err) {
+        console.error('api initialization error', err);
+      }
     };
     
     initialize();
@@ -120,18 +126,12 @@ function TrackMaster(props) {
       //       <Layout turnouts={turnouts} />
       //     } />
       //   );
-      case 'throttles' :
+      case 'locos' :
         return (
           <Route path="/throttles" key={module} element={
             <Throttles jmriApi={jmriApi} />
           } />
         );
-      // case 'conductor' :
-      //   return (
-      //     <Route path="/map" key={module} element={
-      //       <MapControl turnouts={turnouts} onChange={handleTurnoutChange} />
-      //     } />
-      //   );
       case 'turnouts' :
         return (
           <Route path="/turnouts" key={module} element={
@@ -144,12 +144,12 @@ function TrackMaster(props) {
       //       <Signals signals={signals} sensors={sensors} />
       //     } />
       //   )
-      // case 'effects' :
-      //   return (
-      //     <Route path="/effects" key={module} element={
-      //       <Effects />
-      //     } />
-      //   )
+      case 'effects' :
+        return (
+          <Route path="/effects" key={module} element={
+            <Effects />
+          } />
+        )
     }
     // TODO: add signals
   }
@@ -163,6 +163,7 @@ function TrackMaster(props) {
               handleMenuClick={handleMenuClick} 
               jmriApi={jmriApi}
               jmriReady={jmriReady}
+              apiReady={apiReady}
             />
             {/* {page !== '/conductor' && <MiniThrottles showSto={true} locos={state.locos.filter(loco => loco.isAcquired && (loco.speed !== 0 || loco.isPinned))} jmriApi={jmriApi} />} */}
             
@@ -171,7 +172,10 @@ function TrackMaster(props) {
             <Routes>
               {/* <Route path="/" exact element={<div>conductor</div>} /> */}
               <Route path="/" exact element={<Conductor />} />
-              {appConfig.modules && appConfig.modules.map(getRoutedModule)}
+              <Route path="/conductor" key={module} element={
+                <Conductor />
+              } />
+              {modules && modules.map(getRoutedModule)}
             </Routes>
           </Box>
           <Box mt={1}>

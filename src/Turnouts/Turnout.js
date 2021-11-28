@@ -48,19 +48,19 @@ const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colo
 export const Turnout = props => {
 
   const { config } = props;
-  const { dcc, current, straight, divergent, relay, crossover, reverse, name, turnoutId, line, label, abbr, 'default': defaultOrientation } = config;
+  const { type, current, straight, divergent, relay, servo, name, turnoutId, 'default': defaultOrientation } = config;
   
   const [ state, dispatch ] = useContext(Context);
 
-  const [isDivergent, setIsDivergent] = useState((relay && current === divergent) || (dcc && current === 0));
+  const [isDivergent, setIsDivergent] = useState(current === divergent);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isPristine, setIsPristine] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
-    setIsDivergent((relay && current === divergent) || (dcc && current === 0));
-  }, [relay, dcc, current, straight, divergent]);
+    setIsDivergent(current === divergent);
+  }, [current, divergent]);
 
   const handleToggle = async e => {
     if (isLoading) { 
@@ -69,11 +69,8 @@ export const Turnout = props => {
     try {
       setIsLoading(true);
       setIsPristine(false);
-      const newCurrent = relay
-        ? isDivergent ? straight : divergent
-        : dcc 
-          ? current === 0 ? 1 : 0
-          : current;
+      const newCurrent = isDivergent ? straight : divergent;
+      console.log('handleToggle', newCurrent , straight, divergent, servo != null);
       const turnout = await api.turnouts.put({ turnoutId, current: newCurrent });
       await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
     } catch (err) {
@@ -86,8 +83,7 @@ export const Turnout = props => {
   }
 
   const getLineColor = () => {
-    const lineConfig = linesConfig.find(l => l.lineId === line);
-    return lineConfig ? lineConfig.color : defaultLine.color;
+    return defaultLine.color;
   }
 
   const handleReset = async e => {
@@ -110,7 +106,7 @@ export const Turnout = props => {
     <Card className={`turnout turnout--compact`}>
       <CardHeader className="turnout__header">
         <Chip
-            label={`${abbr}`}
+            label={`${name}`}
             // icon={<CallSplit />}
             variant="outlined"
             className="chip"
@@ -149,7 +145,7 @@ export const Turnout = props => {
           
         <Box my={1} className="turnout__desc compact-hidden">
           <Typography component="h6" variant="h6" gutterBottom>
-            {name} <strong style={{whiteSpace:"nowrap"}}>({abbr})</strong>
+            {name}
           </Typography>
           <Typography component="small" gutterBottom>
             Angle: {current}

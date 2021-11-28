@@ -1,12 +1,43 @@
 import * as Colors from '@mui/material/colors';
 
+const storageKey = 'lcConfig';
+
 export const getAppConfig = () => {
     try {
-        return require('./config.local.json');
+        let config = getlocalStorageConfig();
+        return config
+            ? config
+            : require('./config.local.json');
     } catch (e) {
         console.warn('Loading default config');
         return require('./config.default.json');
     }
+}
+
+export const jmriHosts = [
+    'http://tamarackpi:12080/json/',
+    'http://traincontrol:12080/json/',
+    'http://localhost:12080/json/'
+];
+
+export const apiHosts = [
+    'http://tamarackpi:5000',
+    'http://traincontrol:5000',
+    'http://localhost:5000'
+];
+
+export const layoutIds = [
+    'tam',
+    'traincontrol',
+    'betatrack'
+];
+
+export const updateConfig = newConfig =>
+    window.localStorage.setItem(storageKey, JSON.stringify(newConfig));
+
+const getlocalStorageConfig = () => {
+    const config = window.localStorage.getItem(storageKey);
+    return config ? JSON.parse(config) : null;
 }
 
 const defaultColor = Colors.grey[500];

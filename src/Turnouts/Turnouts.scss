@@ -1,0 +1,10 @@
+g.turnout {
+  pointer-events: bounding-box;
+  opacity: 1;
+}
+
+g.turnout:hover {
+  opacity: .5;
+  cursor: pointer;
+
+}

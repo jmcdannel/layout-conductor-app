@@ -1,54 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
-// import CallSplit from '@mui/icons-material/CallSplit';
+import CallSplit from '@mui/icons-material/CallSplit';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import TextField from '@mui/material/TextField';
+import SaveIcon from '@mui/icons-material/Save';
+import Autocomplete from '@mui/material/Autocomplete';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import MapIcon from '@mui/icons-material/Map';
+import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { getAppConfig } from '../config/config';
+import { getAppConfig, jmriHosts, apiHosts, layoutIds, updateConfig } from '../config/config';
 
-export const StatusMonitor = ({ jmriReady }) => {
+export const StatusMonitor = ({ jmriReady,  apiReady }) => {
 
   const appConfig = getAppConfig();
 
-  // const [ powerStatus, setPowerStatus ] = useState(powerStates.unknown);
-  // const [ initialized, setInitialized ] = useState(false);
+  const [jmriConfigOpen, setJMRIConfigOpen] = useState(false);
+  const [apiConfigOpen, setAPIConfigOpen] = useState(false);
+  const [layoutConfigOpen, setLayoutConfigOpen] = useState(false);
 
-  // useEffect(() => {
-  //   console.log('useEffect', initialized, jmriReady, jmriApi);
-  //   if (jmriReady && !initialized) {
-  //     console.log('Power.power', jmriReady);
-  //     jmriApi.on('power', handlePowerStateChange);
-  //     jmriApi.power();
-  //     setInitialized(true);
-  //   }
-  // }, [ initialized, jmriReady, jmriApi ]);
+  const [jmriHost, setJMRIHost] = useState(appConfig.jmri);
+  const [apiHost, setAPIHost] = useState(appConfig.api);
+  const [layoutId, setLayoutId] = useState(appConfig.layoutId);
 
-  // const handlePowerStateChange = state => {
-  //   setPowerStatus(state);
-  // }
+  const handleJMRIUpdate = () => {
+    appConfig.jmri = jmriHost;
+    updateConfig(appConfig);
+    window.location.reload(false);
+  }
 
-  // const handlePowerClick = () => {
-  //   if (powerStatus === powerStates.unknown || powerStatus === powerStates.off) {
-  //     jmriApi.power(powerStates.on);
-  //   } else if (powerStatus === powerStates.on) {
-  //     jmriApi.power(powerStates.off);
-  //   }
-  // }
+  const handleAPIUpdate = () => {
+    appConfig.api = apiHost;
+    updateConfig(appConfig);
+    window.location.reload(false);
+  }
 
-  // const getCurrentStateKey = () => {
-  //   const currState = Object.keys(powerStates)
-  //     .filter(key => powerStates[key] === powerStatus);
-  //   return currState.length ? currState[0] : 'unknown';
-  // }
+  const handleLayoutUpdate = () => {
+    appConfig.layoutId = layoutId;
+    updateConfig(appConfig);
+    window.location.reload(false);
+  }
 
-  // const getClassName = () => jmriApi.getState().ready && initialized
-  //     ? `power-${getCurrentStateKey()}`
-  //     : 'power-pending';
-
-  const handleClick = () => { 
-    console.log('Not Implemented');
-
-    // TODO: allow user to modify api or jmri settings
-  };
   const hasJmri = !!appConfig.jmri;
   const hasApi = !!appConfig.api;
 
@@ -59,7 +52,7 @@ export const StatusMonitor = ({ jmriReady }) => {
     }`;
 
   const apiClassName = `status-monitor--${
-    hasApi
+    hasApi && apiReady
       ? 'connected'
       : 'unknown'
     }`;
@@ -69,26 +62,96 @@ export const StatusMonitor = ({ jmriReady }) => {
 
   return (
     <div className="status-monitor">
-      {hasJmri && (<Tooltip title="JMRI Connection Status">
+      <Tooltip title="Layout ID">
+        <Chip
+          variant="outlined"
+          size="small"
+          icon={<MapIcon className={apiClassName} />}
+          label={`Layout ID: ${appConfig.layoutId}`}
+          color="default"
+          onClick={() => setLayoutConfigOpen(true)}
+        />
+      </Tooltip>
+      <Tooltip title="JMRI Connection Status">
         <Chip
           variant="outlined"
           size="small"
           icon={<UnfoldMoreIcon className={jmriClassName} />}
           label="JMRI"
           color="default"
-          onClick={handleClick}
+          onClick={() => setJMRIConfigOpen(true)}
         />
-      </Tooltip>)}
-      {hasApi && (<Tooltip title="REST API Status">
+      </Tooltip>
+      <Tooltip title="REST API Status">
         <Chip
           variant="outlined"
           size="small"
-          icon={<UnfoldMoreIcon className={apiClassName} />}
+          icon={<CallSplit className={apiClassName} />}
           label="API"
           color="default"
-          onClick={handleClick}
+          onClick={() => setAPIConfigOpen(true)}
         />
-      </Tooltip>)}
+      </Tooltip>
+
+      <Dialog onClose={() => setLayoutConfigOpen(false)} open={layoutConfigOpen}>
+        <DialogTitle>Layout ID</DialogTitle>
+        <Autocomplete
+            sx={{ padding: '1rem', width: '360px' }}
+            id="layout-id"
+            freeSolo
+            onChange={(event, newValue) => {
+              setLayoutId(newValue);
+            }}
+            options={layoutIds}
+            value={layoutId}
+            renderInput={(params) => <TextField {...params} label="Layout ID" />}
+          />
+          <IconButton 
+            size="large" 
+            onClick={handleLayoutUpdate}>
+              <SaveIcon />
+          </IconButton>
+      </Dialog>
+
+      <Dialog onClose={() => setAPIConfigOpen(false)} open={apiConfigOpen}>
+        <DialogTitle>API Host</DialogTitle>
+        <Autocomplete
+            sx={{ padding: '1rem', width: '360px' }}
+            id="api-host"
+            freeSolo
+            onChange={(event, newValue) => {
+              setAPIHost(newValue);
+            }}
+            options={apiHosts}
+            value={apiHost}
+            renderInput={(params) => <TextField {...params} label="API Host" />}
+          />
+          <IconButton 
+            size="large" 
+            onClick={handleAPIUpdate}>
+              <SaveIcon />
+          </IconButton>
+      </Dialog>
+
+      <Dialog onClose={() => setJMRIConfigOpen(false)} open={jmriConfigOpen}>
+        <DialogTitle>JMRI Host</DialogTitle>
+        <Autocomplete
+            sx={{ padding: '1rem', width: '360px' }}
+            id="jmri-host"
+            freeSolo
+            onChange={(event, newValue) => {
+              setJMRIHost(newValue);
+            }}
+            options={jmriHosts}
+            value={jmriHost}
+            renderInput={(params) => <TextField {...params} label="JMRI Host" />}
+          />
+          <IconButton 
+            size="large" 
+            onClick={handleJMRIUpdate}>
+              <SaveIcon />
+          </IconButton>
+      </Dialog>
     </div>
   );
 }

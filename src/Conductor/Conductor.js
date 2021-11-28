@@ -43,7 +43,6 @@ export const Conductor = props => {
     if (menu.sectionFilters && menu.sectionFilters.length > 0) {
       filtered = filtered.filter(t => menu.sectionFilters.includes(t.section));
     }
-    console.log('filterTurnouts', turnouts, filtered, menu);
     return filtered;
   }
 
@@ -72,12 +71,12 @@ export const Conductor = props => {
                 />
               </Paper>
             </Grid>
-            {/* <Grid item>
+            <Grid item>
               <Paper elevation={3} style={{ padding: '0.5rem' }}>
                 <h2>Effects</h2>
                 <Effects view={menu.view} />
               </Paper>              
-            </Grid> */}
+            </Grid>
           </Grid>
       </Grid>
     </Grid>

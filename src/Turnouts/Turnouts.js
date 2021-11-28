@@ -8,6 +8,7 @@ import { ReactComponent as TamSouth } from '../Layout/images/tam/tam-south-lines
 
 import { Context } from '../Store/Store';
 import api from '../Api';
+import './Turnouts.scss';
 
 export const Turnouts = props => {
 
@@ -39,8 +40,7 @@ export const Turnouts = props => {
         <Grid item sm={12} className="turnout__grid-item">
           {turnouts.map(turnout => (
             <div key={`turnout${groupBy}${turnout.turnoutId}`} className="turnout__container">
-            {console.log('none', turnout, turnout.turnoutId)}
-              <Turnout config={turnout} />
+               <Turnout config={turnout} />
             </div>
           ))}
         </Grid>

@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import ShareIcon from '@mui/icons-material/Share';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-// import HighlightIcon from '@mui/icons-material/Highlight';
+import HighlightIcon from '@mui/icons-material/Highlight';
 // import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import TrafficIcon from '@mui/icons-material/Traffic';
@@ -86,15 +86,15 @@ export const Effect = props => {
   const size = isSmallView ? 'small' : 'large';
 
   const getAvatar = () => {
-    switch(effect.type) {
-      // case 'Light':
-      //   return (<HighlightIcon fontSize={size} />);
-      case 'Lighting Animation':
+    switch(effect.type.toLowerCase()) {
+      case 'light':
+        return (<HighlightIcon fontSize={size} />);
+      case 'lighting animation':
         return (<MovieFilterIcon fontSize={size} />);
-      case 'Signal':
+      case 'signal':
         return (<TrafficIcon fontSize={size} />);
-      case 'Sound':
-      case 'Sound Loop':
+      case 'sound':
+      case 'sound loop':
         return (<MusicNoteIcon fontSize={size} />);
       default:
         return effect.type.substring(0, 1);                                                                                
@@ -102,10 +102,10 @@ export const Effect = props => {
   }
 
   const getAction = () => {
-    switch(effect.type) {
-      case 'Signal':
+    switch(effect.type.toLowerCase()) {
+      case 'signal':
         return null;
-      case 'Sound':
+      case 'sound':
         return (
             <Button 
               onClick={handleButtonClick} 
@@ -129,8 +129,8 @@ export const Effect = props => {
   }
 
   const renderContent = () => {
-    switch(effect.type) {
-      case 'Signal':
+    switch(effect.type.toLowerCase()) {
+      case 'signal':
         return (<Signal effect={effect} getMetaData={getMetaData} onChange={updateEffect} view={view} />);
       default:
         return (
@@ -149,11 +149,7 @@ export const Effect = props => {
     <Card className="effect">
       <CardHeader
         avatar={
-          <Avatar style={{
-            backgroundColor: getEffectColor(effect.type),
-            width: isSmallView ? '20px' : 'auto',
-            height: isSmallView ? '20px' : 'auto'
-          }}>
+          <Avatar>
             {getAvatar()}
           </Avatar>}
         title={effect.name}
