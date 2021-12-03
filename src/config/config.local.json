@@ -1,6 +1,0 @@
-{
-    "layoutId": "betatrack",
-    "name": "Beta Track",
-    "api": "http://tamarackpi:5000",
-    "jmri": "http://tamarackpi:12080/json/"
-}
