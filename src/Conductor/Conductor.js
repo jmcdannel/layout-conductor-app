@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
 
 import ConductorMenu from './ConductorMenu';
@@ -10,6 +14,32 @@ import Throttles from '../Throttles/Throttles';
 import Effects from '../Effects/Effects';
 
 import './Conductor.scss';
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 1 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
 
 export const Conductor = props => {
 
@@ -24,6 +54,12 @@ export const Conductor = props => {
     };
 
   const [ menu, setMenu ] = useState(defaultMenu);
+
+  const [tab, setTab] = React.useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setTab(newValue);
+  };
 
   useEffect(() => {
     window.localStorage.setItem('menu', JSON.stringify(menu));
@@ -52,32 +88,36 @@ export const Conductor = props => {
       direction="row"
       justifyContent="space-between"
       alignItems="stretch">
-      <Grid item xs={8} className="flex">
+      <Grid item xs={8} className="flex App-content-column">
         <Throttles />
       </Grid>
-      <Grid item xs={4}>
-          <Grid container direction="column">
-            <Grid item>
-              <Paper elevation={3} style={{ padding: '0.5rem' }}>
-                <h2>Turnouts</h2>
-                {/* <ConductorMenu 
-                  onChange={handleMenuChange} 
-                  defaults={defaultMenu}
-                /> */}
+      <Grid item xs={4} className=" App-content-column">
+        <Grid container direction="column">
+          <Grid item>
+            <Paper elevation={3} style={{ padding: '0.5rem' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+                  <Tab label="Turnouts" />
+                  <Tab label="Effects" />
+                  <Tab label="Signals" />
+                </Tabs>
+              </Box>
+              <TabPanel value={tab} index={0}>
                 <Turnouts 
                   view={menu.view}
                   groupBy={menu.group}
                   filter={filterTurnouts} 
                 />
-              </Paper>
-            </Grid>
-            <Grid item>
-              <Paper elevation={3} style={{ padding: '0.5rem' }}>
-                <h2>Effects</h2>
+              </TabPanel>
+              <TabPanel value={tab} index={1}>
                 <Effects view={menu.view} />
-              </Paper>              
-            </Grid>
+              </TabPanel>
+              <TabPanel value={tab} index={2}>
+                <Effects view={menu.view} />
+              </TabPanel>
+            </Paper>
           </Grid>
+        </Grid>
       </Grid>
     </Grid>
 

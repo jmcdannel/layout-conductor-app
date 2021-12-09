@@ -1,4 +1,15 @@
+@use "sass:color";
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
 
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
 
 $green: #26ac14;
 $blue: #146fac;
@@ -55,6 +66,32 @@ $orange: #f89719;
         }
 
       }
+    }
+  }
+
+
+  &.MuiPaper-root {
+    @include linear-gradient(darken($red, 30%), darken($red, 40%));
+  }
+  &--BNSF,
+  &--GN-317 {
+    &.MuiPaper-root {
+      @include linear-gradient(darken($green, 20%), darken($green, 30%));
+    }
+  }
+
+  &--BNSF-5931 {
+    &.MuiPaper-root {
+      @include linear-gradient(darken($orange, 20%), darken($orange, 30%));
+    }
+  }
+
+  &--BNSF-5917, 
+  &--BNSF-5918,
+  &--BNSF-5919,
+  &--Amtrack-150 {
+    &.MuiPaper-root {
+      @include linear-gradient(darken($blue, 20%), darken($blue, 30%));
     }
   }
 

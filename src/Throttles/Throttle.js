@@ -153,8 +153,8 @@ export const Throttle = props => {
       setMaxSpeed(event.target.value);
       setMinSpeed(-event.target.value);
       setPrecisonDialog(false);
-      await api.locos.put({ address, maxSpeed });
-      await dispatch({ type: 'UPDATE_LOCO', payload: { address, maxSpeed } });
+      await api.locos.put({ address, maxSpeed: event.target.value });
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, maxSpeed: event.target.value } });
     } catch (err) {
       console.error(err);
     }

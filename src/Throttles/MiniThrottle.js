@@ -83,7 +83,9 @@ export const MiniThrottle = props => {
   }, [jmriApi, handleLocoAcquired]);
 
   const computedClassName = () => {
-    return ['mini-throttle', isAcquired ? 'mini-throttle__acquired' : 'mini-throttle__notacquired'].join(' ');
+    return ['mini-throttle', 
+      `mini-throttle--${loco.name.replace(' ', '')}  mini-throttle--${loco.road.replace(' ', '')}`,
+      isAcquired ? 'mini-throttle__acquired' : 'mini-throttle__notacquired'].join(' ');
   }
 
   return (
