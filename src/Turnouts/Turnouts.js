@@ -12,7 +12,9 @@ import './Turnouts.scss';
 
 export const Turnouts = props => {
 
-  const { view, filter, groupBy } = props;
+  const { filter, groupBy } = props;
+
+  const view = 'tiny';
 
   const [ state, dispatch ] = useContext(Context);
   const { turnouts } = state;
