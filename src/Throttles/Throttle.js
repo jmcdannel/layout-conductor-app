@@ -56,12 +56,12 @@ export const Throttle = props => {
   // const FULL_SPEED = '1.0';
 
   const { jmriApi, loco, onLocoClick, loco: { 
-    address, 
     isAcquired, 
     speed, 
     autoStop,
     forward
   } } = props;
+  const address = Number(props.loco.address);
   
   const initialMaxSpeed = isNaN(loco.maxSpeed) ? 100 : loco.maxSpeed;
   console.log('loco.maxSpeed', loco.address, loco.maxSpeed, initialMaxSpeed);

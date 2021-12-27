@@ -1,3 +1,5 @@
+$greenline: rgb(0, 171, 0);
+
 g.turnout {
   pointer-events: bounding-box;
   opacity: 1;
@@ -6,5 +8,35 @@ g.turnout {
 g.turnout:hover {
   opacity: .5;
   cursor: pointer;
+}
 
+svg {
+  &.turnout-109-straight {
+    #t109 {
+      g:nth-child(1) {
+        path {
+          stroke: rgb(0, 171, 0) !important;
+        }
+      }
+      g:nth-child(2) {
+        path {
+          stroke: black !important;
+        }
+      }
+    }
+  }
+  &.turnout-109-divergent {
+    #t109 {
+      g:nth-child(1) {
+        path {
+          stroke: black !important;
+        }
+      }
+      g:nth-child(2) {
+        path {
+          stroke: rgb(0, 171, 0) !important;
+        }
+      }
+    }
+  }
 }
