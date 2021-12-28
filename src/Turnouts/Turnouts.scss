@@ -4,6 +4,10 @@ g.turnout {
   pointer-events: bounding-box;
   opacity: 1;
   cursor: pointer;
+  path {
+    fill:none;
+    stroke-linecap:butt;
+  }
 }
 
 g.turnout:hover {
@@ -12,77 +16,75 @@ g.turnout:hover {
 
 $turnouts: 102, 103, 104, 105, 106, 107, 108, 109, 110, 201;
 
-svg {
-  @each $turnout in $turnouts {
-    &.turnout-#{$turnout}-straight {
-      #t#{$turnout} {
-        cursor: pointer;
-        g:nth-child(1) {
-          path {
-            stroke: $greenline !important;
-          }
-        }
-        g:nth-child(2) {
-          path {
-            stroke: black !important;
-          }
+@each $turnout in $turnouts {
+  .turnout-#{$turnout}-straight {
+    #t#{$turnout} {
+      cursor: pointer;
+      g:nth-child(1) {
+        path {
+          stroke: $greenline !important;
         }
       }
-    }
-    &.turnout-#{$turnout}-divergent {
-      #t#{$turnout} {
-        cursor: pointer;
-        g:nth-child(1) {
-          path {
-            stroke: black !important;
-          }
-        }
-        g:nth-child(2) {
-          path {
-            stroke: $greenline !important;
-          }
+      g:nth-child(2) {
+        path {
+          stroke: black !important;
         }
       }
     }
   }
+  .turnout-#{$turnout}-divergent {
+    #t#{$turnout} {
+      cursor: pointer;
+      g:nth-child(1) {
+        path {
+          stroke: black !important;
+        }
+      }
+      g:nth-child(2) {
+        path {
+          stroke: $greenline !important;
+        }
+      }
+    }
+  }
+}
 
-  &.turnout-101-straight {
-    #t101 {
-      cursor: pointer;
-      g:nth-child(1) {
-        path {
-          stroke: $greenline !important;
-        }
+.turnout-101-straight {
+  #t101 {
+    cursor: pointer;
+    g:nth-child(1) {
+      path {
+        stroke: $greenline !important;
       }
-      g:nth-child(2) {
-        path {
-          stroke: $greenline !important;
-        }
+    }
+    g:nth-child(2) {
+      path {
+        stroke: $greenline !important;
       }
-      g:nth-child(3) {
-        path {
-          stroke: black !important;
-        }
+    }
+    g:nth-child(3) {
+      path {
+        stroke: black !important;
       }
     }
   }
-  &.turnout-101-divergent {
-    #t101 {
-      cursor: pointer;
-      g:nth-child(1) {
-        path {
-          stroke: black !important;
-        }
+}
+.turnout-101-divergent {
+  #t101 {
+    cursor: pointer;
+    g:nth-child(1) {
+      path {
+        stroke: black !important;
       }
-      g:nth-child(2) {
-        path {
-          stroke: black !important;
-        }
+    }
+    g:nth-child(2) {
+      path {
+        stroke: black !important;
       }
-      g:nth-child(3) {
-        path {
-          stroke: $greenline !important;
-        }
+    }
+    g:nth-child(3) {
+      path {
+        stroke: $greenline !important;
       }
     }
   }

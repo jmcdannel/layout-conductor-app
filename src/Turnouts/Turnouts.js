@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
 import Turnout from './Turnout';
 import MapTurnout from './MapTurnout';
 import tamarackStationSouthImage from '../Layout/images/tam/tamarack-station-south.png';
 import { ReactComponent as Turnout4Left } from '../Shared/Images/TurnoutMasks/4-left.svg';
 // import { ReactComponent as TamSouth } from '../Layout/images/tam/tam-south-lines.svg';
-import { ReactComponent as TamSouth } from '../Layout/images/tam/tam-south-lines-0.001.svg';
+// import { ReactComponent as TamSouth } from '../Layout/images/tam/tam-south-lines-0.001.svg';
+import TamSouth from '../Layout/images/tam/TamSouth';
 
 import { Context } from '../Store/Store';
 import api from '../Api';
@@ -22,6 +22,12 @@ export const Turnouts = props => {
   const { turnouts } = state;
 
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    console.log('attaching listeners');
+    
+
+  });
 
   const lines = filter(turnouts).reduce((acc, curr) => {
     if (!acc.includes(curr.line)) {
@@ -41,40 +47,34 @@ export const Turnouts = props => {
     `turnout-${t.turnoutId}-${t.current === t.straight ? 'straight' : 'divergent'}`
   ).join(' ');
 
-  const handleMapClick = async (e) => {
-    console.log('handleMapClick', e);
-    console.log('e.target', e.target);
-    console.log('id', e.target.id);
-    const id = e.target.id && e.target.id.startsWith('t')
-      ? Number(e.target.id.substring(1))
-      : null;
-    if (id) {
-      let turnout = turnouts.find(t => t.turnoutId === id);
-      console.log('turnout', turnout);
+  // const handleMapClick = async (e) => {
+  //   console.log('handleMapClick', e);
+  //   console.log('e.target', e.target);
+  //   console.log('id', e.target.id);
+  //   const id = e.target.id && e.target.id.startsWith('t')
+  //     ? Number(e.target.id.substring(1))
+  //     : null;
+  //   if (id) {
+  //     let turnout = turnouts.find(t => t.turnoutId === id);
+  //     console.log('turnout', turnout);
 
-      try {
-        const newCurrent = (turnout.current === turnout.divergent) ? turnout.straight : turnout.divergent;
-        turnout = await api.turnouts.put({ turnoutId: turnout.turnoutId, current: newCurrent });
-        await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
-      } catch (err) {
-        console.error(err);
-        setError(err.toString());
-      }
+  //     try {
+  //       const newCurrent = (turnout.current === turnout.divergent) ? turnout.straight : turnout.divergent;
+  //       turnout = await api.turnouts.put({ turnoutId: turnout.turnoutId, current: newCurrent });
+  //       await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
+  //     } catch (err) {
+  //       console.error(err);
+  //       setError(err.toString());
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setError(undefined);
-  };
 
   return turnouts ? (
     <Grid container className={`turnouts turnouts--${view}`}>
-      <Grid item sm={12}>
-        <TamSouth className={tunroutStateClasses()} onClick={handleMapClick} />
+      <Grid item sm={12} className={tunroutStateClasses()}>
+        <TamSouth />
       </Grid>
       {groupBy === '' && (
         <Grid item sm={12} className="turnout__grid-item">
@@ -127,7 +127,6 @@ export const Turnouts = props => {
           </Grid>
         </div>
       ))}
-      <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose} message={error} />
     </Grid>
     
   ) : null;
