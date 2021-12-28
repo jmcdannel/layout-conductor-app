@@ -16,6 +16,7 @@ svg {
   @each $turnout in $turnouts {
     &.turnout-#{$turnout}-straight {
       #t#{$turnout} {
+        cursor: pointer;
         g:nth-child(1) {
           path {
             stroke: $greenline !important;
@@ -30,6 +31,7 @@ svg {
     }
     &.turnout-#{$turnout}-divergent {
       #t#{$turnout} {
+        cursor: pointer;
         g:nth-child(1) {
           path {
             stroke: black !important;
@@ -46,6 +48,7 @@ svg {
 
   &.turnout-101-straight {
     #t101 {
+      cursor: pointer;
       g:nth-child(1) {
         path {
           stroke: $greenline !important;
@@ -65,6 +68,7 @@ svg {
   }
   &.turnout-101-divergent {
     #t101 {
+      cursor: pointer;
       g:nth-child(1) {
         path {
           stroke: black !important;
