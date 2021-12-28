@@ -3,11 +3,11 @@ $greenline: rgb(0, 171, 0);
 g.turnout {
   pointer-events: bounding-box;
   opacity: 1;
+  cursor: pointer;
 }
 
 g.turnout:hover {
   opacity: .5;
-  cursor: pointer;
 }
 
 $turnouts: 102, 103, 104, 105, 106, 107, 108, 109, 110, 201;
