@@ -12,9 +12,9 @@ export const Effects = props => {
   const { effects, sensors } = state;
 
   return (
-    <Grid container className={`effects  effects--${view}`} spacing={2}>  
+    <Grid container className={`effects  effects--${view}`} spacing={1}>  
       {effects && effects.map(effect => (
-        <Grid item key={`effect${effect.effectId}`} className="effects__grid-item" xs="auto">
+        <Grid item key={`effect${effect.effectId}`} className="effects__grid-item" xs={12}>
             <Effect effect={effect} sensors={sensors} view={view} key={effect.effectId} />
         </Grid>
       ))}

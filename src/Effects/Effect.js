@@ -20,7 +20,7 @@ import { Context } from '../Store/Store';
 import api from '../Api';
 import { getSectionColor, getLineColor, getEffectColor } from '../config/config';
 
-
+const PLAY_SOUND_DELAY = 2000;
 
 export const Effect = props => {
 
@@ -31,11 +31,14 @@ export const Effect = props => {
   const [isPristine, setIsPristine] = useState(true);
 
   const handleSwitchChange = (event) => {
-    updateEffect({ effectId, state: event.target.checked ? 1 : 0 })
+    updateEffect({ effectId, state: event.target.checked ? 1 : 0 });;
   };
 
   const handleButtonClick = (event) => {
-    updateEffect({ effectId, state: 1 })
+    updateEffect({ effectId, state: 1 });
+    setTimeout(async () => {
+      updateEffect({ effectId, state: 0 });
+    }, PLAY_SOUND_DELAY);
   };
 
   const updateEffect = async (changedEffect) => {
@@ -54,33 +57,33 @@ export const Effect = props => {
     }
   }
 
-  const getMetaData = effect => (
-    <div className="effect__meta">
-      <p>
-        <strong>{effect.actions.length}</strong> Actions 
-        | 
-        State: <strong>{effect.state}</strong>
-      </p>
-      {effect.line && (<Chip 
-        label={`Line: ${effect.line}`} 
-        size="small"
-        variant="outlined"
-        style={{  
-          margin: '0.25rem',
-          borderColor: getLineColor(effect.line) 
-        }}
-      />)}
-      {effect.section && (<Chip 
-        label={`Section: ${effect.section}`} 
-        size="small"
-        variant="outlined"
-        style={{  
-          margin: '0.25rem',
-          borderColor: getSectionColor(effect.section)
-        }}
-      />)}
-    </div>
-  );
+  // const getMetaData = effect => (
+  //   <div className="effect__meta">
+  //     <p>
+  //       <strong>{effect.actions.length}</strong> Actions 
+  //       | 
+  //       State: <strong>{effect.state}</strong>
+  //     </p>
+  //     {effect.line && (<Chip 
+  //       label={`Line: ${effect.line}`} 
+  //       size="small"
+  //       variant="outlined"
+  //       style={{  
+  //         margin: '0.25rem',
+  //         borderColor: getLineColor(effect.line) 
+  //       }}
+  //     />)}
+  //     {effect.section && (<Chip 
+  //       label={`Section: ${effect.section}`} 
+  //       size="small"
+  //       variant="outlined"
+  //       style={{  
+  //         margin: '0.25rem',
+  //         borderColor: getSectionColor(effect.section)
+  //       }}
+  //     />)}
+  //   </div>
+  // );
 
   const isSmallView = (view === 'pill' || view === 'tiny');
   const size = isSmallView ? 'small' : 'large';
@@ -131,13 +134,13 @@ export const Effect = props => {
   const renderContent = () => {
     switch(effect.type.toLowerCase()) {
       case 'signal':
-        return (<Signal effect={effect} getMetaData={getMetaData} onChange={updateEffect} view={view} />);
+        return (<Signal effect={effect} getMetaData={() => {}} onChange={updateEffect} view={view} />);
       default:
         return (
         <Grid container direction="row">
-          {!isSmallView && (<Grid item xs={9}>
+          {/* {!isSmallView && (<Grid item xs={9}>
             {getMetaData(effect)}
-          </Grid>)}
+          </Grid>)} */}
           <Grid item xs={isSmallView ? 12 : 3}>
             {getAction()}
           </Grid>
