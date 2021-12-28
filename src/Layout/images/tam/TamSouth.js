@@ -32,6 +32,10 @@ export const TamSouth = () => {
     }
   }
 
+  const handleTouchEnd = async (e) => {
+    setError(`handleTouchEnd: ${e} `);
+  }
+
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -146,7 +150,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick} className="turnout" id="t101" transform="matrix(1.42572,0,0,1.2227,-112.2,-161.09)">
+                  <g onClick={handleMapClick} onTouchEnd={handleTouchEnd} className="turnout" id="t101" transform="matrix(1.42572,0,0,1.2227,-112.2,-161.09)">
                       <g transform="matrix(0.839868,0,0,0.932393,21.1807,0.851025)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.7px' }} />
                       </g>
