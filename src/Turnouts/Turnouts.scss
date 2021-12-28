@@ -10,23 +10,61 @@ g.turnout:hover {
   cursor: pointer;
 }
 
+$turnouts: 102, 103, 104, 105, 106, 107, 108, 109, 110, 201;
+
 svg {
-  &.turnout-109-straight {
-    #t109 {
+  @each $turnout in $turnouts {
+    &.turnout-#{$turnout}-straight {
+      #t#{$turnout} {
+        g:nth-child(1) {
+          path {
+            stroke: $greenline !important;
+          }
+        }
+        g:nth-child(2) {
+          path {
+            stroke: black !important;
+          }
+        }
+      }
+    }
+    &.turnout-#{$turnout}-divergent {
+      #t#{$turnout} {
+        g:nth-child(1) {
+          path {
+            stroke: black !important;
+          }
+        }
+        g:nth-child(2) {
+          path {
+            stroke: $greenline !important;
+          }
+        }
+      }
+    }
+  }
+
+  &.turnout-101-straight {
+    #t101 {
       g:nth-child(1) {
         path {
-          stroke: rgb(0, 171, 0) !important;
+          stroke: $greenline !important;
         }
       }
       g:nth-child(2) {
+        path {
+          stroke: $greenline !important;
+        }
+      }
+      g:nth-child(3) {
         path {
           stroke: black !important;
         }
       }
     }
   }
-  &.turnout-109-divergent {
-    #t109 {
+  &.turnout-101-divergent {
+    #t101 {
       g:nth-child(1) {
         path {
           stroke: black !important;
@@ -34,7 +72,12 @@ svg {
       }
       g:nth-child(2) {
         path {
-          stroke: rgb(0, 171, 0) !important;
+          stroke: black !important;
+        }
+      }
+      g:nth-child(3) {
+        path {
+          stroke: $greenline !important;
         }
       }
     }
