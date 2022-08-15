@@ -16,6 +16,7 @@ import Turnouts from '../Turnouts/Turnouts';
 import Throttles from '../Throttles/Throttles';
 // import Signals from '../Signals/Signals';
 import Effects from '../Effects/Effects';
+import Pinout from '../Settings/Pinout';
 import MiniThrottles from '../Throttles/MiniThrottles';
 import LandingMenu from './LandingMenu';
 
@@ -172,6 +173,7 @@ function TrackMaster(props) {
             <Routes>
               {/* <Route path="/" exact element={<div>conductor</div>} /> */}
               <Route path="/" exact element={<Conductor />} />
+              <Route path="/pinout" exact element={<Pinout />} />
               <Route path="/conductor" key={module} element={
                 <Conductor />
               } />

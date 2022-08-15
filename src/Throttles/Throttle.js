@@ -217,6 +217,7 @@ export const Throttle = props => {
                   <Paper elevation={3} className="" display="flex" direction="column">
                     {/* <pre>speed={loco.speed}</pre>
                     <pre>uiSpeed={uiSpeed}</pre> */}
+                    <img src={`${process.env.PUBLIC_URL}/images/tam/locos/${loco.address}.jpg`} className="throttle__locoimg" />
                     <ThrottleSpeed speed={uiSpeed} />
                     <ButtonGroup
                         orientation="vertical"

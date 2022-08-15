@@ -78,7 +78,7 @@ export const TamSouth = () => {
                           <path d="M221.06,11.887L66.073,11.887" style={{ fill: 'none', stroke: 'rgb(0,171,0)', strokeWidth: '2px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t110" transform="matrix(1.42572,0,0,1.2227,-91.1706,-120)">
+                  <g onClick={handleMapClick} className="turnout" id="t110" transform="matrix(1.42572,0,0,1.2227,-91.1706,-120)">
                       <g transform="matrix(1,0,0,1,-1.09602,-0.05725)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
@@ -86,7 +86,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t109" transform="matrix(1.42572,0,0,1.2227,-108.416,-105.258)">
+                  <g onClick={handleMapClick} className="turnout" id="t109" transform="matrix(1.42572,0,0,1.2227,-108.416,-105.258)">
                       <g transform="matrix(1,0,0,1,-1.09602,-0.05725)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
@@ -94,7 +94,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t108" transform="matrix(1.42572,0,0,1.2227,-128.024,-89.0408)">
+                  <g onClick={handleMapClick} className="turnout" id="t108" transform="matrix(1.42572,0,0,1.2227,-128.024,-89.0408)">
                       <g transform="matrix(1,0,0,1,3.88808,11.0838)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
@@ -102,7 +102,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '3.35px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t107" transform="matrix(1.42572,0,0,1.2227,-128.024,-89.0408)">
+                  <g onClick={handleMapClick} className="turnout" id="t107" transform="matrix(1.42572,0,0,1.2227,-128.024,-89.0408)">
                       <g transform="matrix(0.91349,0,0,1,16.9081,-1.37165)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.51px' }} />
                       </g>
@@ -110,7 +110,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '3.83px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t106" transform="matrix(1.42572,0,0,1.2227,-162.226,-89.0408)">
+                  <g onClick={handleMapClick} className="turnout" id="t106" transform="matrix(1.42572,0,0,1.2227,-162.226,-89.0408)">
                       <g transform="matrix(1,0,0,1,4.49271,-25.3775)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
@@ -118,7 +118,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t105" transform="matrix(1.42572,0,0,1.2227,-146.23,-102.198)">
+                  <g onClick={handleMapClick} className="turnout" id="t105" transform="matrix(1.42572,0,0,1.2227,-146.23,-102.198)">
                       <g transform="matrix(0.896877,0,0,0.932393,23.1727,12.6855)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.62px' }} />
                       </g>
@@ -126,7 +126,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t104" transform="matrix(1.42572,0,0,1.2227,-110.384,-132.549)">
+                  <g onClick={handleMapClick} className="turnout" id="t104" transform="matrix(1.42572,0,0,1.2227,-110.384,-132.549)">
                       <g transform="matrix(0.839868,0,0,0.932393,30.1429,1.50832)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.7px' }} />
                       </g>
@@ -134,7 +134,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t103" transform="matrix(1.42572,0,0,1.2227,-59.0314,-147.221)">
+                  <g onClick={handleMapClick} className="turnout" id="t103" transform="matrix(1.42572,0,0,1.2227,-59.0314,-147.221)">
                       <g transform="matrix(0.839868,0,0,0.932393,30.1429,1.50832)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.7px' }} />
                       </g>
@@ -142,7 +142,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} className="turnout" id="t102" transform="matrix(1.42572,0,0,1.2227,-76.19,-161.894)">
+                  <g onClick={handleMapClick} className="turnout" id="t102" transform="matrix(1.42572,0,0,1.2227,-76.19,-161.894)">
                       <g transform="matrix(0.839868,0,0,0.932393,30.1429,1.50832)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.7px' }} />
                       </g>
@@ -150,7 +150,7 @@ export const TamSouth = () => {
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.4px' }} />
                       </g>
                   </g>
-                  <g onClick={handleMapClick}  onTouchStart={handleMapClick} onTouchEnd={handleTouchEnd} className="turnout" id="t101" transform="matrix(1.42572,0,0,1.2227,-112.2,-161.09)">
+                  <g onClick={handleMapClick} onTouchEnd={handleTouchEnd} className="turnout" id="t101" transform="matrix(1.42572,0,0,1.2227,-112.2,-161.09)">
                       <g transform="matrix(0.839868,0,0,0.932393,21.1807,0.851025)">
                           <path d="M174.073,48L184.499,48" style={{ strokeWidth: '2.7px' }} />
                       </g>
