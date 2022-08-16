@@ -16,7 +16,7 @@ export const Turnouts = props => {
 
   const { filter, groupBy } = props;
 
-  const view = 'tiny';
+  const view = 'comfy';
 
   const [ state, dispatch ] = useContext(Context);
   const { turnouts } = state;
