@@ -46,7 +46,7 @@ export const Conductor = props => {
   const defaultMenu = window.localStorage.getItem('menu') 
     ? JSON.parse(window.localStorage.getItem('menu'))
     : {
-      view: 'pill',
+      view: 'tiny',
       showMaps: true,
       group: '',
       lineFilters: [],
@@ -69,17 +69,6 @@ export const Conductor = props => {
     console.log('handleMenuChange', event);
     // window.localStorage.setItem('throttleView', event.target.value);
     setMenu({ ...menu, ...event });
-  }
-
-  const filterTurnouts = turnouts => {
-    let filtered = turnouts ? [...turnouts] : [];
-    if (menu.lineFilters && menu.lineFilters.length > 0) {
-      filtered = filtered.filter(t => menu.lineFilters.includes(t.line));
-    }
-    if (menu.sectionFilters && menu.sectionFilters.length > 0) {
-      filtered = filtered.filter(t => menu.sectionFilters.includes(t.section));
-    }
-    return filtered;
   }
 
   return (
@@ -105,8 +94,6 @@ export const Conductor = props => {
               <TabPanel value={tab} index={0}>
                 <Turnouts 
                   view={menu.view}
-                  groupBy={menu.group}
-                  filter={filterTurnouts} 
                 />
               </TabPanel>
               <TabPanel value={tab} index={1}>

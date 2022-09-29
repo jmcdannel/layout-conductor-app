@@ -1,44 +1,72 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Context } from '../Store/Store';
 
 export const JmriThrottleController = props => {
 
     const [ state, dispatch ] = useContext(Context);
     const { jmriApi, speed, forward, address } = props;
+    const [ eventsAttached, setEventsAttached ] = useState(false);
     
-    const handleSpeed = ({ name, speed }) => {
-        console.log('handleSpeed', address, name, forward, speed);
-      dispatch({ type: 'UPDATE_LOCO', payload: { address: name, speed } });
+    const handleSpeed = async ({ name, speed }) => {
+        try {
+            await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, speed } });
+        } catch(err) {
+            console.error(err);
+        }
+
     }
     
     const handleDirection = async ({ name, forward }) => {
-        console.log('handleDirection', address, name, forward, speed);
-      dispatch({ type: 'UPDATE_LOCO', payload: { address: name, forward } });
-      if (speed !== 0) {
-        await jmriApi.throttle(address, Math.abs(speed));
-      }
+        try {
+            await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, forward } });
+            if (speed !== 0) {
+                await jmriApi.throttle(address, Math.abs(speed));
+            } 
+        } catch(err) {
+            console.error(err);
+        }
+
     }
 
     useEffect(() => {
-        jmriApi.on('direction', 'JmriThrottleController', handleDirection);
-        jmriApi.on('speed', 'JmriThrottleController', handleSpeed);
-    }, [jmriApi, handleDirection, handleSpeed]);
+        if (!eventsAttached) {
+            jmriApi.on('direction', 'JmriThrottleController', handleDirection);
+            jmriApi.on('speed', 'JmriThrottleController', handleSpeed);
+            setEventsAttached(true);
+        }
+    }, [jmriApi, handleDirection, handleSpeed, eventsAttached]);
 
     useEffect(() => {
         const updateThrottle = async () => {
-            if (speed > 0 && forward === false) {
-                await jmriApi.changeDirection(address, true);
-            } else if (speed < 0 && forward === true) {
-                await jmriApi.changeDirection(address, false);
-            } else if (speed > 0 && forward === true) {
-                await jmriApi.throttle(address, Math.abs(speed));
-            } else if (speed < 0 && forward === false) {
-                await jmriApi.throttle(address, Math.abs(speed));
-            } else if (speed !== 0 && forward === null) {
-                await jmriApi.changeDirection(address, speed > 0);
-            } else if (speed === 0 && forward !== null) {
-                await jmriApi.throttle(address, Math.abs(speed));
+        try {
+            if (speed < 0) { // backward
+                if (forward !== false) {
+                    try {
+                        await jmriApi.throttle(address, 0, false);
+                    } catch (err) {
+                        console.error(err);
+                    } finally {
+                        await jmriApi.changeDirection(address, false);
+                    }
+                }
+
+            } else if (speed > 0) { //forward
+                if (forward !== true) {
+                    try {
+                        await jmriApi.throttle(address, 0, true);
+                    } catch (err) {
+                        console.error(err);
+                    } finally {
+                        await jmriApi.changeDirection(address, true);
+                    }
+                }
+                
             }
+            await jmriApi.throttle(address, Math.abs(speed), forward);
+        } catch (err) {
+            console.error(err);
+        }
+            // }
         };
         updateThrottle();
     }, [jmriApi, speed, address, forward]);

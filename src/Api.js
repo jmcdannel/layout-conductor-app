@@ -29,7 +29,9 @@ const locoDefaults = {
   autoStop: true,
   maxSpeed: 100,
   speed: 0,
-  forward: null
+  forward: null,
+  lastAcquired: null,
+  lastUpdated: null
 };
 
 // const appConfig = getConfig();
@@ -51,10 +53,7 @@ async function get(type = null, Id = null) {
 
 async function initialize() {
   const layoutConfig = await api.get();
-  console.log('appConfig', appConfig);
-  console.log('layoutConfig', layoutConfig);
   const getModules = layoutConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
-  console.log('getModules', getModules, layoutConfig.modules);
   const results = await Promise.all(
     getModules.map(req => api[req].get()
       .then(resp => api[req].initialize ? api[req].initialize(resp) : resp))
@@ -63,7 +62,6 @@ async function initialize() {
     ...state, 
     [module]: results[index] 
   }), { modules: layoutConfig.modules });
-  console.log('initialState', initialState);
   return initialState;
 }
 
@@ -105,10 +103,6 @@ export const api = {
     get: args => get('turnout', args),
     put: args => put('turnout', args)
   },
-  // signals: {
-  //   get: args => get('signal', args),
-  //   put: args => put('signal', args)
-  // },
   effects: {
     get: args => get('effect', args),
     put: args => put('effect', args)

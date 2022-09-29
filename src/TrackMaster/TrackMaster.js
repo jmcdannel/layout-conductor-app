@@ -17,7 +17,6 @@ import Throttles from '../Throttles/Throttles';
 // import Signals from '../Signals/Signals';
 import Effects from '../Effects/Effects';
 import Pinout from '../Settings/Pinout';
-import MiniThrottles from '../Throttles/MiniThrottles';
 import LandingMenu from './LandingMenu';
 
 // Store

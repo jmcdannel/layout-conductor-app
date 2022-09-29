@@ -55,7 +55,7 @@ export const Throttle = props => {
 	const STOP = '0.0';
   // const FULL_SPEED = '1.0';
 
-  const { jmriApi, loco, onLocoClick, loco: { 
+  const { jmriApi, loco, cruiseDisabled, onLocoClick, loco: { 
     isAcquired, 
     speed, 
     autoStop,
@@ -64,7 +64,6 @@ export const Throttle = props => {
   const address = Number(props.loco.address);
   
   const initialMaxSpeed = isNaN(loco.maxSpeed) ? 100 : loco.maxSpeed;
-  console.log('loco.maxSpeed', loco.address, loco.maxSpeed, initialMaxSpeed);
   const initialUiSpeed = speed * 100 * (forward === true ? 1 : -1);
 
   const [ state, dispatch ] = useContext(Context);
@@ -132,7 +131,6 @@ export const Throttle = props => {
   const handleStickyThrottleClick = async () => {
     try {
       const newAutoStop = !loco.autoStop;
-      console.log('handleStickyThrottleClick', newAutoStop, loco);
       await api.locos.put({ address, autoStop: newAutoStop });
       await dispatch({ type: 'UPDATE_LOCO', payload: { address, autoStop: newAutoStop } });
     } catch (err) {
@@ -250,7 +248,7 @@ export const Throttle = props => {
 
                   </Paper>
                   <div>
-                    <IconButton size="large" onClick={handleCruiceControlClick} ><SpeedIcon /></IconButton>
+                    <IconButton disabled={cruiseDisabled} size="large" onClick={handleCruiceControlClick} ><SpeedIcon /></IconButton>
                     <IconButton size="large" onClick={handleParkClick} ><LocalParkingIcon /></IconButton>
                     <IconButton size="large" onClick={handleThrottlePrecisionClick} ><ThermostatAutoIcon /></IconButton>
                     <IconButton size="large" onClick={handleStickyThrottleClick} >
