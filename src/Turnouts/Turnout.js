@@ -44,23 +44,40 @@ export const linesConfig = [
 ];
 const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colors.grey[500] };
 
+/*
+[
+  {
+    "config": {
+      "payload": {
+        "turnoutIdx": 0
+      },
+      "type": "kato"
+    },
+    "interface": "betatrack-layout",
+    "name": "BT1",
+    "state": 0,
+    "turnoutId": 101
+  }
+]*/
 
 export const Turnout = props => {
 
-  const { config } = props;
-  const { type, current, straight, divergent, relay, servo, name, turnoutId, 'default': defaultOrientation } = config;
+  const { turnout } = props;
+  const { state: turnoutState, config, name, turnoutId } = turnout;
+  const { type,payload } = config;
+  // const { type, current, straight, divergent, relay, servo, name, turnoutId, 'default': defaultOrientation } = turnout;
   
   const [ state, dispatch ] = useContext(Context);
 
-  const [isDivergent, setIsDivergent] = useState(current === divergent);
+  const [isDivergent, setIsDivergent] = useState(turnout.state);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isPristine, setIsPristine] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
-    setIsDivergent(current === divergent);
-  }, [current, divergent]);
+    setIsDivergent(turnout.state);
+  }, [turnout.state]);
 
   const handleToggle = async e => {
     if (isLoading) { 
@@ -69,9 +86,8 @@ export const Turnout = props => {
     try {
       setIsLoading(true);
       setIsPristine(false);
-      const newCurrent = isDivergent ? straight : divergent;
-      console.log('handleToggle', newCurrent , straight, divergent, servo != null);
-      const turnout = await api.turnouts.put({ turnoutId, current: newCurrent });
+      const newState = !turnoutState;
+      const turnout = await api.turnouts.put({ turnoutId, state: newState });
       await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
     } catch (err) {
       console.error(err);
@@ -87,7 +103,7 @@ export const Turnout = props => {
   }
 
   const handleReset = async e => {
-    const turnout = await api.turnouts.put({ turnoutId, current: defaultOrientation === 'straight' ? straight : divergent });
+    const turnout = await api.turnouts.put({ turnoutId, state: 0 });
     await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
   }
 
@@ -119,10 +135,10 @@ export const Turnout = props => {
             {isLoading || isPristine 
               ? <PortableWifiOffIcon style={{color: 'gray'}} /> 
               :  <WifiTetheringIcon style={{color: 'green'}} />}
-            {relay && (
+            {/* {relay && (
               <PowerIcon style={{ color: 'green'}}
               />
-            )}
+            )} */}
         </Box>
       </CardHeader>
       <CardContent className="turnout__id">
@@ -147,9 +163,9 @@ export const Turnout = props => {
           <Typography component="h6" variant="h6" gutterBottom>
             {name}
           </Typography>
-          <Typography component="small" gutterBottom>
+          {/* <Typography component="small" gutterBottom>
             Angle: {current}
-          </Typography>
+          </Typography> */}
           {/* {(crossover || reverse) && (
           <Box className="turnout__link">
               {crossover && (

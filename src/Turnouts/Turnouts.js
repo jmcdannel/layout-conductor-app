@@ -28,7 +28,7 @@ export const Turnouts = props => {
         <Grid item sm={12} className="turnout__grid-item">
           {turnouts.filter(filter).map(turnout => (
             <div key={`turnout${turnout.turnoutId}`} className="turnout__container">
-               <Turnout config={turnout} />
+               <Turnout turnout={turnout} />
             </div>
           ))}
         </Grid>
