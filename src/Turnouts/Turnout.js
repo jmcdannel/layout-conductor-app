@@ -44,32 +44,12 @@ export const linesConfig = [
 ];
 const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colors.grey[500] };
 
-/*
-[
-  {
-    "config": {
-      "payload": {
-        "turnoutIdx": 0
-      },
-      "type": "kato"
-    },
-    "interface": "betatrack-layout",
-    "name": "BT1",
-    "state": 0,
-    "turnoutId": 101
-  }
-]*/
-
 export const Turnout = props => {
 
-  const { turnout } = props;
-  const { state: turnoutState, config, name, turnoutId } = turnout;
-  const { type,payload } = config;
-  // const { type, current, straight, divergent, relay, servo, name, turnoutId, 'default': defaultOrientation } = turnout;
-  
+  const { turnout } = props;  
   const [ state, dispatch ] = useContext(Context);
 
-  const [isDivergent, setIsDivergent] = useState(turnout.state);
+  const [isDivergent, setIsDivergent] = useState(!turnout.state);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isPristine, setIsPristine] = useState(true);
@@ -86,8 +66,11 @@ export const Turnout = props => {
     try {
       setIsLoading(true);
       setIsPristine(false);
-      const newState = !turnoutState;
-      const turnout = await api.turnouts.put({ turnoutId, state: newState });
+      const newState = !turnout.state;
+      const turnout = await api.turnouts.put({ 
+        turnoutId: turnout.turnoutId, 
+        state: newState 
+      });
       await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
     } catch (err) {
       console.error(err);
@@ -103,7 +86,28 @@ export const Turnout = props => {
   }
 
   const handleReset = async e => {
-    const turnout = await api.turnouts.put({ turnoutId, state: 0 });
+    if (isLoading) { 
+      return;
+    }
+    try {
+      setIsLoading(true);
+      setIsPristine(false);
+      const turnout = await api.turnouts.put({ 
+        turnoutId: turnout.turnoutId, 
+        state: false 
+      });
+      await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
+    } catch (err) {
+      console.error(err);
+      setError(err.toString());
+    } finally {
+      setIsLoading(false);
+    }
+
+    const turnout = await api.turnouts.put({ 
+      turnoutId: turnout.turnoutId, 
+      state: false 
+    });
     await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
   }
 
@@ -118,11 +122,12 @@ export const Turnout = props => {
     setError(undefined);
   };
 
+
 	return (
     <Card className={`turnout turnout--compact`}>
       <CardHeader className="turnout__header">
         <Chip
-            label={`${name}`}
+            label={`${turnout.name}`}
             // icon={<CallSplit />}
             variant="outlined"
             className="chip"
@@ -161,7 +166,7 @@ export const Turnout = props => {
           
         <Box my={1} className="turnout__desc compact-hidden">
           <Typography component="h6" variant="h6" gutterBottom>
-            {name}
+            {turnout.name}
           </Typography>
           {/* <Typography component="small" gutterBottom>
             Angle: {current}
@@ -216,11 +221,11 @@ export const Turnout = props => {
           </IconButton>
         </span>
       </CardActions>
-      <Settings 
+      {/* <Settings 
         open={showSettings} 
-        config={config} 
+        turnout={turnout} 
         onClose={hideSettings}
-      />
+      /> */}
 
       <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose} message={error} />
     </Card>

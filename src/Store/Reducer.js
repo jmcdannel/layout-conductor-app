@@ -58,10 +58,18 @@ const Reducer = (state, action) => {
         signals: action.payload
       };
 
-    case 'UPDATE_SENSORS':
+      case 'UPDATE_SENSORS':
+        return {
+          ...state,
+          sensors: action.payload
+        };
+
+    case 'UPDATE_USER_PREFERENCES':
+      const key = Object.keys(action.payload)[0];
+      window.localStorage.setItem(key, action.payload[key]);
       return {
         ...state,
-        sensors: action.payload
+        userPreferences: { ...state.userPreferences, ...action.payload }
       };
 
     default:

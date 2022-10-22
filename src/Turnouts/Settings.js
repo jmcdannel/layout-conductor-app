@@ -37,18 +37,17 @@ const getInverse = degrees => {
 }
 
 export const Settings = props => {
-  const { open, config, onClose } = props;
+  const { turnout: { turnoutId }, turnout, open, config, onClose } = props;
 
   const [ state, dispatch ] = useContext(Context);
 
-  const { turnoutId } = config;
-  const [name, setName] = useState(config.name);
-  const [line, setLine] = useState(config.line);
-  const [straight, setStraight] = useState(config.straight);
-  const [divergent, setDivergent] = useState(config.divergent);
+  const [name, setName] = useState(turnout.name);
+  const [line, setLine] = useState(turnout.line);
+  const [straight, setStraight] = useState(turnout.straight);
+  const [divergent, setDivergent] = useState(turnout.divergent);
   const [isLoading, setIsLoading] = useState(false);
   const [isLocked, setIsLocked] = useState(true);
-  const [isLinked, setIsLinked] = useState(config.straight === getInverse(config.divergent));
+  const [isLinked, setIsLinked] = useState(turnout.straight === getInverse(turnout.divergent));
   const [isPristine, setIsPristine] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -107,8 +106,8 @@ export const Settings = props => {
   }
 
   const handleResetServo = () => {
-    setStraight(config.straight);
-    setDivergent(config.divergent);
+    setStraight(turnout.straight);
+    setDivergent(turnout.divergent);
   }
 
   const handleStraightChange = e => {
