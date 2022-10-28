@@ -7,24 +7,29 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 import { Context } from '../Store/Store';
 
-export const TurnoutsMenu = props => {
+import './DispatcherMenu.scss';
+
+export const DispatcherMenu = props => {
 
   const { handleTurnoutsAction } = props;
   const [ state, dispatch ] = useContext(Context);
-  const [ list, setList ] = useState('turnouts');
-
+  
   const views = [
     { label: 'Pill', value: 'pill' },
     { label: 'Tiny', value: 'tiny' },
     { label: 'Compact', value: 'compact' },
     { label: 'Comfy', value: 'comfy' },
   ];
+
   const view = state.userPreferences.turnoutView;
+  const dispatcherLayout = state.userPreferences.dispatcherLayout;
 
   const handleViewClick = async event => {    
     await dispatch({ type: 'UPDATE_USER_PREFERENCES', payload: {
@@ -32,23 +37,61 @@ export const TurnoutsMenu = props => {
     }});
   }
 
+  const hanldeLayoutClick = async event => {
+    await dispatch({ type: 'UPDATE_USER_PREFERENCES', payload: { 
+      dispatcherLayout: { ... dispatcherLayout, ...{ [event.target.value]: event.target.checked } } 
+    } });
+  }
+
+  console.log('dispatcherLayout', dispatcherLayout);
+
   return (
-    <AppBar position="relative">
+    <AppBar position="relative" className="menu" color="secondary">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <ButtonGroup>
+        <ButtonGroup color="secondary">
           <Button onClick={() => handleTurnoutsAction('straight')}>All Straight</Button>
           <Button onClick={() => handleTurnoutsAction('divergent')}>All Divergent</Button>
           <Button onClick={() => handleTurnoutsAction('toggle')}>Toggle All</Button>
           <Button onClick={() => handleTurnoutsAction('sweep')}>Sweep All</Button> 
         </ButtonGroup>
-        <Box sx={{ minWidth: '10rem' }}>
-          <FormControl fullWidth>
+        <Box>
+          <FormControlLabel control={
+            <Switch 
+              checked={dispatcherLayout.map}
+              onChange={hanldeLayoutClick}
+              value="map"
+              color="secondary"
+            />
+          } label="Show Map" />
+
+          <FormControlLabel control={
+            <Switch 
+              checked={dispatcherLayout.routes}
+              onChange={hanldeLayoutClick}
+              value="routes"
+              color="secondary"
+            />
+          } label="Show routes" />
+
+          <FormControlLabel control={
+            <Switch 
+              checked={dispatcherLayout.turnouts}
+              onChange={hanldeLayoutClick}
+              value="turnouts"
+              color="secondary"
+            />
+          } label="Show turnouts" />
+
+        </Box>
+        <Box>
+          <FormControl variant="filled" fullWidth sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="view-throttles-label">View</InputLabel>
             <Select
               labelId="view-throttles-label"
               id="view-throttles"
               value={view}
               label="View"
+              size="small"
               onChange={handleViewClick}
             >
               {views.map(vw => (
@@ -63,8 +106,8 @@ export const TurnoutsMenu = props => {
 
 }
 
-TurnoutsMenu.defaultProps = {
+DispatcherMenu.defaultProps = {
   view: 'tiny'
 };
 
-export default TurnoutsMenu;
+export default DispatcherMenu;

@@ -1,4 +1,4 @@
-# Layout Conductor Roadmap
+# Trestle (Train/Micro/Mini/Custom/Core) (Technologies/Solutions/Engineering) ~Layout Conductor~ Roadmap
 
 ## App / Api / Sketch
 
@@ -14,6 +14,8 @@
 - Kato via Motor Controller
 - Routes via SVG map
 - Set / reset / Sweep / Mainline
+- Map Options / Show/Hide Layers
+- 
 
 ### Effects
 
@@ -28,6 +30,7 @@
 
 - Locos, Turnouts, Routes, Effets
 - Drive up to 2, Cruise up to 3
+- Mobile View
 
 ### Api
 - auto configure serial connections
@@ -49,14 +52,14 @@ JMRI, CommandStation EX
 ### Running Goals
 
 #### October
-[ ] trains running on each section
-[ ] turnouts running on each section
+[x] trains running on each section
+[x] turnouts running on each section
 [ ] connect sections
-[ ] town turnouts
+[x] town turnouts
 [ ] routes
 [ ] trackwork
 [ ] helix install
-[ ] town terrain
+[x] town terrain
 [ ] full surface coverage
 
 #### November

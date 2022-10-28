@@ -1,5 +1,4 @@
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import * as Colors from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
@@ -7,11 +6,15 @@ const theme = createTheme({
   },
   palette: {
     mode: 'dark',
-    primary: Colors.red,
-    secondary: Colors.lightGreen
+    primary: { 
+      main: '#ff0000' 
+    },
+    secondary: {
+      main: 'rgb(50, 125, 238)'
+    }
   },
   background: {
-    default: Colors.grey[900]
+    default: 'rgba(13, 17, 23, 1)'
   },
 });
 

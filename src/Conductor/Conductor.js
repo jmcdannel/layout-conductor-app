@@ -92,9 +92,10 @@ export const Conductor = props => {
                 </Tabs>
               </Box>
               <TabPanel value={tab} index={0}>
-                <Turnouts 
+                {/* <Turnouts 
                   view={menu.view}
-                />
+                  showMenu={false}
+                /> */}
               </TabPanel>
               <TabPanel value={tab} index={1}>
                 <Effects view={menu.view} />

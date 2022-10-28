@@ -1,5 +1,6 @@
 $greenline: rgb(0, 171, 0);
 
+
 .turnouts {
   align-content: flex-start;
 }
@@ -38,6 +39,9 @@ $turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204,
       }
     }
   }
+  .hide-turnouts & {
+    display: none;
+  }
 }
 #Routes {
   > g {
@@ -48,7 +52,12 @@ $turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204,
       }
     }
   }
+  .hide-routes & {
+    display: none;
+  }
 }
+
+
 
 @each $turnout in $turnouts {
   .turnout-#{$turnout}-straight {

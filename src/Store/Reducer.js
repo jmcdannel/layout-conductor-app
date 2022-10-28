@@ -12,7 +12,6 @@ const Reducer = (state, action) => {
           ? { ...loco, ...action.payload }
           : loco
       );
-      console.log('UPDATE_LOCO', locos, action);
       return {
         ...state,
         locos
@@ -25,6 +24,7 @@ const Reducer = (state, action) => {
       };
 
     case 'UPDATE_TURNOUT':
+      // await api.turnouts.put(action.payload);
       const turnouts = state.turnouts.map(turnout => 
         turnout.turnoutId === action.payload.turnoutId
           ? { ...turnout, ...action.payload }
@@ -58,15 +58,26 @@ const Reducer = (state, action) => {
         signals: action.payload
       };
 
-      case 'UPDATE_SENSORS':
-        return {
-          ...state,
-          sensors: action.payload
-        };
+    case 'UPDATE_SENSORS':
+      return {
+        ...state,
+        sensors: action.payload
+      };
+
+    case 'UPDATE_ROUTES':
+      return {
+        ...state,
+        routes: action.payload
+      };
 
     case 'UPDATE_USER_PREFERENCES':
       const key = Object.keys(action.payload)[0];
-      window.localStorage.setItem(key, action.payload[key]);
+      const rawValue = action.payload[key];
+      console.log('rawValue', rawValue, typeof rawValue);
+      const value = typeof rawValue === 'object'
+        ? JSON.stringify(rawValue)
+        : rawValue;
+      window.localStorage.setItem(key, value);
       return {
         ...state,
         userPreferences: { ...state.userPreferences, ...action.payload }

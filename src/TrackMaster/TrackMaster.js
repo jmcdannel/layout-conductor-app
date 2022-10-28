@@ -12,6 +12,7 @@ import Footer from './Footer';
 // Modules
 import Conductor from '../Conductor/Conductor';
 import Turnouts from '../Turnouts/Turnouts';
+import Dispatcher from '../Dispatcher/Dispatcher';
 // import Layout from '../Layout/Layout';
 import Throttles from '../Throttles/Throttles';
 // import Signals from '../Signals/Signals';
@@ -29,14 +30,13 @@ import api, { apiStates } from '../Api';
 import jmriApi from '../Shared/jmri/jmriApi';
 
 import './TrackMaster.scss';
+import { ModeNight } from '@mui/icons-material';
 
 function TrackMaster(props) {
 
   let location = useLocation();
 
   const appConfig = getAppConfig();
-
-  console.log('appConfig', appConfig);
 
   const [ state, dispatch ] = useContext(Context);
   const { signals, effects, sensors, turnouts, modules } = state;
@@ -55,7 +55,8 @@ function TrackMaster(props) {
       try {
         const apiInitState = await api.initialize();
         console.log('apiInitState', apiInitState);
-        await dispatch({ type: 'INIT_STATE', payload: apiInitState });
+        const newState = await dispatch({ type: 'INIT_STATE', payload: apiInitState });
+        console.log('INIT_STATE', newState, apiInitState);
         setApiReady(true);
       } catch (err) {
         console.error('api initialization error', err);
@@ -135,7 +136,8 @@ function TrackMaster(props) {
       case 'turnouts' :
         return (
           <Route path="/turnouts" key={module} element={
-            <Turnouts />
+            // <Turnouts />
+            <Dispatcher />
           } />
         );
       // case 'signals' :
@@ -169,7 +171,7 @@ function TrackMaster(props) {
             
           </Box>
           <Box flexGrow={1} display="flex" width="100%" height="100%" alignContent="center" className="App-content" mt={1}>
-            <Routes>
+            {apiReady && (<Routes>
               {/* <Route path="/" exact element={<div>conductor</div>} /> */}
               <Route path="/" exact element={<Conductor />} />
               <Route path="/pinout" exact element={<Pinout />} />
@@ -177,7 +179,7 @@ function TrackMaster(props) {
                 <Conductor />
               } />
               {modules && modules.map(getRoutedModule)}
-            </Routes>
+            </Routes>)}
           </Box>
           <Box mt={1}>
 

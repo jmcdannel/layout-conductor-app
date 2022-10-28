@@ -2,6 +2,7 @@ html,
 body,
 #root {
 	height: 100%;
+  background-color: rgb(13, 17, 23);
 }
 
 .App {
@@ -11,33 +12,42 @@ body,
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  color:rgb(50, 125, 238);
 }
 
-#root .MuiAppBar-colorPrimary {
-  background-color: rgba(244, 67, 54, .2);
+.app-header-menu.MuiAppBar-root {
+  
+  background: rgb(120,1,1);
+  background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
   border-bottom: 1px solid rgba(244, 67, 54, 1);
+}
+
+.app-footer.MuiBottomNavigation-root {
+
+  background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
+  border-top: 1px solid rgba(244, 67, 54, 1);
 }
 
 .title {
     flex-grow: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+// @media (prefers-reduced-motion: no-preference) {
+//   .App-logo {
+//     animation: App-logo-spin infinite 20s linear;
+//   }
+// }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+// .App-header {
+//   background-color: #282c34;
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: calc(10px + 2vmin);
+//   color: white;
+// }
 
 .App-content {
   overflow: auto;
@@ -48,9 +58,9 @@ body,
   overflow: auto;
 }
 
-.App-link {
-  color: #61dafb;
-}
+// .App-link {
+//   color: #61dafb;
+// }
 
 .grow {
   flex: 1;
@@ -66,20 +76,20 @@ body,
   width: 100%;
 }
 
-.MuiIconButton-root { 
+// .MuiIconButton-root { 
   
-}
+// }
 
 /* .App-footer {
   position: fixed;
   bottom: 0;
 } */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+// @keyframes App-logo-spin {
+//   from {
+//     transform: rotate(0deg);
+//   }
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }

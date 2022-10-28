@@ -49,55 +49,6 @@ $off: rgba(0,0,0,.4);
       justify-content: space-between;
     }
 
-    &__layout {
-      position: relative;
-
-      &__switch {
-        position: absolute;
-        border: 0;
-        padding: 0;
-        background-color: transparent;
-        display: none;
-        &:active, &:focus {
-          outline: none;
-        }
-        .divergent {
-          visibility: visible;
-        }
-        &--divergent {
-          .straight {
-            visibility: visible;
-          }
-          .divergent {
-            visibility: visible;
-          }
-        }
-        &--tamarack-south {
-          path,
-          rect {
-            fill: rgb(0,	232,	220);
-          }
-        }
-        &--101 {  
-          display: block; 
-          transform: scale(0.24);
-          bottom: -18px;
-          left: -102px;
-        }
-        &--102 {  
-          display: block; 
-          transform: scale(0.24);
-          bottom: 0px;
-          left: -102px;
-        }
-        &--103 {  
-          display: block;     
-          transform: scale(0.24) scaleX(-1) rotate(15deg);
-          bottom: 0px;
-          left: -36px;
-        }
-      }
-    }
 
   }
 
@@ -125,7 +76,7 @@ $off: rgba(0,0,0,.4);
 
       }
 
-      .tournout__actions {
+      .turnout__actions {
         order: 2;
         align-self: flex-end;
       }
@@ -138,6 +89,11 @@ $off: rgba(0,0,0,.4);
 
       flex-direction: column;
       align-items: center;
+
+      &__container {
+        flex-basis: auto;
+      }
+
       .turnout__header {
         justify-content: center;
         padding: .5rem;
@@ -148,7 +104,7 @@ $off: rgba(0,0,0,.4);
       .turnout__state {
         order: 1;
         display: flex;
-        background-color: #222;
+        // background-color: #222;
         padding: .5rem 1.5rem;
       }
 
@@ -171,7 +127,7 @@ $off: rgba(0,0,0,.4);
         }
       }
 
-      .tournout__actions,
+      .turnout__actions,
       .turnout__header__status {
         display: none;
       }
@@ -205,7 +161,7 @@ $off: rgba(0,0,0,.4);
 
       }
 
-      .tournout__actions {
+      .turnout__actions {
         align-self: flex-end;
         width: 100%;
         justify-content: space-between;
@@ -226,6 +182,7 @@ $off: rgba(0,0,0,.4);
 
       &__container {
         padding: 2px;
+        flex-basis: auto;
       }
 
       .turnout__header {
@@ -238,7 +195,7 @@ $off: rgba(0,0,0,.4);
       }
 
       .turnout__id,
-      .tournout__actions,
+      .turnout__actions,
       .turnout__state,
       .turnout__header__status {
         display: none;
@@ -279,34 +236,6 @@ $off: rgba(0,0,0,.4);
   opacity: 0.1;
 }
 
-.turnout-image {
-  
-  // text {
-  //   fill: #fff;
-  // }
-  // path {
-  //   stroke: $on;
-  // }
-  // #Label {
-  //   display: none; 
-  // }
-  // #divergent-inner,
-  // #divergent-outer {
-  //   stroke: $off;
-  // }
-
-  // &.divergent {
-  //   #straight-inner,
-  //   #straight-outer {
-  //     stroke: $off;
-  //   }
-  //   #divergent-inner,
-  //   #divergent-outer {
-  //     stroke: $on;
-  //   }
-  // }
-}
-
 .MuiTextField-root {
   margin: 1rem;
 }
@@ -318,6 +247,28 @@ $off: rgba(0,0,0,.4);
   }
 }
 
+.route {
+  margin: .25rem;
+
+  &__origin .MuiChip-root {
+    background-color: green;    
+  }
+
+  &__destination .MuiChip-root {
+    background-color: red;    
+  }
+
+  &__available-option .MuiChip-root {
+    background-color: blue;    
+  }
+
+  &__unavailable-option{
+    display: none; 
+    .MuiChip-root {
+      background-color: #666;    
+    }
+  }
+}
 
 @keyframes pulse {
   0% { transform: scale(0.95); opacity: 0.3; }

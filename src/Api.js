@@ -114,6 +114,9 @@ export const api = {
   },
   sensors: {
     get: args => get('sensor', args)
+  },
+  routes: {
+    get: args => get('route', args)
   }
 }
 

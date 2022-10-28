@@ -25,7 +25,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 // import LinkIcon from '@mui/icons-material/Link';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import ShuffleIcon from '@mui/icons-material/Shuffle';
+import CallSplit from '@mui/icons-material/CallSplit';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import myIcon from '@mui/icons-material/'
 import WifiTetheringIcon from '@mui/icons-material/WifiTethering';
@@ -34,7 +34,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import Settings from './Settings';
 import { Context } from '../Store/Store';
-import api from '../Api';
 import './Turnout.scss';
 // import { linesConfig } from '../Api';
 
@@ -46,8 +45,7 @@ const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colo
 
 export const Turnout = props => {
 
-  const { turnout } = props;  
-  const [ state, dispatch ] = useContext(Context);
+  const { turnout, handleTurnoutChange } = props;  
 
   const [isDivergent, setIsDivergent] = useState(!turnout.state);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +54,7 @@ export const Turnout = props => {
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
-    setIsDivergent(turnout.state);
+    setIsDivergent(!turnout.state);
   }, [turnout.state]);
 
   const handleToggle = async e => {
@@ -66,19 +64,16 @@ export const Turnout = props => {
     try {
       setIsLoading(true);
       setIsPristine(false);
-      const newState = !turnout.state;
-      const turnout = await api.turnouts.put({ 
+      await handleTurnoutChange({ 
         turnoutId: turnout.turnoutId, 
-        state: newState 
+        state: !turnout.state 
       });
-      await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
     } catch (err) {
       console.error(err);
       setError(err.toString());
     } finally {
       setIsLoading(false);
-    }
-    
+    }    
   }
 
   const getLineColor = () => {
@@ -92,23 +87,16 @@ export const Turnout = props => {
     try {
       setIsLoading(true);
       setIsPristine(false);
-      const turnout = await api.turnouts.put({ 
+      await handleTurnoutChange({ 
         turnoutId: turnout.turnoutId, 
-        state: false 
+        state: false
       });
-      await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
     } catch (err) {
       console.error(err);
       setError(err.toString());
     } finally {
       setIsLoading(false);
     }
-
-    const turnout = await api.turnouts.put({ 
-      turnoutId: turnout.turnoutId, 
-      state: false 
-    });
-    await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
   }
 
   const handleSettings = () => setShowSettings(true);
@@ -128,11 +116,10 @@ export const Turnout = props => {
       <CardHeader className="turnout__header">
         <Chip
             label={`${turnout.name}`}
-            // icon={<CallSplit />}
+            icon={<CallSplit />}
             variant="outlined"
             className="chip"
             size="small"
-            style={{ backgroundColor: getLineColor() }}
             clickable
             onClick={handleToggle}
           />
@@ -199,7 +186,7 @@ export const Turnout = props => {
         </Box>
 
       </CardContent>
-      <CardActions className="tournout__actions">
+      <CardActions className="turnout__actions">
         <Button 
           className="compact-hidden"
           variant="contained" 
