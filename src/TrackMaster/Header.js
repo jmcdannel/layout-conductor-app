@@ -27,7 +27,7 @@ export const Header = props => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" className="app-header-menu">
       <Toolbar>
         <Typography variant="h6" className="title">
           {navItem ? navItem.label : '[unknown]'}

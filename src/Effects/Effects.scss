@@ -3,6 +3,8 @@
   &.effects--pill,
   &.effects--tiny {
     .effect {
+      display: flex;
+      justify-content: space-between;
       flex: 1;
       &__meta {
         display: none;
@@ -11,15 +13,14 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         padding-left: 0.5rem;
       }
       .MuiCardHeader-root {
-        padding: 0.5rem;
+        padding: 0.25rem;
       }
       .MuiCardContent-root {
-        padding: 0.5rem;
-        padding-top: 0;
+        padding: 0.25rem;
       }
       .MuiCardHeader-avatar {
         margin-right: 0;

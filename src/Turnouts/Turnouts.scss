@@ -1,10 +1,121 @@
+$greenline: rgb(0, 171, 0);
+
+.turnouts {
+  align-content: flex-start;
+}
+
 g.turnout {
   pointer-events: bounding-box;
   opacity: 1;
+  cursor: pointer;
+  path {
+    fill:none;
+    stroke-linecap:butt;
+  }
 }
 
 g.turnout:hover {
   opacity: .5;
-  cursor: pointer;
-
 }
+
+svg {
+  display: block;
+}
+
+$turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204, 205, 300, 301, 302, 303, 304, 305, 306, 307, 308;
+
+#Turnouts {
+  > g {
+    visibility: hidden;
+  }
+}
+#TurnoutLabels {
+  > g {
+    cursor: pointer;
+    &:hover {
+      path {
+        stroke: #a0e12f !important;
+      }
+    }
+  }
+}
+#Routes {
+  > g {
+    cursor: pointer;
+    &:hover {
+      path {
+        stroke: #a0e12f !important;
+      }
+    }
+  }
+}
+
+@each $turnout in $turnouts {
+  .turnout-#{$turnout}-straight {
+    #_#{$turnout} {
+      visibility: visible;
+      cursor: pointer;
+      path:nth-child(1) {
+        visibility: hidden;
+      }
+      path:nth-child(2) {
+        stroke: black !important;
+        visibility: visible;
+      }
+    }
+  }
+  .turnout-#{$turnout}-divergent {
+    #_#{$turnout} {
+      display:block;
+      cursor: pointer;
+      path:nth-child(1) {
+        stroke: black !important;
+        visibility: visible;
+      }
+      path:nth-child(2) {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+// .turnout-101-straight {
+//   #t101 {
+//     cursor: pointer;
+//     g:nth-child(1) {
+//       path {
+//         stroke: $greenline !important;
+//       }
+//     }
+//     g:nth-child(2) {
+//       path {
+//         stroke: $greenline !important;
+//       }
+//     }
+//     g:nth-child(3) {
+//       path {
+//         stroke: black !important;
+//       }
+//     }
+//   }
+// }
+// .turnout-101-divergent {
+//   #t101 {
+//     cursor: pointer;
+//     g:nth-child(1) {
+//       path {
+//         stroke: black !important;
+//       }
+//     }
+//     g:nth-child(2) {
+//       path {
+//         stroke: black !important;
+//       }
+//     }
+//     g:nth-child(3) {
+//       path {
+//         stroke: $greenline !important;
+//       }
+//     }
+//   }
+// }

@@ -12,7 +12,7 @@ export const Footer = props => {
   return (
     <BottomNavigation
       value={page}
-      className="App-footer"
+      className="app-footer"
     >
       <BottomNavigationAction 
         label="Conductor" 

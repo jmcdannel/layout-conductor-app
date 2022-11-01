@@ -25,7 +25,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 // import LinkIcon from '@mui/icons-material/Link';
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import ShuffleIcon from '@mui/icons-material/Shuffle';
+import CallSplit from '@mui/icons-material/CallSplit';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import myIcon from '@mui/icons-material/'
 import WifiTetheringIcon from '@mui/icons-material/WifiTethering';
@@ -34,7 +34,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import Settings from './Settings';
 import { Context } from '../Store/Store';
-import api from '../Api';
 import './Turnout.scss';
 // import { linesConfig } from '../Api';
 
@@ -44,23 +43,19 @@ export const linesConfig = [
 ];
 const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colors.grey[500] };
 
-
 export const Turnout = props => {
 
-  const { config } = props;
-  const { type, current, straight, divergent, relay, servo, name, turnoutId, 'default': defaultOrientation } = config;
-  
-  const [ state, dispatch ] = useContext(Context);
+  const { turnout, handleTurnoutChange } = props;  
 
-  const [isDivergent, setIsDivergent] = useState(current === divergent);
+  const [isDivergent, setIsDivergent] = useState(!turnout.state);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isPristine, setIsPristine] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
-    setIsDivergent(current === divergent);
-  }, [current, divergent]);
+    setIsDivergent(!turnout.state);
+  }, [turnout.state]);
 
   const handleToggle = async e => {
     if (isLoading) { 
@@ -69,17 +64,16 @@ export const Turnout = props => {
     try {
       setIsLoading(true);
       setIsPristine(false);
-      const newCurrent = isDivergent ? straight : divergent;
-      console.log('handleToggle', newCurrent , straight, divergent, servo != null);
-      const turnout = await api.turnouts.put({ turnoutId, current: newCurrent });
-      await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
+      await handleTurnoutChange({ 
+        turnoutId: turnout.turnoutId, 
+        state: !turnout.state 
+      });
     } catch (err) {
       console.error(err);
       setError(err.toString());
     } finally {
       setIsLoading(false);
-    }
-    
+    }    
   }
 
   const getLineColor = () => {
@@ -87,8 +81,22 @@ export const Turnout = props => {
   }
 
   const handleReset = async e => {
-    const turnout = await api.turnouts.put({ turnoutId, current: defaultOrientation === 'straight' ? straight : divergent });
-    await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
+    if (isLoading) { 
+      return;
+    }
+    try {
+      setIsLoading(true);
+      setIsPristine(false);
+      await handleTurnoutChange({ 
+        turnoutId: turnout.turnoutId, 
+        state: false
+      });
+    } catch (err) {
+      console.error(err);
+      setError(err.toString());
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const handleSettings = () => setShowSettings(true);
@@ -102,16 +110,16 @@ export const Turnout = props => {
     setError(undefined);
   };
 
+
 	return (
     <Card className={`turnout turnout--compact`}>
       <CardHeader className="turnout__header">
         <Chip
-            label={`${name}`}
-            // icon={<CallSplit />}
+            label={`${turnout.name}`}
+            icon={<CallSplit />}
             variant="outlined"
             className="chip"
             size="small"
-            style={{ backgroundColor: getLineColor() }}
             clickable
             onClick={handleToggle}
           />
@@ -119,10 +127,10 @@ export const Turnout = props => {
             {isLoading || isPristine 
               ? <PortableWifiOffIcon style={{color: 'gray'}} /> 
               :  <WifiTetheringIcon style={{color: 'green'}} />}
-            {relay && (
+            {/* {relay && (
               <PowerIcon style={{ color: 'green'}}
               />
-            )}
+            )} */}
         </Box>
       </CardHeader>
       <CardContent className="turnout__id">
@@ -145,11 +153,11 @@ export const Turnout = props => {
           
         <Box my={1} className="turnout__desc compact-hidden">
           <Typography component="h6" variant="h6" gutterBottom>
-            {name}
+            {turnout.name}
           </Typography>
-          <Typography component="small" gutterBottom>
+          {/* <Typography component="small" gutterBottom>
             Angle: {current}
-          </Typography>
+          </Typography> */}
           {/* {(crossover || reverse) && (
           <Box className="turnout__link">
               {crossover && (
@@ -178,7 +186,7 @@ export const Turnout = props => {
         </Box>
 
       </CardContent>
-      <CardActions className="tournout__actions">
+      <CardActions className="turnout__actions">
         <Button 
           className="compact-hidden"
           variant="contained" 
@@ -200,11 +208,11 @@ export const Turnout = props => {
           </IconButton>
         </span>
       </CardActions>
-      <Settings 
+      {/* <Settings 
         open={showSettings} 
-        config={config} 
+        turnout={turnout} 
         onClose={hideSettings}
-      />
+      /> */}
 
       <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose} message={error} />
     </Card>

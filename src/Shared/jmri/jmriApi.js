@@ -183,7 +183,6 @@ const requestLoco = async address => {
 }
 
 const releaseLoco = async address => {
-	console.log('releaseLoco', address);
 	validateCommand(promises.release.reject) && $jmri.setJMRI('throttle', address, { release: null });
 	return createPromise('release', 'New loco release action dispatched.');
 }
@@ -223,7 +222,6 @@ const fireEvent = (type, payload) => {
     promises[type].resolve(payload);
   }
   if (eventHandlers[type]) {
-		console.log('fireevent', type, eventHandlers[type]);
 		Object.keys(eventHandlers[type]).forEach(key => {
 			eventHandlers[type][key](payload);
 		});

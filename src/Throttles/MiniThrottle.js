@@ -14,6 +14,8 @@ import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import { Context } from '../Store/Store';
 import useDebounce from '../Shared/Hooks/useDebounce';
 
+import './MiniThrottle.scss';
+
 export const MiniThrottle = props => {
 
   const [ state, dispatch ] = useContext(Context);
@@ -21,7 +23,7 @@ export const MiniThrottle = props => {
   const minSpeed = -maxSpeed;
 	const STOP = '0.0';
 
-  const { jmriApi, onLocoClick, loco, loco: { 
+  const { jmriApi, onLocoClick, loco, disabled, loco: { 
     address, 
     isAcquired, 
     speed, 
@@ -36,7 +38,7 @@ export const MiniThrottle = props => {
   const debouncedSpeed = useDebounce(uiSpeed, 100);
 
   const handleLocoAcquired = async address => {
-    await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true } });
+    await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
   }
 
   const handleStopClick = () => {
@@ -52,6 +54,7 @@ export const MiniThrottle = props => {
   }
 
   const handleLocoClick = async () => {
+    console.log('handleLocoClick', isAcquired, disabled);
     try {
       if (isAcquired) {
         await dispatch({ type: 'UPDATE_LOCO', payload: { address, cruiseControl: false } });
@@ -83,7 +86,9 @@ export const MiniThrottle = props => {
   }, [jmriApi, handleLocoAcquired]);
 
   const computedClassName = () => {
-    return ['mini-throttle', isAcquired ? 'mini-throttle__acquired' : 'mini-throttle__notacquired'].join(' ');
+    return ['mini-throttle', 
+      `mini-throttle--${loco.name.replace(' ', '')}  mini-throttle--${loco.road.replace(' ', '')}`,
+      isAcquired ? 'mini-throttle__acquired' : 'mini-throttle__notacquired'].join(' ');
   }
 
   return (
@@ -94,6 +99,7 @@ export const MiniThrottle = props => {
             className="chip"
             variant={isAcquired ? 'default' : 'outlined'}
             clickable
+            disabled={disabled}
             onClick={handleLocoClick}
           />
       {isAcquired ? (
@@ -132,13 +138,17 @@ export const MiniThrottle = props => {
 
           <IconButton size="medium" onClick={handleParkClick} ><LocalParkingIcon /></IconButton>
                   
-          
-          {/* <IconButton  size="medium" disabled={speed === minSpeed} onClick={handleDownClick}><RemoveIcon /></IconButton>
-          <IconButton size="medium"  disabled={!isAcquired} variant="contained" color="primary" onClick={handleStopClick} ><PanToolIcon /></IconButton>
-          <IconButton variant="outlined" size="medium" disabled={speed === maxSpeed} onClick={handleUpClick}><AddIcon /></IconButton> */}
+        
         </>
       ) : ( 
-        <IconButton variant="outlined" size="medium" variant="contained" color="primary" onClick={handleLocoClick}><OpenInBrowserIcon /></IconButton>
+        <IconButton 
+          variant="outlined" 
+          size="medium"
+          color="primary" 
+          disabled={disabled}
+          onClick={handleLocoClick}>
+            <OpenInBrowserIcon />
+          </IconButton>
       )}
       </Paper>
   )
