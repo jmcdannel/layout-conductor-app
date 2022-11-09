@@ -20,8 +20,6 @@ export const Header = props => {
 
   let location = useLocation();
   const navItem = getByLink(location.pathname);
-  console.log('Header.location', location);
-
 
   return (
     <AppBar position="sticky" className="app-header-menu">

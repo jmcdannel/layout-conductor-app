@@ -8,7 +8,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
 
-import ConductorMenu from './ConductorMenu';
 import Throttles from '../Throttles/Throttles';
 import Effects from '../Effects/Effects';
 import Dispatcher from '../Dispatcher/Dispatcher';

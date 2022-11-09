@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import * as Colors from '@mui/material/colors';
-// import SwitchImg from './switch.svg';
-import { ReactComponent as Logo } from './switch.svg';
 import { ReactComponent as TurnoutStriaghtImage } from '../Shared/Images/turnout-straight.svg';
 import { ReactComponent as TurnoutDivergentImage } from '../Shared/Images/turnout-divergent.svg';
-import { ReactComponent as TurnoutDImage } from '../Shared/Images/turnout-export.svg';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -14,33 +11,23 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
-import Switch from '@mui/material/Switch';
-
-// import CallSplit from '@mui/icons-material/CallSplit';
 import RestoreIcon from '@mui/icons-material/Restore';
-import PowerIcon from '@mui/icons-material/Power';
 import TuneIcon from '@mui/icons-material/Tune';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-// import LinkIcon from '@mui/icons-material/Link';
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import CallSplit from '@mui/icons-material/CallSplit';
-import LinkOffIcon from '@mui/icons-material/LinkOff';
-import myIcon from '@mui/icons-material/'
 import WifiTetheringIcon from '@mui/icons-material/WifiTethering';
 import PortableWifiOffIcon from '@mui/icons-material/PortableWifiOff';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
-import Settings from './Settings';
-import { Context } from '../Store/Store';
-import './Turnout.scss';
-// import { linesConfig } from '../Api';
 
+import './Turnout.scss';
 
 export const linesConfig = [
   { lineId: 'Demo Track', label: 'Mainline SB', color: Colors.red[500] }
 ];
+
 const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colors.grey[500] };
 
 export const Turnout = props => {
