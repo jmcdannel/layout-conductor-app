@@ -119,6 +119,9 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
             sx={{ padding: '1rem', width: '360px' }}
             id="api-host"
             freeSolo
+            onInputChange={(event, newValue) => {
+              setAPIHost(newValue);
+            }}
             onChange={(event, newValue) => {
               setAPIHost(newValue);
             }}

@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Header from './Header';
 import Footer from './Footer';
 
 // Modules
 import Conductor from '../Conductor/Conductor';
-import Turnouts from '../Turnouts/Turnouts';
 import Dispatcher from '../Dispatcher/Dispatcher';
 // import Layout from '../Layout/Layout';
 import Throttles from '../Throttles/Throttles';
@@ -34,14 +28,11 @@ import { ModeNight } from '@mui/icons-material';
 
 function TrackMaster(props) {
 
-  let location = useLocation();
-
   const appConfig = getAppConfig();
 
   const [ state, dispatch ] = useContext(Context);
   const { signals, effects, sensors, turnouts, modules } = state;
 
-  const [page, setPage] = useState(location && location.pathname);
   const [menu, setMenu] = useState(menuConfig);
 
   const [jmriInitialized, setJmriInitialized] = useState(false);
@@ -49,12 +40,10 @@ function TrackMaster(props) {
   const [jmriReady, setJmriReady] = useState(false);
   const [apiReady, setApiReady] = useState(false);
 
-
   useEffect(() => {
     const initialize = async function() {
       try {
         const apiInitState = await api.initialize();
-        console.log('apiInitState', apiInitState);
         const newState = await dispatch({ type: 'INIT_STATE', payload: apiInitState });
         console.log('INIT_STATE', newState, apiInitState);
         setApiReady(true);
@@ -109,11 +98,6 @@ function TrackMaster(props) {
     sensor.LOW.map(sensorAction => setSignal(sensorAction, state));
   }
 
-  // const handleNavigate = (event, newValue) => {
-  //   setPage(newValue);
-  //   history.push(newValue);
-  // }
-
   const handleMenuClick = menuChange => {
     const m = {...menu, ...menuChange};
     setMenu(m);
@@ -121,12 +105,6 @@ function TrackMaster(props) {
 
   const getRoutedModule = module => {
     switch(module) {
-      // case 'map' :
-      //   return (
-      //     <Route path="/map" key={module} element={
-      //       <Layout turnouts={turnouts} />
-      //     } />
-      //   );
       case 'locos' :
         return (
           <Route path="/throttles" key={module} element={
@@ -135,9 +113,8 @@ function TrackMaster(props) {
         );
       case 'turnouts' :
         return (
-          <Route path="/turnouts" key={module} element={
-            // <Turnouts />
-            <Dispatcher />
+          <Route path="/dispatcher" key={module} element={
+            <Dispatcher view={state.userPreferences.turnoutView} />
           } />
         );
       // case 'signals' :
@@ -153,7 +130,6 @@ function TrackMaster(props) {
           } />
         )
     }
-    // TODO: add signals
   }
 
   return (
@@ -161,29 +137,23 @@ function TrackMaster(props) {
         <Box display="flex" flexDirection="column" height="100%">
           <Box>
             <Header 
-              page={page} 
               handleMenuClick={handleMenuClick} 
               jmriApi={jmriApi}
               jmriReady={jmriReady}
               apiReady={apiReady}
             />
-            {/* {page !== '/conductor' && <MiniThrottles showSto={true} locos={state.locos.filter(loco => loco.isAcquired && (loco.speed !== 0 || loco.isPinned))} jmriApi={jmriApi} />} */}
             
           </Box>
           <Box flexGrow={1} display="flex" width="100%" height="100%" alignContent="center" className="App-content" mt={1}>
             {apiReady && (<Routes>
-              {/* <Route path="/" exact element={<div>conductor</div>} /> */}
               <Route path="/" exact element={<Conductor />} />
               <Route path="/pinout" exact element={<Pinout />} />
-              <Route path="/conductor" key={module} element={
-                <Conductor />
-              } />
               {modules && modules.map(getRoutedModule)}
             </Routes>)}
           </Box>
           <Box mt={1}>
 
-            <Footer page={page} modules={modules} />
+            <Footer modules={modules} />
 
           </Box>
         </Box>

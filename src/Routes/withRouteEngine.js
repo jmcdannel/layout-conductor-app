@@ -57,12 +57,16 @@ export const withRouteEngine = WrappedComponent => props => {
       const classNames = ['route'];
       let disabled = false;
       let variant = 'outlined';
+      let isOrigin = false;
+      let isDestination = false;
       if (routeDestination && routeDestination.routeId === rte.routeId) {
           classNames.push('route__destination');
           variant = 'contained';
+          isDestination = true;
       } else if (routeOrigin && routeOrigin.routeId === rte.routeId) {
           classNames.push('route__origin');
           variant = 'contained';
+          isOrigin = true;
       } else if (!routeDestination && routeOrigin) {
         if (isRouteConnected(routeOrigin.routeId, rte.routeId)) {
           classNames.push('route__available-option');
@@ -77,7 +81,9 @@ export const withRouteEngine = WrappedComponent => props => {
       return {
         className: classNames.join(' '),
         disabled,
-        variant
+        variant,
+        isOrigin,
+        isDestination
       };
     }
     return routes.destinations.map(rte => ({
@@ -91,9 +97,9 @@ export const withRouteEngine = WrappedComponent => props => {
       handleSetRoute={handleSetRoute}
       handleRouteToggle={handleRouteToggle} 
       handleClearRoute={handleClearRoute}
-      computedRoutes={computedRoutes}
-      disableClear={!routeOrigin}
-      disableSet={!routeDestination}
+      computedRoutes={computedRoutes()}
+      routeOrigin={routeOrigin}
+      routeDestination={routeDestination}
       view={view}
       { ...props } 
     />

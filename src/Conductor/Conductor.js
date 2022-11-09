@@ -9,9 +9,9 @@ import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
 
 import ConductorMenu from './ConductorMenu';
-import Turnouts from '../Turnouts/Turnouts';
 import Throttles from '../Throttles/Throttles';
 import Effects from '../Effects/Effects';
+import Dispatcher from '../Dispatcher/Dispatcher';
 
 import './Conductor.scss';
 
@@ -87,21 +87,18 @@ export const Conductor = props => {
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                   <Tab label="Turnouts" />
+                  <Tab label="Routes" />
                   <Tab label="Effects" />
-                  <Tab label="Signals" />
                 </Tabs>
               </Box>
               <TabPanel value={tab} index={0}>
-                {/* <Turnouts 
-                  view={menu.view}
-                  showMenu={false}
-                /> */}
+                <Dispatcher overrideUserPrefs={true} enabled={['turnouts']} />
               </TabPanel>
               <TabPanel value={tab} index={1}>
-                <Effects view={menu.view} />
+                <Dispatcher overrideUserPrefs={true} enabled={['routes']} view="pill" />
               </TabPanel>
-              <TabPanel value={tab} index={2}>
-                <Effects view={menu.view} />
+              <TabPanel value={tab} index={2} className="conductor-effects">
+                <Effects />
               </TabPanel>
             </Paper>
           </Grid>

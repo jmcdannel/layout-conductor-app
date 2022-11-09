@@ -6,13 +6,13 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 export const Signal = props => {
 
-  const { effect, effect: { effectId }, onChange, getMetaData, view } = props;
+  const { effect, effect: { effectId }, onChange, getMetaData } = props;
 
   const handleChange = (event, newValue) => {
     onChange({ effectId, state: newValue });
   };
 
-  const isSmallView = (view === 'pill' || view === 'tiny');
+  const isSmallView = true;
 
   return (
     <Grid container direction="row">

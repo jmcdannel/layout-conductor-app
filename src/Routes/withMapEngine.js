@@ -6,7 +6,7 @@ import { Context } from '../Store/Store';
 
 export const withMapEngine = WrappedComponent => props => {
 
-  const { handleRouteToggle } = props;
+  const { computedRoutes, handleRouteToggle, handleTurnoutChange } = props;
 
   const [ state, dispatch ] = useContext(Context);
   const [ error, setError] = useState(false);
@@ -23,7 +23,7 @@ export const withMapEngine = WrappedComponent => props => {
           break;
         case 'Turnouts':
         case 'TurnoutLabels':
-          // handleMapTurnoutClick(svgBtn.target.id);
+          handleMapTurnoutClick(svgBtn.target.id);
           break;
       }
     }
@@ -34,6 +34,22 @@ export const withMapEngine = WrappedComponent => props => {
     const rte = routes.destinations.find(r => r.svgId === svgId);
     console.log('handleMapRouteClick', svgId, rte);
     handleRouteToggle(rte, true);
+
+  }
+
+  const handleMapTurnoutClick = async svgId => {
+    const getTurnoutId = svgId => {
+      if (svgId.startsWith('lbl')) {
+        return parseInt(svgId.replace(/lbl/g, ''));
+      } else if (svgId.startsWith('_')) {
+        return parseInt(svgId.replace(/_/g, ''));
+      }
+    }
+    const turnout = turnouts.find(t => t.turnoutId === getTurnoutId(svgId));
+    turnout && handleTurnoutChange({
+      turnoutId: turnout.turnoutId,
+      state: !turnout.state
+    });
 
   }
 
@@ -63,14 +79,27 @@ export const withMapEngine = WrappedComponent => props => {
   };
  
   const getClassNames = () => {
-    const classNames = [];
+    const turnoutClassNames = turnouts.map(t => `turnout-${t.turnoutId}-${t.state ? 'straight' : 'divergent'}`);
+    const routeClassNames = computedRoutes.map(rte => {
+      if (rte.isOrigin) {
+        return `route-${rte.svgId}-origin`;
+      } else if (rte.isDestination) {
+        return `route-${rte.svgId}-destination`;
+      } else if (rte.disabled) {
+        return `route-${rte.svgId}-unavailable`;
+      } else {
+        return `route-${rte.svgId}-available`;
+      }
+    });
+    // console.log('svgIds', computedRoutes.map(rte => rte.svgId));
+    const classNames = [...turnoutClassNames, ...routeClassNames];
     if (!dispatcherLayout.routes) {
       classNames.push('hide-routes');
     }
     if (!dispatcherLayout.turnouts) {
       classNames.push('hide-turnouts');
     }
-    return classNames.concat(turnouts.map(t => `turnout-${t.turnoutId}-${t.state ? 'straight' : 'divergent'}`)).join(' ');
+    return classNames.join(' ');
   };
 
   return (

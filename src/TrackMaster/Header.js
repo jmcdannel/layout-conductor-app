@@ -4,27 +4,24 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Stop from './Stop';
 import Power from './Power';
 import StatusMonitor from './StatusMonitor';
 import { getByLink } from '../Shared/Config/navConfig';
+import { useLocation } from "react-router-dom";
 
 export const Header = props => {
 
   const { 
-    page, 
     jmriApi, 
     jmriReady, 
-    apiReady,
-    onSSLAuth: handleSSLAuth 
+    apiReady
   } = props;
 
-  const [ anchorEl, setAnchorEl ] = useState(null);
-  const [ menu, setMenu ] = useState(null);
-  const navItem = getByLink(page);
+  let location = useLocation();
+  const navItem = getByLink(location.pathname);
+  console.log('Header.location', location);
 
-  const handleClose = () => {
-    setMenu(null);
-  };
 
   return (
     <AppBar position="sticky" className="app-header-menu">
@@ -33,18 +30,9 @@ export const Header = props => {
           {navItem ? navItem.label : '[unknown]'}
         </Typography>
         <StatusMonitor jmriReady={jmriReady} apiReady={apiReady} />
-
+        <Stop jmriApi={jmriApi} jmriReady={jmriReady} />
         <Power jmriApi={jmriApi} jmriReady={jmriReady} />
       </Toolbar>
-      <Menu
-        id="menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={!!menu}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleSSLAuth}>View API Host</MenuItem>
-      </Menu>
     </AppBar>
   );
 

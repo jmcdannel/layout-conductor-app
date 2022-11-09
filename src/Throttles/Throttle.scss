@@ -19,8 +19,35 @@ $red: #f44336;
 $orange: #f89719;
 
 
+.throttle-container {
+  margin: 5px 10px;
+
+  &--size-2 {
+    flex-basis: 50%;
+  }
+
+  &--empty {
+    opacity: .6;
+    border: 2px solid rgba(255,255,255,.5);
+    border-radius: 15px;
+  }
+
+}
+
+.available-throttle {
+  margin: 10px;
+  border-radius: 8px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+}
+
+
 .throttle {
   margin: 0 .5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   .MulutiCardHeader-root,
   .MuiCardActions-root {

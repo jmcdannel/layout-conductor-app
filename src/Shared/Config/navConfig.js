@@ -8,9 +8,8 @@ import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import TrainIcon from '@mui/icons-material/Train';
 
 export const navConfig = {
-  map: { link: '/map', label: 'Layout', icon: (<MapIcon />) },
   conductor: { link: '/', label: 'Conductor', icon: (<TrainIcon />) },
-  turnouts: { link: '/turnouts', label: 'Turnouts', icon: (<CallSplit />) },
+  turnouts: { link: '/dispatcher', label: 'Dispatcher', icon: (<CallSplit />) },
   throttles: { link: '/throttles', label: 'Throttle', icon: (<UnfoldMoreIcon />) },
   signals: { link: '/signals', label: 'Signals', icon: (<TrafficIcon />) },
   effects: { link: '/effects', label: 'Effects', icon: (<MovieFilterIcon />) }

@@ -85,7 +85,7 @@ export const Effect = props => {
   //   </div>
   // );
 
-  const isSmallView = (view === 'pill' || view === 'tiny');
+  const isSmallView = true;
   const size = isSmallView ? 'small' : 'large';
 
   const getAvatar = () => {
@@ -141,7 +141,7 @@ export const Effect = props => {
           {/* {!isSmallView && (<Grid item xs={9}>
             {getMetaData(effect)}
           </Grid>)} */}
-          <Grid item xs={isSmallView ? 12 : 3}>
+          <Grid item xs={12}>
             {getAction()}
           </Grid>
         </Grid>);

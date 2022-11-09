@@ -62,10 +62,11 @@ export const Route = props => {
             label={`${route.name}`}
             variant={route.variant}
             icon={<AltRouteIcon />}
+            size="small"
              sx={{ borderColor: lineColors[route.line] }}
             clickable
             disabled={route.disabled}
-            onClick={e => handleRouteToggle(route)}
+            onClick={e => handleRouteToggle(route, true)}
           />
       </CardHeader>
       <CardContent className="route__id">

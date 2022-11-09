@@ -62,9 +62,11 @@ export const Throttle = props => {
     forward
   } } = props;
   const address = Number(props.loco.address);
+
+  const calcSpeed = origSpeed => origSpeed * 100 * (forward === true ? 1 : -1);
   
   const initialMaxSpeed = isNaN(loco.maxSpeed) ? 100 : loco.maxSpeed;
-  const initialUiSpeed = speed * 100 * (forward === true ? 1 : -1);
+  const initialUiSpeed = calcSpeed(speed);
 
   const [ state, dispatch ] = useContext(Context);
   // const [ initialized, setInitialized ] = useState(false);
@@ -73,21 +75,41 @@ export const Throttle = props => {
   const [ minSpeed, setMinSpeed ] = useState(-initialMaxSpeed);
   const [ precisonDialog, setPrecisonDialog ] = useState(false);
   const debouncedSpeed = useDebounce(uiSpeed, 100);
+  const locoSpeed = useDebounce(parseInt(initialUiSpeed), 2000);
 
-  // useEffect(() => {
-  //   if (!initialized) { // TODO: move to store
-  //     const jmriState = jmriApi.getState();
-  //     if (jmriState.ready) {
-  //       jmriReady();
-  //     } else {
-  //       jmriApi.on('ready', 'Throttle', jmriReady);
-  //     }
-  //   }
-  // }, [ initialized, jmriApi ]);
+    
+  const handleSpeed = async ({ name, speed }) => {
+    try {
+        console.log('handleSpeed', { address: name, speed });
+        await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, speed } });
+    } catch(err) {
+        console.error(err);
+    }
+  }
 
-  // const jmriReady = () => {
-  //   setInitialized(true);
-  // }
+  const handleDirection = async ({ name, forward }) => {
+      try {
+          console.log('handleDirection', { address: name, forward });
+          await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, forward } });
+          // if (speed !== 0) {
+          //     await jmriApi.throttle(address, Math.abs(speed));
+          // } 
+      } catch(err) {
+          console.error(err);
+      }
+  }
+
+  useEffect(() => {
+    jmriApi.on('direction', 'JmriThrottleController', handleDirection);
+    jmriApi.on('speed', 'JmriThrottleController', handleSpeed);
+  }, [jmriApi]);
+
+  useEffect(() => {
+    const newSpeed = calcSpeed(speed);
+    if (newSpeed != uiSpeed) {
+      setUiSpeed(newSpeed);
+    }
+  }, [speed]);
 
   const handleSliderSpeed = value => {
     setUiSpeed(value);
@@ -121,6 +143,7 @@ export const Throttle = props => {
 
   const handleParkClick = async () => {
     try {
+      await jmriApi.throttle(address, STOP);
       const res = await jmriApi.releaseLoco(address);
       await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
     } catch (err) {
@@ -225,14 +248,13 @@ export const Throttle = props => {
                       <IconButton 
                         className="speed-up-btn"
                         size="large" 
-                        disabled={speed === maxSpeed} 
+                        disabled={uiSpeed === maxSpeed} 
                         onClick={handleUpClick}>
                           <AddIcon />
                         </IconButton>
                       <IconButton 
                         className="speed-stop-btn"
                         size="large" 
-                        disabled={!isAcquired} 
                         color="primary" 
                         onClick={handleStopClick} >
                           <PanToolIcon />
@@ -240,7 +262,7 @@ export const Throttle = props => {
                       <IconButton 
                         className="speed-down-btn"
                         size="large" 
-                        disabled={speed === minSpeed} 
+                        disabled={uiSpeed === minSpeed} 
                         onClick={handleDownClick}>
                           <RemoveIcon />
                       </IconButton>

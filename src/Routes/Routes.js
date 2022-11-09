@@ -17,44 +17,21 @@ const lineColors = {
 const Routes = props => {
 
   const { 
-    handleRouteToggle, 
-    handleSetRoute, 
-    handleClearRoute ,
+    handleRouteToggle,
     computedRoutes,
-    disableClear,
-    disableSet,
     view
   } = props;
 
-
   return (
     <Grid container>
-      <Grid item sm={10} >
-        <Grid container spacing={1} className={`routes routes--${view}`}>
-          {computedRoutes().map(rte => (
+      <Grid item sm={12} >
+        <Grid container spacing={view === 'pill' ? 0 : 1} className={`routes routes--${view}`}>
+          {computedRoutes.map(rte => (
             <Grid item xs="auto" key={rte.routeId} sx={{ borderBottomColor: lineColors[rte.line] }}>
               <Route className={rte.className} route={rte} handleRouteToggle={handleRouteToggle} />
             </Grid>
           ))}
         </Grid>
-      </Grid>
-      <Grid item sm={2}>
-        <Button 
-          onClick={handleClearRoute} 
-          sx={{ m: '0.25rem' }} 
-          variant="outlined" 
-          disabled={disableClear} 
-          fullWidth>
-            Clear
-        </Button>
-        <Button 
-          onClick={handleSetRoute} 
-          sx={{ m: '0.25rem' }} 
-          variant="contained" 
-          disabled={disableSet} 
-          fullWidth>
-            Set Route
-        </Button>
       </Grid>
     </Grid>
   );

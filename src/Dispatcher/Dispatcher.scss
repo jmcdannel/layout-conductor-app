@@ -1,6 +1,5 @@
 $greenline: rgb(0, 171, 0);
 
-
 .turnouts {
   align-content: flex-start;
 }
@@ -21,9 +20,12 @@ g.turnout:hover {
 
 svg {
   display: block;
+  width: 100vw;
 }
 
 $turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204, 205, 300, 301, 302, 303, 304, 305, 306, 307, 308;
+
+$routes: 'VLYNB1', 'VLYSB1', 'VLYNB2', 'VLYSB2', 'TS1', 'TS2', 'TS3', 'TS4', 'TSF1', 'ENG1', 'ENG2', 'UL', 'IND1', 'IND2', 'VLYNB3', 'VLYSB3';
 
 #Turnouts {
   > g {
@@ -57,8 +59,6 @@ $turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204,
   }
 }
 
-
-
 @each $turnout in $turnouts {
   .turnout-#{$turnout}-straight {
     #_#{$turnout} {
@@ -88,43 +88,37 @@ $turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204,
   }
 }
 
-// .turnout-101-straight {
-//   #t101 {
-//     cursor: pointer;
-//     g:nth-child(1) {
-//       path {
-//         stroke: $greenline !important;
-//       }
-//     }
-//     g:nth-child(2) {
-//       path {
-//         stroke: $greenline !important;
-//       }
-//     }
-//     g:nth-child(3) {
-//       path {
-//         stroke: black !important;
-//       }
-//     }
-//   }
-// }
-// .turnout-101-divergent {
-//   #t101 {
-//     cursor: pointer;
-//     g:nth-child(1) {
-//       path {
-//         stroke: black !important;
-//       }
-//     }
-//     g:nth-child(2) {
-//       path {
-//         stroke: black !important;
-//       }
-//     }
-//     g:nth-child(3) {
-//       path {
-//         stroke: $greenline !important;
-//       }
-//     }
-//   }
-// }
+@each $route in $routes {
+  .route-#{$route}-origin {
+    ##{$route} {
+      path {
+        stroke:rgb(0, 88, 0) !important;
+        fill:rgb(0, 171, 0) !important;
+      }
+    }
+  }
+  .route-#{$route}-destination {
+    ##{$route} {
+      path {
+        stroke:rgb(189, 9, 9) !important;
+        fill:rgb(213, 87, 87) !important;
+      }
+    }
+  }
+  .route-#{$route}-available {
+    ##{$route} {
+      path {
+        stroke:rgb(0, 41, 174) !important;
+        fill:rgba(0, 41, 174, 1) !important;
+      }
+    }
+  }
+  .route-#{$route}-unavailable {
+    ##{$route} {
+      visibility: hidden;
+      path, text {
+        stroke:rgb(55, 55, 55) !important;
+      }
+    }
+  }
+}

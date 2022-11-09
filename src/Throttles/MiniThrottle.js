@@ -53,18 +53,7 @@ export const MiniThrottle = props => {
     setUiSpeed(uiSpeed - 1);
   }
 
-  const handleLocoClick = async () => {
-    console.log('handleLocoClick', isAcquired, disabled);
-    try {
-      if (isAcquired) {
-        await dispatch({ type: 'UPDATE_LOCO', payload: { address, cruiseControl: false } });
-      } else {
-        await jmriApi.requestLoco(address);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    
+  const handleLocoClick = () => {
     if (onLocoClick) {
       onLocoClick(loco);
     }
@@ -72,9 +61,8 @@ export const MiniThrottle = props => {
 
   const handleParkClick = async () => {
     try {
-      console.log('handleParkClick', address);
+      await jmriApi.throttle(address, STOP);
       const res = await jmriApi.releaseLoco(address);
-      console.log('releaseLoco', res);
       await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
     } catch (err) {
       console.error(err);
@@ -102,8 +90,6 @@ export const MiniThrottle = props => {
             disabled={disabled}
             onClick={handleLocoClick}
           />
-      {isAcquired ? (
-        <>
           <JmriThrottleController speed={debouncedSpeed} address={address} jmriApi={jmriApi} forward={forward} />
           <ThrottleSpeed speed={debouncedSpeed} idleByDefault={loco.idleByDefault} />
           
@@ -138,18 +124,6 @@ export const MiniThrottle = props => {
 
           <IconButton size="medium" onClick={handleParkClick} ><LocalParkingIcon /></IconButton>
                   
-        
-        </>
-      ) : ( 
-        <IconButton 
-          variant="outlined" 
-          size="medium"
-          color="primary" 
-          disabled={disabled}
-          onClick={handleLocoClick}>
-            <OpenInBrowserIcon />
-          </IconButton>
-      )}
       </Paper>
   )
 

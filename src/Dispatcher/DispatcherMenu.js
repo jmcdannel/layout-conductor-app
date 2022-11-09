@@ -18,8 +18,9 @@ import './DispatcherMenu.scss';
 
 export const DispatcherMenu = props => {
 
-  const { handleTurnoutsAction } = props;
+  const { setTurnouts } = props;
   const [ state, dispatch ] = useContext(Context);
+  const { turnouts } = state;
   
   const views = [
     { label: 'Pill', value: 'pill' },
@@ -30,6 +31,24 @@ export const DispatcherMenu = props => {
 
   const view = state.userPreferences.turnoutView;
   const dispatcherLayout = state.userPreferences.dispatcherLayout;
+
+  const handleTurnoutsAction = async action => {
+    switch(action) {
+      case 'straight':
+        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: true })));
+        break;
+      case 'divergent':
+        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: false })));
+        break;
+      case 'toggle':
+        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
+        break;
+      case 'sweep':
+        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
+        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
+        break;
+    }
+  }
 
   const handleViewClick = async event => {    
     await dispatch({ type: 'UPDATE_USER_PREFERENCES', payload: {

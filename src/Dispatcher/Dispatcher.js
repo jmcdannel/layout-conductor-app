@@ -1,15 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 
 import DispatcherMenu from './DispatcherMenu';
-import TamSouth from '../Layout/images/tam/TamSouth';
 import Routes from '../Routes/Routes';
 import RouteMap from '../Routes/RouteMap';
 import Turnout from '../Turnouts/Turnout';
 
 import { Context } from '../Store/Store';
+
 import './Dispatcher.scss';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -18,58 +17,15 @@ const TURNOUT_DELAY = 1000; // ms
 
 export const Dispatcher = props => {
 
-  const { filter, showMenu } = props;
+  const { filter, enabled, overrideUserPrefs, view } = props;
   const [ state, dispatch ] = useContext(Context);
   const { turnouts, routes } = state;
-  const view = state.userPreferences.turnoutView;
   const dispatcherLayout = state.userPreferences.dispatcherLayout;
-
-  const handleTurnoutsAction = async action => {
-    switch(action) {
-      case 'straight':
-        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: true })));
-        break;
-      case 'divergent':
-        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: false })));
-        break;
-      case 'toggle':
-        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
-        break;
-      case 'sweep':
-        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
-        await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
-        break;
-    }
-  }
 
   const setTurnouts = async deltas => {
     deltas.map(async (delta, idx) => {
       await sleep(idx * TURNOUT_DELAY);
       await handleTurnoutChange(delta);
-    });
-  }
-
-  const handleMapRouteClick = svgId => {
-    const rte = routes.destinations.find(r => r.svgId === svgId);
-    console.log('handleMapRouteClick', svgId, rte);
-    // handleRouteToggle(rte);
-
-  }
-
-  const handleMapTurnoutClick = svgId => {
-
-    const getTurnoutId = svgId => {
-      if (svgId.startsWith('lbl')) {
-        return parseInt(svgId.replace(/lbl/g, ''));
-      } else if (svgId.startsWith('_')) {
-        return parseInt(svgId.replace(/_/g, ''));
-      }
-    }
-
-    const turnout = turnouts.find(t => t.turnoutId === getTurnoutId(svgId));
-    turnout && handleTurnoutChange({
-      turnoutId: turnout.turnoutId,
-      state: !turnout.state
     });
   }
 
@@ -82,29 +38,35 @@ export const Dispatcher = props => {
       // throw err;
     }   
   }
+
+  console.log('overrideUserPrefs', enabled, overrideUserPrefs, dispatcherLayout);
+
+  const isVisible = (item) => overrideUserPrefs
+    ? enabled.includes(item)
+    : enabled.includes(item) || !!dispatcherLayout[item];
   
   return turnouts ? (
     <Grid container sx={{ alignContent: 'flex-start' }}>
-      {showMenu && (
+      {isVisible('menu') && (
         <Grid item sm={12} >
-          <DispatcherMenu handleTurnoutsAction={handleTurnoutsAction}  />
+          <DispatcherMenu setTurnouts={setTurnouts}  />
         </Grid>
       )}
 
-      {dispatcherLayout.map && (
+      {isVisible('map') && (
         <Grid item sm={12} >
           {/* <TamSouth handleMapRouteClick={handleMapRouteClick} handleMapTurnoutClick={handleMapTurnoutClick} /> */}
-          <RouteMap setTurnouts={setTurnouts} />
+          <RouteMap setTurnouts={setTurnouts} handleTurnoutChange={handleTurnoutChange} />
         </Grid>
       )}
 
-      {dispatcherLayout.routes && (
+      {isVisible('routes') && (
         <Grid item sm={12} p={2}>
-          <Routes setTurnouts={setTurnouts} />
+          <Routes setTurnouts={setTurnouts} view={view}  />
       </Grid>
       )}
       
-      {dispatcherLayout.turnouts && (
+      {isVisible('turnouts') && (
         <Grid item sm={12} p={2}>
           <Grid container className={`turnouts turnouts--${view}`} spacing={2}>
             <Grid item sm={12} className="turnout__grid-item">
@@ -124,7 +86,9 @@ export const Dispatcher = props => {
 
 Dispatcher.defaultProps = {
   filter: turnouts => turnouts,
-  showMenu: true
+  enabled: ['menu'],
+  overrideUserPrefs: false,
+  view: 'tiny'
 };
 
 export default Dispatcher;

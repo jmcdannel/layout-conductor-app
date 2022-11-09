@@ -1,43 +1,34 @@
 .effects {
 
-  &.effects--pill,
-  &.effects--tiny {
-    .effect {
-      display: flex;
-      justify-content: space-between;
-      flex: 1;
-      &__meta {
-        display: none;
-      }
-      .MuiCardHeader-title {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 0.9rem;
-        padding-left: 0.5rem;
-      }
-      .MuiCardHeader-root {
-        padding: 0.25rem;
-      }
-      .MuiCardContent-root {
-        padding: 0.25rem;
-      }
-      .MuiCardHeader-avatar {
-        margin-right: 0;
-      }
+  
+  .effects__grid-item {
+    flex-basis: 33%;
+    min-width: 24rem;
+  }
+  
+  .effect {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    &__meta {
+      display: none;
+    }
+    .MuiCardHeader-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.9rem;
+      padding-left: 0.5rem;
+    }
+    .MuiCardHeader-root {
+      padding: 0.25rem;
+    }
+    .MuiCardContent-root {
+      padding: 0.25rem;
+    }
+    .MuiCardHeader-avatar {
+      margin-right: 0;
     }
   }
-
-  &.effects--compact {
-
-  }
-
-  &.effects--comfy {
-
-  }
-
-  &__grid-item {
-    // display: flex;    
-  }
-
+  
 }

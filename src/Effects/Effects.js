@@ -6,27 +6,19 @@ import './Effects.scss';
 
 export const Effects = props => {
 
-  const { view, filter, groupBy } = props;
-
   const [ state, dispatch ] = useContext(Context);
-  const { effects, sensors } = state;
+  const { effects } = state;
 
   return (
-    <Grid container className={`effects  effects--${view}`} spacing={1}>  
+    <Grid container className={`effects`} spacing={1}>  
       {effects && effects.map(effect => (
-        <Grid item key={`effect${effect.effectId}`} className="effects__grid-item" xs={12}>
-            <Effect effect={effect} sensors={sensors} view={view} key={effect.effectId} />
+        <Grid item key={`effect${effect.effectId}`} className="effects__grid-item" xs="auto">
+            <Effect effect={effect} key={effect.effectId} />
         </Grid>
       ))}
     </Grid>    
   );
 
 }
-
-Effects.defaultProps = {
-  initialView: 'compact',
-  groupBy: '',
-  filter: turnouts => turnouts
-};
 
 export default Effects;
