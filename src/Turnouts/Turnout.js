@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Colors from '@mui/material/colors';
 import { ReactComponent as TurnoutStriaghtImage } from '../Shared/Images/turnout-straight.svg';
 import { ReactComponent as TurnoutDivergentImage } from '../Shared/Images/turnout-divergent.svg';
@@ -27,8 +27,6 @@ import './Turnout.scss';
 export const linesConfig = [
   { lineId: 'Demo Track', label: 'Mainline SB', color: Colors.red[500] }
 ];
-
-const defaultLine = { lineId: 'Unknown Line', label: 'Unknown Line', color: Colors.grey[500] };
 
 export const Turnout = props => {
 
@@ -63,10 +61,6 @@ export const Turnout = props => {
     }    
   }
 
-  const getLineColor = () => {
-    return defaultLine.color;
-  }
-
   const handleReset = async e => {
     if (isLoading) { 
       return;
@@ -88,7 +82,7 @@ export const Turnout = props => {
 
   const handleSettings = () => setShowSettings(true);
 
-  const hideSettings = () => setShowSettings(false);
+  // const hideSettings = () => setShowSettings(false);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -195,12 +189,12 @@ export const Turnout = props => {
           </IconButton>
         </span>
       </CardActions>
+      {showSettings && <></>}
       {/* <Settings 
         open={showSettings} 
         turnout={turnout} 
         onClose={hideSettings}
       /> */}
-
       <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose} message={error} />
     </Card>
 	)

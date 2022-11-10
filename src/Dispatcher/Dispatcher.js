@@ -19,7 +19,7 @@ export const Dispatcher = props => {
 
   const { filter, enabled, overrideUserPrefs, view } = props;
   const [ state, dispatch ] = useContext(Context);
-  const { turnouts, routes } = state;
+  const { turnouts } = state;
   const dispatcherLayout = state.userPreferences.dispatcherLayout;
 
   const setTurnouts = async deltas => {

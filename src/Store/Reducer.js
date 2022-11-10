@@ -1,4 +1,4 @@
-import api from '../Api';
+// import api from '../Api';
 
 const Reducer = (state, action) => {
   switch(action.type) {
@@ -8,7 +8,7 @@ const Reducer = (state, action) => {
 
     case 'UPDATE_LOCO':
       const locos = state.locos.map(loco => 
-        loco.address == action.payload.address
+        loco.address === action.payload.address
           ? { ...loco, ...action.payload }
           : loco
       );

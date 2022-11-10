@@ -4,7 +4,6 @@ import Chip from '@mui/material/Chip';
 import TrainIcon from '@mui/icons-material/Train';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import ThrottleSpeed from './ThrottleSpeed';
@@ -18,7 +17,7 @@ import './MiniThrottle.scss';
 
 export const MiniThrottle = props => {
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ , dispatch ] = useContext(Context);
   const maxSpeed = 100;
   const minSpeed = -maxSpeed;
 	const STOP = '0.0';
@@ -34,12 +33,7 @@ export const MiniThrottle = props => {
   const initialUiSpeed = speed * 100 * (forward === true ? 1 : -1);
 
   const [ uiSpeed, setUiSpeed ] = useState(initialUiSpeed);
-  const [ dirty, setDirty ] = useState(speed ? speed * 100 : 0);
   const debouncedSpeed = useDebounce(uiSpeed, 100);
-
-  const handleLocoAcquired = async address => {
-    await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
-  }
 
   const handleStopClick = () => {
     setUiSpeed(parseInt(STOP));
@@ -62,7 +56,7 @@ export const MiniThrottle = props => {
   const handleParkClick = async () => {
     try {
       await jmriApi.throttle(address, STOP);
-      const res = await jmriApi.releaseLoco(address);
+      await jmriApi.releaseLoco(address);
       await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
     } catch (err) {
       console.error(err);
@@ -70,8 +64,10 @@ export const MiniThrottle = props => {
   }
 
   useEffect(() => {
-    jmriApi.on('acquire', 'Throttles', handleLocoAcquired);
-  }, [jmriApi, handleLocoAcquired]);
+    jmriApi.on('acquire', 'Throttles', async address => {
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
+    });
+  }, [jmriApi, dispatch]);
 
   const computedClassName = () => {
     return ['mini-throttle', 

@@ -4,7 +4,7 @@ var $jmri = null;
 var $debug = false;
 var $ = window.jQuery;
 var log = new window.Logger();
-var sensros = [];
+// var sensros = [];
 var promises = {
 	speed: {
 		resolve: () => {},

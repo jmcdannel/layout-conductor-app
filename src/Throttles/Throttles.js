@@ -44,7 +44,7 @@ export const Throttles = props => {
     }));
     setThrottles(nextThrottles);
 
-  }, [locos]);
+  }, [locos, throttles]);
 
   const renderThrottle = ({ loco }, throttleIdx) => {
     return !!(loco && !loco.cruiseControl) ? (

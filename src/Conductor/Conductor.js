@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
@@ -42,33 +41,11 @@ TabPanel.propTypes = {
 
 export const Conductor = props => {
 
-  const defaultMenu = window.localStorage.getItem('menu') 
-    ? JSON.parse(window.localStorage.getItem('menu'))
-    : {
-      view: 'tiny',
-      showMaps: true,
-      group: '',
-      lineFilters: [],
-      sectionFilters: []
-    };
-
-  const [ menu, setMenu ] = useState(defaultMenu);
-
   const [tab, setTab] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);
   };
-
-  useEffect(() => {
-    window.localStorage.setItem('menu', JSON.stringify(menu));
-  }, [menu])
-
-  const handleMenuChange = event => {
-    console.log('handleMenuChange', event);
-    // window.localStorage.setItem('throttleView', event.target.value);
-    setMenu({ ...menu, ...event });
-  }
 
   return (
     // <Grid container className="conductor" spacing={2} >

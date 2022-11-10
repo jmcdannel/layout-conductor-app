@@ -4,36 +4,31 @@ export const JmriThrottleController = props => {
 
     const { jmriApi, speed, forward, address } = props;
 
-    const stop = async () => await jmriApi.throttle(address, 0, !forward);
-    const changeDireaction = async () => await jmriApi.changeDirection(address, (speed > 0));
-
     useEffect(() => {
+        const stop = async () => await jmriApi.throttle(address, 0, !forward);
+        const changeDireaction = async () => await jmriApi.changeDirection(address, (speed > 0));
+        const setToReverse = async () => {
+            try {
+                await stop();
+            } catch (err) {
+                console.error(err);
+                throw err;
+            } finally {  await changeDireaction(); }
+        };
+        const setToForward = async () => {
+            try {
+                await stop();
+            } catch (err) {
+                console.error(err);
+                throw err;
+            } finally {  await changeDireaction(); }
+        };
         const updateThrottle = async () => {
             try {
-                if (speed < 0) { // backward
-                    if (forward !== false) {
-                        try {
-                            await stop();
-                        } catch (err) {
-                            console.error(err);
-                            throw err;
-                        } finally {
-                            await changeDireaction();
-                        }
-                    }
-
-                } else if (speed > 0) { //forward
-                    if (forward !== true) {
-                        try {
-                            await stop();
-                        } catch (err) {
-                            console.error(err);
-                            throw err;
-                        } finally {
-                            await changeDireaction();
-                        }
-                    }
-                    
+                if (speed < 0 && forward !== false) {
+                    setToReverse();
+                } else if (speed > 0 && forward !== true) {
+                    setToForward();
                 }
                 await jmriApi.throttle(address, Math.abs(speed), forward);
             } catch (err) {

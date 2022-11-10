@@ -1,10 +1,8 @@
 import React from 'react';
 import CallSplit from '@mui/icons-material/CallSplit';
-import MapIcon from '@mui/icons-material/Map';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import TrafficIcon from '@mui/icons-material/Traffic';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
-// import SettingsIcon from '@mui/icons-material/Settings';
 import TrainIcon from '@mui/icons-material/Train';
 
 export const navConfig = {

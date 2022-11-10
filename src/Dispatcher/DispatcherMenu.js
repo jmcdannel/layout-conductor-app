@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -47,6 +47,9 @@ export const DispatcherMenu = props => {
         await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
         await setTurnouts(turnouts.map(t => ({ turnoutId: t.turnoutId, state: !t.state })));
         break;
+      default:
+        // no op
+        break;
     }
   }
 
@@ -58,7 +61,7 @@ export const DispatcherMenu = props => {
 
   const hanldeLayoutClick = async event => {
     await dispatch({ type: 'UPDATE_USER_PREFERENCES', payload: { 
-      dispatcherLayout: { ... dispatcherLayout, ...{ [event.target.value]: event.target.checked } } 
+      dispatcherLayout: { ...dispatcherLayout, ...{[event.target.value]: event.target.checked }} 
     } });
   }
 

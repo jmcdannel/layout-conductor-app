@@ -1,5 +1,3 @@
-import { apiStates } from '../Api';
-
 export const initialState = {
   layout: null,
   userPreferences: {

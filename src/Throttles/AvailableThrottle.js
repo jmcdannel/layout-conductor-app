@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
 import TrainIcon from '@mui/icons-material/Train';
@@ -10,7 +10,7 @@ import './MiniThrottle.scss';
 
 export const AvailableThrottle = props => {
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ , dispatch ] = useContext(Context);
   
   const { 
     jmriApi, 
@@ -20,11 +20,6 @@ export const AvailableThrottle = props => {
     disabled, 
     loco: {  address } 
   } = props;
-
-  const handleLocoAcquired = async (address) => {
-    console.log('handleLocoAcquired', address);
-    await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
-  }
 
   const handleLocoClick = async () => {
     console.log('handleLocoClick', loco, throttleIdx, disabled);
@@ -42,8 +37,11 @@ export const AvailableThrottle = props => {
   }
 
   useEffect(() => {
-    jmriApi.on('acquire', 'Throttles', handleLocoAcquired);
-  }, [jmriApi, handleLocoAcquired]);
+    jmriApi.on('acquire', 'Throttles',  async (address) => {
+      console.log('handleLocoAcquired', address);
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
+    });
+  }, [jmriApi, dispatch]);
 
   return (
     <Paper 

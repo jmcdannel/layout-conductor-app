@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { Context } from '../Store/Store';
 
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardContent';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 
-import PowerIcon from '@mui/icons-material/Power';
 
 export const Pinout = props => {
-  const [ state, dispatch ] = useContext(Context);
+  const [ state ] = useContext(Context);
 
-  const debug = () => JSON.stringify(state, null, 2);
+  // const debug = () => JSON.stringify(state, null, 2);
 
   const pins = () => {
     console.log(state);

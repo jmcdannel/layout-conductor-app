@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 // import ShareIcon from '@mui/icons-material/Share';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 // import MusicNoteIcon from '@mui/icons-material/MusicNote';
@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 
 export const Functions = props => {
 
-  const functionButtons = new Array(8).fill({}).map((item, idx) => {
+  // const functionButtons = new Array(8).fill({}).map((item, idx) => {
     // switch(idx) {
     //   case 0:
     //     return {
@@ -37,7 +37,7 @@ export const Functions = props => {
     //     }
     // }
     
-  });
+  // });
 
   return (
     <div className="throttle__functions">

@@ -27,13 +27,13 @@ export const Signal = props => {
           exclusive 
           onChange={handleChange}>
           <ToggleButton value="red">
-            <FiberManualRecordIcon style={{color: 'red', opacity: effect.state == 'red' ? 1 : .1 }} />
+            <FiberManualRecordIcon style={{color: 'red', opacity: effect.state === 'red' ? 1 : .1 }} />
           </ToggleButton>
           <ToggleButton value="yellow">
-            <FiberManualRecordIcon style={{color: 'yellow', opacity: effect.state == 'yellow' ? 1 : .1 }} />
+            <FiberManualRecordIcon style={{color: 'yellow', opacity: effect.state === 'yellow' ? 1 : .1 }} />
           </ToggleButton>
           <ToggleButton value="green" >
-            <FiberManualRecordIcon style={{color: 'green', opacity: effect.state == 'green' ? 1 : .1 }} />
+            <FiberManualRecordIcon style={{color: 'green', opacity: effect.state === 'green' ? 1 : .1 }} />
           </ToggleButton>
         </ToggleButtonGroup>
       </Grid>

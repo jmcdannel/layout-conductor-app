@@ -4,9 +4,9 @@ import { Context } from '../Store/Store';
 import Effect from './Effect';
 import './Effects.scss';
 
-export const Effects = props => {
+export const Effects = () => {
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ state ] = useContext(Context);
   const { effects } = state;
 
   return (

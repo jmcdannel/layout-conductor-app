@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -6,12 +6,9 @@ import CardHeader from '@mui/material/CardContent';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
 import Typography from '@mui/material/Typography';
-
 import AltRouteIcon from '@mui/icons-material/AltRoute';
-import TuneIcon from '@mui/icons-material/Tune';
 
 import './Route.scss';
 
@@ -27,10 +24,6 @@ export const Route = props => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [isPristine, setIsPristine] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
-
-  const handleSettings = () => setShowSettings(true);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -45,7 +38,6 @@ export const Route = props => {
     }
     try {
       setIsLoading(true);
-      setIsPristine(false);
       await handleRouteToggle(route);
     } catch (err) {
       console.error(err);
@@ -75,26 +67,15 @@ export const Route = props => {
         </Typography> 
       </CardContent>
       <CardActions className="route__actions">
-        <span>          
-          <IconButton variant="outlined" color="default" onClick={handleSettings}>
-            <TuneIcon />
-          </IconButton>
-        </span>
         <Button 
           className="compact-hidden"
-          variant="contained" 
-          color="primary" 
+          variant="outlined" 
+          color="secondary" 
           onClick={handleToggle}
           >
             Toggle
         </Button>
       </CardActions>
-      {/* <Settings 
-        open={showSettings} 
-        turnout={turnout} 
-        onClose={hideSettings}
-      /> */}
-
       <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose} message={error} />
     </Card>
   );

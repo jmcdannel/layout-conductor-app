@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import * as Colors from '@mui/material/colors';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
 
@@ -16,38 +14,25 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Tooltip from '@mui/material/Tooltip';
 
 import TrainIcon from '@mui/icons-material/Train';
-import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SpeedIcon from '@mui/icons-material/Speed';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import ReportIcon from '@mui/icons-material/Report';
 import ExpandIcon from '@mui/icons-material/Expand';
 import ThermostatAutoIcon from '@mui/icons-material/ThermostatAuto';
 import CompressIcon from '@mui/icons-material/Compress';
-import HighlightIcon from '@mui/icons-material/Highlight';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import ThrottleSlider from './ThrottleSlider';
 import ThrottleSpeed from './ThrottleSpeed';
 import JmriThrottleController from './JmriThrottleController';
-import Functions from './Functions';
+// import Functions from './Functions';
 import { Context } from '../Store/Store';
 import useDebounce from '../Shared/Hooks/useDebounce';
 import api from '../Api';
 import './Throttle.scss';
-
-/*
-[ ] Cruise Control / Park
-[ ] Sticky Slider
-[ ] Slider maxSpeed
-*/
 
 export const Throttle = props => {
 
@@ -63,31 +48,30 @@ export const Throttle = props => {
   } } = props;
   const address = Number(props.loco.address);
 
-  const calcSpeed = origSpeed => origSpeed * 100 * (forward === true ? 1 : -1);
+  const calcSpeed = useCallback(origSpeed => origSpeed * 100 * (forward === true ? 1 : -1), [forward]);
   
   const initialMaxSpeed = isNaN(loco.maxSpeed) ? 100 : loco.maxSpeed;
   const initialUiSpeed = calcSpeed(speed);
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ , dispatch ] = useContext(Context);
   // const [ initialized, setInitialized ] = useState(false);
   const [ uiSpeed, setUiSpeed ] = useState(initialUiSpeed);
   const [ maxSpeed, setMaxSpeed ] = useState(initialMaxSpeed);
   const [ minSpeed, setMinSpeed ] = useState(-initialMaxSpeed);
   const [ precisonDialog, setPrecisonDialog ] = useState(false);
   const debouncedSpeed = useDebounce(uiSpeed, 100);
-  const locoSpeed = useDebounce(parseInt(initialUiSpeed), 2000);
 
     
-  const handleSpeed = async ({ name, speed }) => {
+  const handleSpeed = useCallback(async ({ name, speed }) => {
     try {
         console.log('handleSpeed', { address: name, speed });
         await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, speed } });
     } catch(err) {
         console.error(err);
     }
-  }
+  }, [dispatch]);
 
-  const handleDirection = async ({ name, forward }) => {
+  const handleDirection = useCallback(async ({ name, forward }) => {
       try {
           console.log('handleDirection', { address: name, forward });
           await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, forward } });
@@ -97,19 +81,19 @@ export const Throttle = props => {
       } catch(err) {
           console.error(err);
       }
-  }
+  }, [dispatch]);
 
   useEffect(() => {
     jmriApi.on('direction', 'JmriThrottleController', handleDirection);
     jmriApi.on('speed', 'JmriThrottleController', handleSpeed);
-  }, [jmriApi]);
+  }, [jmriApi, handleDirection, handleSpeed]);
 
   useEffect(() => {
     const newSpeed = calcSpeed(speed);
-    if (newSpeed != uiSpeed) {
+    if (newSpeed !== uiSpeed) {
       setUiSpeed(newSpeed);
     }
-  }, [speed]);
+  }, [speed, calcSpeed, uiSpeed]);
 
   const handleSliderSpeed = value => {
     setUiSpeed(value);
@@ -144,7 +128,7 @@ export const Throttle = props => {
   const handleParkClick = async () => {
     try {
       await jmriApi.throttle(address, STOP);
-      const res = await jmriApi.releaseLoco(address);
+      await jmriApi.releaseLoco(address);
       await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
     } catch (err) {
       console.error(err);
@@ -205,11 +189,6 @@ export const Throttle = props => {
                 onClick={handleLocoClick}
               />
           }
-          // action={
-          //   <IconButton aria-label="settings" onClick={handleMenuClick}>
-          //     <MoreVertIcon />
-          //   </IconButton>
-          // }
         />
         <CardContent className="throttle__content grow flex">
           {(true || loco.isAcquired) && 
@@ -233,12 +212,11 @@ export const Throttle = props => {
               </Grid>
               <Grid item xs={7} display="flex">
                 {/* <Functions /> */}
-                {/* <div className="throttle__space"></div> */}
                 <div className="throttle__controls">
                   <Paper elevation={3} className="" display="flex" direction="column">
                     {/* <pre>speed={loco.speed}</pre>
                     <pre>uiSpeed={uiSpeed}</pre> */}
-                    <img src={`${process.env.PUBLIC_URL}/images/tam/locos/${loco.address}.jpg`} className="throttle__locoimg" />
+                    <img alt={`${loco.name}`} src={`${process.env.PUBLIC_URL}/images/tam/locos/${loco.address}.jpg`} className="throttle__locoimg" />
                     <ThrottleSpeed speed={uiSpeed} />
                     <ButtonGroup
                         orientation="vertical"
@@ -276,9 +254,6 @@ export const Throttle = props => {
                     <IconButton size="large" onClick={handleStickyThrottleClick} >
                       {autoStop  ? <CompressIcon /> : <ExpandIcon/>}
                     </IconButton>
-                    {/* <IconButton size="large" ><HighlightIcon/></IconButton>                  
-                    <IconButton size="large" disabled><SettingsIcon/></IconButton>                  
-                    <IconButton size="large" disabled ><FavoriteIcon/></IconButton>                   */}
                   </div>
                 </div>
               </Grid>

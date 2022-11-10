@@ -16,38 +16,19 @@ body,
 }
 
 .app-header-menu.MuiAppBar-root {
-  
   background: rgb(120,1,1);
   background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
   border-bottom: 1px solid rgba(244, 67, 54, 1);
 }
 
 .app-footer.MuiBottomNavigation-root {
-
   background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
   border-top: 1px solid rgba(244, 67, 54, 1);
 }
 
 .title {
-    flex-grow: 1;
+  flex-grow: 1;
 }
-
-// @media (prefers-reduced-motion: no-preference) {
-//   .App-logo {
-//     animation: App-logo-spin infinite 20s linear;
-//   }
-// }
-
-// .App-header {
-//   background-color: #282c34;
-//   min-height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: calc(10px + 2vmin);
-//   color: white;
-// }
 
 .App-content {
   overflow: auto;
@@ -57,10 +38,6 @@ body,
   height: 100%;
   overflow: auto;
 }
-
-// .App-link {
-//   color: #61dafb;
-// }
 
 .grow {
   flex: 1;
@@ -76,20 +53,77 @@ body,
   width: 100%;
 }
 
-// .MuiIconButton-root { 
-  
-// }
+.status-monitor {
+  .MuiChip-root {
+    margin: 0 0.5em;
+  }
+  &--unknown.MuiChip-icon {
+    animation: flickerAnimation 1s infinite;
+  }
+  &--connected.MuiChip-icon {
+    background-color: rgb(14, 192, 14);
+    border-radius: 50%;
+  }
+  &--disconnected.MuiChip-icon {
+    background-color: rgb(211, 0, 0);
+    border-radius: 50%;
+  }
+}
 
-/* .App-footer {
-  position: fixed;
-  bottom: 0;
-} */
+.power {
+  &-on, 
+  &-off, 
+  &-unknown, 
+  &-pending {
+    &.MuiButtonBase-root  {
+      margin-left: .5rem;
+    }
+    svg.MuiSvgIcon-root {
+      border-radius: 50%;
+    }
+  }
+  &-on {
+   svg.MuiSvgIcon-root {
+    background-color: rgb(14, 192, 14);
+   }
+  }
+  &-off {
+    svg.MuiSvgIcon-root {
+     background-color: rgb(211, 0, 0);
+    }
 
-// @keyframes App-logo-spin {
-//   from {
-//     transform: rotate(0deg);
-//   }
-//   to {
-//     transform: rotate(360deg);
-//   }
-// }
+  }
+  &-unknown {
+    svg.MuiSvgIcon-root {
+     background-color: rgb(129, 129, 129);
+    }
+
+  }
+
+  &-pending {
+    svg.MuiSvgIcon-root {
+      fill: #999;
+      animation: flickerAnimation 1s infinite;
+    }
+  }
+}
+@keyframes flickerAnimation {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}

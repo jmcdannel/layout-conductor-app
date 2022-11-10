@@ -1,27 +1,6 @@
-import * as Colors from '@mui/material/colors';
-import blueLineImg from './Layout/images/IDAWANY-blueline.png';
-import brownLineImg from './Layout/images/IDAWANY-brownline.png';
-import greenLineImg from './Layout/images/IDAWANY-greenline.png';
-import magentaLineImg from './Layout/images/IDAWANY-magentaline.png';
-import orangeLineImg from './Layout/images/IDAWANY-orangeline.png';
-import purpleLineImg from './Layout/images/IDAWANY-purpleline.png';
-import redLineImg from './Layout/images/IDAWANY-redline.png';
-import yellowLineImg from './Layout/images/IDAWANY-yellowline.png';
-// import { getApi as getApiHostName, getConfig } from './config/config';
 import { getAppConfig } from './config/config';
 
 const appConfig = getAppConfig();
-
-export const linesConfig = [
-  { name: 'Red', color: Colors.red[500], img: redLineImg },
-  { name: 'Green', color: Colors.green[500], img: greenLineImg },
-  { name: 'Magenta', color: Colors.pink[500], img: magentaLineImg },
-  { name: 'Yellow', color: Colors.yellow[500], img: yellowLineImg },
-  { name: 'Orange', color: Colors.orange[500], img: orangeLineImg },
-  { name: 'Blue', color: Colors.blue[500], img: blueLineImg },
-  { name: 'Brown', color: Colors.brown[500], img: brownLineImg },
-  { name: 'Purple', color: Colors.purple[500], img: purpleLineImg }
-];
 
 const locoDefaults = {
   isAcquired: false,
@@ -34,8 +13,19 @@ const locoDefaults = {
   lastUpdated: null
 };
 
-// const appConfig = getConfig();
-// let apiHost = getApiHostName();
+async function initialize() {
+  const layoutConfig = await api.get();
+  const getModules = layoutConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
+  const results = await Promise.all(
+    getModules.map(req => api[req].get()
+      .then(resp => api[req].initialize ? api[req].initialize(resp) : resp))
+  );
+  const initialState = getModules.reduce((state, module, index) => ({ 
+    ...state, 
+    [module]: results[index] 
+  }), { modules: layoutConfig.modules, initialized: true });
+  return initialState;
+}
 
 async function get(type = null, Id = null) {
   try {
@@ -49,20 +39,6 @@ async function get(type = null, Id = null) {
     console.error(err);
     throw new Error('Unable to read', type, `Id=${Id}`);
   }
-}
-
-async function initialize() {
-  const layoutConfig = await api.get();
-  const getModules = layoutConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
-  const results = await Promise.all(
-    getModules.map(req => api[req].get()
-      .then(resp => api[req].initialize ? api[req].initialize(resp) : resp))
-  );
-  const initialState = getModules.reduce((state, module, index) => ({ 
-    ...state, 
-    [module]: results[index] 
-  }), { modules: layoutConfig.modules });
-  return initialState;
 }
 
 async function put(type, data, idField) {

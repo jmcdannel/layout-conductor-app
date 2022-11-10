@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Snackbar from '@mui/material/Snackbar';
 
@@ -8,7 +8,7 @@ export const withMapEngine = WrappedComponent => props => {
 
   const { computedRoutes, handleRouteToggle, handleTurnoutChange } = props;
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ state ] = useContext(Context);
   const [ error, setError] = useState(false);
   const { turnouts, routes } = state;
   const dispatcherLayout = state.userPreferences.dispatcherLayout;
@@ -24,6 +24,9 @@ export const withMapEngine = WrappedComponent => props => {
         case 'Turnouts':
         case 'TurnoutLabels':
           handleMapTurnoutClick(svgBtn.target.id);
+          break;
+        default:
+          // noop
           break;
       }
     }

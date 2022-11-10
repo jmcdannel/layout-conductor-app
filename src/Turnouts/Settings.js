@@ -4,7 +4,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 // import CallSplit from '@mui/icons-material/CallSplit';
-import { green } from '@mui/material/colors';
+// import { green } from '@mui/material/colors';
 import Divider from '@mui/material/Divider';
 // import ErrorIcon from '@mui/icons-material/Error';
 import IconButton from '@mui/material/IconButton';
@@ -17,7 +17,7 @@ import Lock from '@mui/icons-material/Lock';
 // import Bookmark from '@mui/icons-material/Bookmark';
 import LockOpen from '@mui/icons-material/LockOpen';
 import InputAdornment from '@mui/material/InputAdornment';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -29,7 +29,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Context } from '../Store/Store';
 import api from '../Api';
 
-
 const getInverse = degrees => {
   return degrees < 90
     ? 90 + (90 - degrees)
@@ -39,7 +38,7 @@ const getInverse = degrees => {
 export const Settings = props => {
   const { turnout: { turnoutId }, turnout, open, config, onClose } = props;
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ , dispatch ] = useContext(Context);
 
   const [name, setName] = useState(turnout.name);
   const [line, setLine] = useState(turnout.line);
@@ -48,7 +47,6 @@ export const Settings = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLocked, setIsLocked] = useState(true);
   const [isLinked, setIsLinked] = useState(turnout.straight === getInverse(turnout.divergent));
-  const [isPristine, setIsPristine] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   const handleClose = () => {
@@ -60,12 +58,12 @@ export const Settings = props => {
 
   const handleUnlock = () => setIsLocked(false);
 
-  const handleLink = () => {
-    setIsLinked(true);
-    setDivergent(straight);
-  }
+  // const handleLink = () => {
+  //   setIsLinked(true);
+  //   setDivergent(straight);
+  // }
 
-  const handleUnlink = () => setIsLinked(false);
+  // const handleUnlink = () => setIsLinked(false);
 
   const handleServo = degrees => {
     if (isLoading) { 

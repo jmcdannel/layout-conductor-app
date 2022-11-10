@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 
 import { Context } from '../Store/Store';
 
 export const withRouteEngine = WrappedComponent => props => {
 
   const { setTurnouts } = props;
-  const [ state, dispatch ] = useContext(Context);
+  const [ state ] = useContext(Context);
   const { routes } = state;
   const [ routeOrigin, setRouteOrigin ] = useState(undefined);
   const [ routeDestination, setRouteDestination ] = useState(undefined);
@@ -27,7 +27,7 @@ export const withRouteEngine = WrappedComponent => props => {
     }
   }
 
-  const handleSetRoute = async () => {
+  const handleSetRoute = useCallback(async () => {
     setAutoRun(false);
     const path = routes.paths.find(path => path.destinations.includes(routeOrigin.routeId) && path.destinations.includes(routeDestination.routeId))
     await setTurnouts(path.turnouts);
@@ -35,7 +35,7 @@ export const withRouteEngine = WrappedComponent => props => {
       setRouteDestination(undefined);
       setRouteOrigin(undefined);
     }, 3000);
-  }
+  }, [routeDestination.routeId, routeOrigin.routeId, routes.paths, setTurnouts]);
 
   const handleClearRoute = () => {
     setRouteDestination(undefined);

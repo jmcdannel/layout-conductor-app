@@ -1,24 +1,18 @@
 import React, { useContext, useState } from 'react';
-import * as Colors from '@mui/material/colors';
 import Grid from '@mui/material/Grid';
-import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
-import ShareIcon from '@mui/icons-material/Share';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import HighlightIcon from '@mui/icons-material/Highlight';
-// import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import TrafficIcon from '@mui/icons-material/Traffic';
 import Signal from './Signal';
 import { Context } from '../Store/Store';
 import api from '../Api';
-import { getSectionColor, getLineColor, getEffectColor } from '../config/config';
 
 const PLAY_SOUND_DELAY = 2000;
 
@@ -26,9 +20,8 @@ export const Effect = props => {
 
   const { effect, effect: { effectId }, view } = props;
 
-  const [ state, dispatch ] = useContext(Context);
+  const [ ,dispatch ] = useContext(Context);
   const [isLoading, setIsLoading] = useState(false);
-  const [isPristine, setIsPristine] = useState(true);
 
   const handleSwitchChange = (event) => {
     updateEffect({ effectId, state: event.target.checked ? 1 : 0 });;
@@ -47,7 +40,6 @@ export const Effect = props => {
     }
     try {
       setIsLoading(true);
-      setIsPristine(false);
       const newEffect = await api.effects.put(changedEffect);
       await dispatch({ type: 'UPDATE_EFFECT', payload: newEffect });
     } catch (err) {
