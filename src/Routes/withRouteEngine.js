@@ -35,7 +35,7 @@ export const withRouteEngine = WrappedComponent => props => {
       setRouteDestination(undefined);
       setRouteOrigin(undefined);
     }, 3000);
-  }, [routeDestination.routeId, routeOrigin.routeId, routes.paths, setTurnouts]);
+  }, [routeDestination, routeOrigin, routes.paths, setTurnouts]);
 
   const handleClearRoute = () => {
     setRouteDestination(undefined);

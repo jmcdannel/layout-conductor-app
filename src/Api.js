@@ -8,7 +8,7 @@ const locoDefaults = {
   autoStop: true,
   maxSpeed: 100,
   speed: 0,
-  forward: null,
+  forward: true,
   lastAcquired: null,
   lastUpdated: null
 };

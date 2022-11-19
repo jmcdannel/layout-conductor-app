@@ -39,8 +39,6 @@ export const Dispatcher = props => {
     }   
   }
 
-  console.log('overrideUserPrefs', enabled, overrideUserPrefs, dispatcherLayout);
-
   const isVisible = (item) => overrideUserPrefs
     ? enabled.includes(item)
     : enabled.includes(item) || !!dispatcherLayout[item];
@@ -55,7 +53,6 @@ export const Dispatcher = props => {
 
       {isVisible('map') && (
         <Grid item sm={12} >
-          {/* <TamSouth handleMapRouteClick={handleMapRouteClick} handleMapTurnoutClick={handleMapTurnoutClick} /> */}
           <RouteMap setTurnouts={setTurnouts} handleTurnoutChange={handleTurnoutChange} />
         </Grid>
       )}

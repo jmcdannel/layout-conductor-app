@@ -4,6 +4,7 @@ var $jmri = null;
 var $debug = false;
 var $ = window.jQuery;
 var log = new window.Logger();
+var throttleCommand = '';
 // var sensros = [];
 var promises = {
 	speed: {
@@ -61,7 +62,7 @@ var jmriReady = function(jsonVersion, jmriVersion, railroadName) {
 
 //----------------------------------------- [from server] Last selected throttle address
 var throttleState = function(name, address, speed, forward, fs) {
-	console.log('__throttleState', name, address, speed, forward, fs, arguments);
+	console.log('__throttleState', name, address, speed, forward, fs);
 	if (name !== undefined 
 		&& typeof address === 'undefined' 
 		&& typeof speed === 'undefined' 
@@ -69,10 +70,12 @@ var throttleState = function(name, address, speed, forward, fs) {
 			throttleRelease(name);
 			return;
 	}
-	if (address !== undefined) throttleAcquisition(address);
-	if (forward !== undefined) throttleDirection(name, forward);
-	if (speed !== undefined) throttleSpeed(name, speed);
+	console.log('throttleCommand', throttleCommand);
+	if (throttleCommand === 'acquire' && address !== undefined) throttleAcquisition(address);
+	if (throttleCommand === 'direction' && forward !== undefined) throttleDirection(name, forward);
+	if (throttleCommand === 'speed' && speed !== undefined) throttleSpeed(name, speed);
 	for (var i = 0; i < 29; i++) if (fs[i] !== undefined) throttleFunctionState(name, i, fs[i]);
+	throttleCommand = '';
 };
 
 //----------------------------------------- [from server] Last selected throttle address
@@ -155,36 +158,41 @@ const watchSensors = sensors => {
 }
 
 const throttle = async (address, speed) => {
-    const speedValue = speed / 100;
-    var speedValueFormated = '' + speedValue;
-	if (speedValue === 0) speedValueFormated = $jmri.STOP;
-	if (speedValue === 1) speedValueFormated = $jmri.FULL_SPEED;
-	validateCommand() && $jmri.setJMRI('throttle', address, { 
-		address,
+	const speedValue = speed / 100;
+	var speedValueFormated = '' + speedValue;
+	if (speedValue === 0) speedValueFormated = "0.0";
+	if (speedValue === 1) speedValueFormated = "1";
+	const payload = { 
 		'speed': speedValueFormated
-	});
-	return createPromise('speed', 'New throttle action dispatched.');
+	};
+	console.log('throttle', address, speed, speedValueFormated, payload);
+	throttleCommand = 'speed';
+	validateCommand() && $jmri.setJMRI('throttle', address.toString(), payload);
+	return createPromise('speed', 'throttle action failed.');
 }
 
 const changeDirection = (address, forward) => {
-    validateCommand() && $jmri.setJMRI('throttle', address, { 
-			address, 
-		forward: !!forward
+		console.log('changeDirection', address, forward, !!forward);
+		throttleCommand = 'direction';
+    validateCommand() && $jmri.setJMRI('throttle', address.toString(), { 
+			forward: !!forward
 	 });
-	 return createPromise('direction', 'New direction action dispatched.');
+	 return createPromise('direction', 'direction action failed.');
 }
 
 const requestLoco = async address => {
-	validateCommand(promises.acquire.reject) && $jmri.setJMRI('throttle', address, { 
-        throttle: address,
-        address
-	});
-	return createPromise('acquire', 'New loco request action dispatched.');
+	throttleCommand = 'acquire';
+	const payload = { 
+		throttle: address.toString(),
+		address
+	};
+	validateCommand(promises.acquire.reject) && $jmri.setJMRI('throttle', address, payload);
+	return createPromise('acquire', 'loco request action failed.');
 }
 
 const releaseLoco = async address => {
 	validateCommand(promises.release.reject) && $jmri.setJMRI('throttle', address, { release: null });
-	return createPromise('release', 'New loco release action dispatched.');
+	return createPromise('release', 'loco release action failed.');
 }
 
 const power = async state => {
@@ -192,7 +200,7 @@ const power = async state => {
     ? { state: state }
     : {}
   validateCommand(promises.power.reject) && $jmri.setJMRI('power', null, payload);
-  return createPromise('power', 'New power action dispatched.');
+  return createPromise('power', 'power action failed.');
 }
 
 const getState = () =>{
@@ -218,6 +226,7 @@ const dettachEvent = (type, src) => {
 }
 
 const fireEvent = (type, payload) => {
+	console.log('fireEvent', type, payload, promises[type], eventHandlers[type]);
   if (promises[type]) {
     promises[type].resolve(payload);
   }
@@ -229,6 +238,7 @@ const fireEvent = (type, payload) => {
 }
 
 const createPromise = (obj, rejectMsg) => {
+	console.log('createPromise', obj);
   if (rejectMsg && promises[obj]) {
     promises[obj].reject(rejectMsg);
   }

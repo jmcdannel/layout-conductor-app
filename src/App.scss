@@ -16,13 +16,14 @@ body,
 }
 
 .app-header-menu.MuiAppBar-root {
-  background: rgb(120,1,1);
-  background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
+  background: rgba(120,1,1, .6);
+  // background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
   border-bottom: 1px solid rgba(244, 67, 54, 1);
 }
 
 .app-footer.MuiBottomNavigation-root {
-  background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
+  background: rgba(120,1,1, .6);
+  // background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
   border-top: 1px solid rgba(244, 67, 54, 1);
 }
 

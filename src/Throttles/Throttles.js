@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Throttle from './Throttle';
 import MiniThrottle from './MiniThrottle';
@@ -17,9 +17,6 @@ export const Throttles = props => {
   const { locos } = state;
   const cruiseLocos = locos.filter(loco => loco.cruiseControl);
 
-  const findLocoForThrottle = (locos, throttleIdx) => locos
-      .sort((objA, objB) => Number(objA.lastAcquired) - Number(objB.lastAcquired))
-      .find(loco => loco.isAcquired && !loco.cruiseControl && loco.throttleIdx === throttleIdx);
 
   const handleCruiseClick = async loco => {
     console.log('handleCruiseClick', loco, loco.throttleIdx);
@@ -37,14 +34,20 @@ export const Throttles = props => {
     await dispatch({ type: 'UPDATE_LOCO', payload: { address: loco.address, cruiseControl: false, throttleIdx: newThrottleIdx } });
   }
 
-  useEffect(() => {
-    const nextThrottles = throttles.map((throttle, throttleIdx) => ({
+  const computedThrottles = useCallback(() => {
+    const findLocoForThrottle = (locos, throttleIdx) => locos
+      .sort((objA, objB) => Number(objA.lastAcquired) - Number(objB.lastAcquired))
+      .find(loco => loco.isAcquired && !loco.cruiseControl && loco.throttleIdx === throttleIdx);
+  
+    return throttles.map((throttle, throttleIdx) => ({
       ...throttle,
       loco: findLocoForThrottle(locos, throttleIdx)
     }));
-    setThrottles(nextThrottles);
+  }, [locos]);
 
-  }, [locos, throttles]);
+  useEffect(() => {
+    setThrottles(computedThrottles());
+  }, [computedThrottles]);
 
   const renderThrottle = ({ loco }, throttleIdx) => {
     return !!(loco && !loco.cruiseControl) ? (
@@ -57,7 +60,7 @@ export const Throttles = props => {
 
   const renderAvailableThrorttles = throttleIdx => locos.filter(loco => !loco.isAcquired).map(loco => 
     <Box key={loco.address} className="throttles--available">
-      <AvailableThrottle throttleIdx={throttleIdx} loco={loco} jmriApi={jmriApi} disabled={false}/>
+      <AvailableThrottle throttleIdx={throttleIdx} loco={loco} disabled={false}/>
     </Box>
   );
 

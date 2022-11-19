@@ -2,20 +2,15 @@
 
 ## App / Api / Sketch
 
-### Locos
+### Throttles
 
 - control via JMRI / CommandStation EX
-- Throttle, Functions (via drawer?), Stop, Cruise
-- Drive up to 3, Cruise up to 12
+- Functions (via drawer?)
+- loading / acquiring
 
 ### Turnouts / Routes
 
-- Servo via PCA96785
-- Kato via Motor Controller
-- Routes via SVG map
-- Set / reset / Sweep / Mainline
-- Map Options / Show/Hide Layers
-- 
+- loading state
 
 ### Effects
 
@@ -28,8 +23,7 @@
 
 ### Conductor
 
-- Locos, Turnouts, Routes, Effets
-- Drive up to 2, Cruise up to 3
+- Route / Turnout Map SVG
 - Mobile View
 
 ### Api
@@ -54,21 +48,27 @@ JMRI, CommandStation EX
 #### October
 [x] trains running on each section
 [x] turnouts running on each section
-[ ] connect sections
 [x] town turnouts
-[ ] routes
-[ ] trackwork
-[ ] helix install
+[x] routes
 [x] town terrain
-[ ] full surface coverage
 
 #### November
-[ ] City
-[ ] Station
-[ ] 1 Bridge
-[ ] Yard entrance / exit
+[ ] connect sections
+[ ] trackwork
+[ ] helix install
 
 #### December
+[ ] Yard entrance / exit
+[ ] full surface coverage
+
+#### January
+[ ] 1 Bridge
+
+#### February
+[ ] City
+[ ] Station
+
+#### March
 [ ] Town Track & Roads
 [ ] Tunnels
 [ ] 2 Bridges
@@ -86,7 +86,7 @@ JMRI, CommandStation EX
 - parsed JSON (or more compact format)
 
 ## Layout Conductor Wishlist
-[ ] Loco CRUD
-[ ] Turnout CRUD
-[ ] Effect CRUD (pin, signal, serial digit, serial json, sound, sensor)
-[ ] Route Config / CRUD
+[ ] Loco CRUD / Admin Tool
+[ ] Turnout CRUD / Admin Tool
+[ ] Effect CRUD / Admin Tool (pin, signal, serial digit, serial json, sound, sensor)
+[ ] Route Config / CRUD / Admin Tool

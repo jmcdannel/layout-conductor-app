@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
@@ -61,39 +61,12 @@ export const Throttle = props => {
   const [ precisonDialog, setPrecisonDialog ] = useState(false);
   const debouncedSpeed = useDebounce(uiSpeed, 100);
 
-    
-  const handleSpeed = useCallback(async ({ name, speed }) => {
-    try {
-        console.log('handleSpeed', { address: name, speed });
-        await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, speed } });
-    } catch(err) {
-        console.error(err);
-    }
-  }, [dispatch]);
-
-  const handleDirection = useCallback(async ({ name, forward }) => {
-      try {
-          console.log('handleDirection', { address: name, forward });
-          await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, forward } });
-          // if (speed !== 0) {
-          //     await jmriApi.throttle(address, Math.abs(speed));
-          // } 
-      } catch(err) {
-          console.error(err);
-      }
-  }, [dispatch]);
-
-  useEffect(() => {
-    jmriApi.on('direction', 'JmriThrottleController', handleDirection);
-    jmriApi.on('speed', 'JmriThrottleController', handleSpeed);
-  }, [jmriApi, handleDirection, handleSpeed]);
-
-  useEffect(() => {
-    const newSpeed = calcSpeed(speed);
-    if (newSpeed !== uiSpeed) {
-      setUiSpeed(newSpeed);
-    }
-  }, [speed, calcSpeed, uiSpeed]);
+  // useEffect(() => {
+  //   const newSpeed = calcSpeed(speed);
+  //   if (newSpeed !== uiSpeed) {
+  //     setUiSpeed(newSpeed);
+  //   }
+  // }, [speed, calcSpeed, uiSpeed]);
 
   const handleSliderSpeed = value => {
     setUiSpeed(value);
@@ -127,12 +100,13 @@ export const Throttle = props => {
 
   const handleParkClick = async () => {
     try {
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
       await jmriApi.throttle(address, STOP);
       await jmriApi.releaseLoco(address);
-      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
     } catch (err) {
       console.error(err);
     }
+    
   }
 
   const handleStickyThrottleClick = async () => {
@@ -198,8 +172,7 @@ export const Throttle = props => {
                     <JmriThrottleController 
                       speed={debouncedSpeed} 
                       address={address} 
-                      jmriApi={jmriApi} 
-                      forward={forward} 
+                      forward={(debouncedSpeed >= 0)} 
                     />
                   )}
                   <ThrottleSlider 

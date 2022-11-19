@@ -61,7 +61,11 @@ export const Conductor = props => {
           <Grid item>
             <Paper elevation={3} style={{ padding: '0.5rem' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+                <Tabs 
+                  textColor="secondary"
+                  indicatorColor="secondary"
+                  value={tab} 
+                  onChange={handleTabChange}>
                   <Tab label="Turnouts" />
                   <Tab label="Routes" />
                   <Tab label="Effects" />

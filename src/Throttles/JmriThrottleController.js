@@ -1,42 +1,85 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../Store/Store';
+import { usePrevious } from '../Shared/Hooks/usePrevious';
+import jmriApi from '../Shared/jmri/jmriApi';
 
 export const JmriThrottleController = props => {
 
-    const { jmriApi, speed, forward, address } = props;
+    const { speed, forward, address } = props;
+    const [ , dispatch ] = useContext(Context);
+    const [ speedChange, setSpeedChange ] = useState(null);
+    const [ changeDirection, setChangeDirection ] = useState(false);
+    const prevSpeed = usePrevious(speed);
+    const prevForward = usePrevious(forward);
 
     useEffect(() => {
-        const stop = async () => await jmriApi.throttle(address, 0, !forward);
-        const changeDireaction = async () => await jmriApi.changeDirection(address, (speed > 0));
-        const setToReverse = async () => {
+        const handleSpeed = async ({ name, speed }) => {
             try {
-                await stop();
-            } catch (err) {
-                console.error(err);
-                throw err;
-            } finally {  await changeDireaction(); }
-        };
-        const setToForward = async () => {
-            try {
-                await stop();
-            } catch (err) {
-                console.error(err);
-                throw err;
-            } finally {  await changeDireaction(); }
-        };
-        const updateThrottle = async () => {
-            try {
-                if (speed < 0 && forward !== false) {
-                    setToReverse();
-                } else if (speed > 0 && forward !== true) {
-                    setToForward();
-                }
-                await jmriApi.throttle(address, Math.abs(speed), forward);
-            } catch (err) {
+                console.log('handleSpeed', { address: name, speed });
+                await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, speed } });
+            } catch(err) {
                 console.error(err);
             }
         };
-        updateThrottle();
-    }, [jmriApi, speed, address, forward]);
+
+        const handleDirection = async ({ name, forward }) => {
+            try {
+                console.log('handleDirection', { address: name, forward });
+                await dispatch({ type: 'UPDATE_LOCO', payload: { address: name, forward } });
+            } catch(err) {
+                console.error(err);
+            }
+        };
+
+        console.log('jmri handlers');
+        jmriApi.on('direction', 'JmriThrottleController', handleDirection);
+        jmriApi.on('speed', 'JmriThrottleController', handleSpeed);
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (prevForward !== forward) {
+            setChangeDirection(true);
+        }
+    }, [forward, prevForward]);
+
+    useEffect(() => {
+        const updateDirection = async () => {
+            try {
+                console.log('changeDirection');
+                await jmriApi.changeDirection(address, forward);
+                console.log('/changeDirection');
+            } catch (err) {
+                console.error(err);
+            } 
+        }
+        if (changeDirection) {
+            updateDirection();
+            setChangeDirection(false);
+            setSpeedChange(true);
+        }
+    }, [changeDirection, address, forward]);
+
+    useEffect(() => {
+        if (prevSpeed !== speed) {
+            setSpeedChange(true);
+        }
+    }, [speed, prevSpeed]);
+
+    useEffect(() => {
+        const updateThrottle = async () => {
+            try {
+                console.log('updateThrottle');
+                await jmriApi.throttle(address, Math.abs(speed));
+                console.log('/updateThrottle');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        if (speedChange && !changeDirection) {
+            updateThrottle();
+            setSpeedChange(false);
+        }
+    }, [speedChange, address, speed, changeDirection]);
 
     return (<></>)
 }

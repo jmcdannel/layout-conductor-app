@@ -16,17 +16,18 @@ export const Power = props => {
   const [ powerStatus, setPowerStatus ] = useState(powerStates.unknown);
   const [ initialized, setInitialized ] = useState(false);
 
+
   useEffect(() => {
+    const handlePowerStateChange = state => {
+      setPowerStatus(state);
+    }
+
     if (jmriReady && !initialized) {
       jmriApi.on('power', 'Power', handlePowerStateChange);
       jmriApi.power();
       setInitialized(true);
     }
-  }, [ initialized, jmriReady, jmriApi ]);
-
-  const handlePowerStateChange = state => {
-    setPowerStatus(state);
-  }
+  }, [ initialized, jmriReady, jmriApi, setPowerStatus ]);
 
   const handlePowerClick = () => {
     if (powerStatus === powerStates.unknown || powerStatus === powerStates.off) {

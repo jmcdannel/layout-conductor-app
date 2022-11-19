@@ -55,9 +55,9 @@ export const MiniThrottle = props => {
 
   const handleParkClick = async () => {
     try {
+      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
       await jmriApi.throttle(address, STOP);
       await jmriApi.releaseLoco(address);
-      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: false, cruiseControl: false } });
     } catch (err) {
       console.error(err);
     }
