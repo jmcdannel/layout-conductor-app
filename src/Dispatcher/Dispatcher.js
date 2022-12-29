@@ -47,13 +47,13 @@ export const Dispatcher = props => {
   return turnouts ? (
     <Grid container sx={{ alignContent: 'flex-start' }}>
       {isVisible('menu') && (
-        <Grid item sm={12} >
+        <Grid item sm={12}>
           <DispatcherMenu setTurnouts={setTurnouts}  />
         </Grid>
       )}
 
       {isVisible('map') && (
-        <Grid item sm={12} >
+        <Grid item sm={12} className="dispatcher__routemap" >
           <RouteMap setTurnouts={setTurnouts} handleTurnoutChange={handleTurnoutChange} />
         </Grid>
       )}

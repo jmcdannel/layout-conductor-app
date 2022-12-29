@@ -1,7 +1,19 @@
 $greenline: rgb(0, 171, 0);
 
+.dispatcher {
+  &__routemap {
+    svg {
+      display: block;
+      width: 100vw;
+    }
+  }
+}
 .turnouts {
   align-content: flex-start;
+}
+
+.turnout {
+  max-width: 10rem;
 }
 
 g.turnout {
@@ -16,11 +28,6 @@ g.turnout {
 
 g.turnout:hover {
   opacity: .5;
-}
-
-svg {
-  display: block;
-  width: 100vw;
 }
 
 $turnouts: 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 201, 202, 203, 204, 205, 300, 301, 302, 303, 304, 305, 306, 307, 308;

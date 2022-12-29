@@ -52,37 +52,6 @@ $off: rgba(0,0,0,.4);
 
   }
 
-  &.turnouts--compact {
-
-    .turnout {
-
-      flex-direction: column;
-      align-items: center;
-
-
-      .turnout__state {
-        order: 1;
-        display: flex;
-        background-color: #222;
-        padding: .5rem 2rem;
-      }
-
-      .turnout__id {
-        order: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-
-      }
-
-      .turnout__actions {
-        order: 2;
-        align-self: flex-end;
-      }
-    }
-  }
-
   &.turnouts--tiny {
 
     .turnout {
@@ -134,6 +103,7 @@ $off: rgba(0,0,0,.4);
     }
   }
 
+  &.turnouts--compact,
   &.turnouts--comfy {
     .turnout {
       flex-direction: column;
@@ -142,7 +112,7 @@ $off: rgba(0,0,0,.4);
       align-items: flex-start;
 
       &__container {
-        flex: 1 0 33%;
+        flex: 0 0 12rem;
       }
 
       .turnout__state {

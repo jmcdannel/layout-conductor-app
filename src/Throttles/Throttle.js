@@ -28,7 +28,7 @@ import CompressIcon from '@mui/icons-material/Compress';
 import ThrottleSlider from './ThrottleSlider';
 import ThrottleSpeed from './ThrottleSpeed';
 import JmriThrottleController from './JmriThrottleController';
-// import Functions from './Functions';
+import Functions from './Functions';
 import { Context } from '../Store/Store';
 import useDebounce from '../Shared/Hooks/useDebounce';
 import api from '../Api';
@@ -139,6 +139,10 @@ export const Throttle = props => {
     }
   };
 
+  const handleFunctionClick = async functionIndex => {
+
+  }
+
   const roadClassName = () => {
     return loco.road.toLowerCase().replace(/ /g, '-');
   }
@@ -184,7 +188,6 @@ export const Throttle = props => {
                   />
               </Grid>
               <Grid item xs={7} display="flex">
-                {/* <Functions /> */}
                 <div className="throttle__controls">
                   <Paper elevation={3} className="" display="flex" direction="column">
                     {/* <pre>speed={loco.speed}</pre>
@@ -220,6 +223,7 @@ export const Throttle = props => {
                     </ButtonGroup>
 
                   </Paper>
+                  <Functions onFunctionClick={handleFunctionClick} />
                   <div>
                     <IconButton disabled={cruiseDisabled} size="large" onClick={handleCruiceControlClick} ><SpeedIcon /></IconButton>
                     <IconButton size="large" onClick={handleParkClick} ><LocalParkingIcon /></IconButton>

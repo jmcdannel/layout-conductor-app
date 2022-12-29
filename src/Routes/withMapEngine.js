@@ -83,7 +83,7 @@ export const withMapEngine = WrappedComponent => props => {
  
   const getClassNames = () => {
     const turnoutClassNames = turnouts.map(t => `turnout-${t.turnoutId}-${t.state ? 'straight' : 'divergent'}`);
-    const routeClassNames = computedRoutes.map(rte => {
+    const routeClassNames = computedRoutes?.map(rte => {
       if (rte.isOrigin) {
         return `route-${rte.svgId}-origin`;
       } else if (rte.isDestination) {

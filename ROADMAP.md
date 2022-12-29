@@ -6,11 +6,11 @@
 
 - control via JMRI / CommandStation EX
 - Functions (via drawer?)
-- loading / acquiring
+- / loading / acquiring
 
 ### Turnouts / Routes
 
-- loading state
+- / loading state
 
 ### Effects
 
@@ -23,7 +23,7 @@
 
 ### Conductor
 
-- Route / Turnout Map SVG
+- / Route / Turnout Map SVG
 - Mobile View
 
 ### Api

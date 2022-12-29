@@ -36,27 +36,22 @@ const getInverse = degrees => {
 }
 
 export const Settings = props => {
-  const { turnout: { turnoutId }, turnout, open, config, onClose } = props;
+  const { turnout: { turnoutId }, turnout, open, onClose } = props;
 
   const [ , dispatch ] = useContext(Context);
 
   const [name, setName] = useState(turnout.name);
-  const [line, setLine] = useState(turnout.line);
-  const [straight, setStraight] = useState(turnout.straight);
-  const [divergent, setDivergent] = useState(turnout.divergent);
+  const [straight, setStraight] = useState(turnout?.config?.straight);
+  const [divergent, setDivergent] = useState(turnout?.config?.divergent);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLocked, setIsLocked] = useState(true);
-  const [isLinked, setIsLinked] = useState(turnout.straight === getInverse(turnout.divergent));
+  // const [isLinked, setIsLinked] = useState(turnout.straight === getInverse(turnout.divergent));
   const [hasError, setHasError] = useState(false);
+  const [isPristine, setIsPristine] = useState(true);
 
   const handleClose = () => {
     console.log(props);
     onClose();
   };
-
-  const handleLock = () => setIsLocked(true);
-
-  const handleUnlock = () => setIsLocked(false);
 
   // const handleLink = () => {
   //   setIsLinked(true);
@@ -86,14 +81,16 @@ export const Settings = props => {
     try {
       setIsLoading(true);
       setHasError(false);
-      const turnout = await api.turnouts.put({
+      const resp = await api.turnouts.put({
         turnoutId,
         name,
-        line,
-        straight,
-        divergent
+        config: {
+          type: turnout?.config?.type,
+          straight,
+          divergent
+        }
       });
-      await dispatch({ type: 'UPDATE_TURNOUT', payload: turnout });
+      await dispatch({ type: 'UPDATE_TURNOUT', payload: resp });
       onClose();
     } catch (err) {
       console.error(err);
@@ -104,17 +101,17 @@ export const Settings = props => {
   }
 
   const handleResetServo = () => {
-    setStraight(turnout.straight);
-    setDivergent(turnout.divergent);
+    setStraight(turnout?.config?.straight);
+    setDivergent(turnout?.config?.divergent);
   }
 
   const handleStraightChange = e => {
     const val = parseInt(e.target.value);
     if (isValidDegrees(val)) {
       setStraight(val);
-      if (isLinked) {
-        setDivergent(getInverse(val));
-      }
+      // if (isLinked) {
+      //   setDivergent(getInverse(val));
+      // }
     }
   }
 
@@ -129,9 +126,9 @@ export const Settings = props => {
     const val = parseInt(e.target.value);
     if (isValidDegrees(val)) {
       setDivergent(val);
-      if (isLinked) {
-        setStraight(getInverse(val));
-      }
+      // if (isLinked) {
+      //   setStraight(getInverse(val));
+      // }
     }
   }
   const sendDegrees = async degrees => {
@@ -167,23 +164,6 @@ export const Settings = props => {
                 }}
               />
             </Grid>
-            <Grid item xs={3}>
-              <TextField
-                margin="dense"
-                id="line"
-                label="Line"
-                size="small"
-                value={line}
-                onChange={e => setLine(e.target.value)}
-                // InputProps={{
-                //   startAdornment: (
-                //     <InputAdornment position="start">
-                //       <Info />
-                //     </InputAdornment>
-                //   ),
-                // }}
-              />
-            </Grid>
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -204,76 +184,68 @@ export const Settings = props => {
           </Grid>
         </Box>
       </DialogContent>
-      <Divider />
-      <DialogTitle id="form-servo-title">
-        {!isLocked && (
-          <IconButton aria-label="lock" onClick={handleLock}>
-            <LockOpen />
-          </IconButton>
-        )}
-        {isLocked && (
-          <IconButton aria-label="lock" onClick={handleUnlock}>
-            <Lock />
-          </IconButton>
-        )}
-        Configure Servo
-      </DialogTitle>
-      <DialogContent>
-        <Grid container spacing={1}>
-          <Grid item xs={9}>
-            <TextField
-              margin="dense"
-              id="straight"
-              label="Straight"
-              width="100px"
-              disabled={isLocked || isLoading}
-              value={straight}
-              onChange={handleStraightChange}
-            />
-            {/* {isLinked && (
-              <IconButton aria-label="unlink" onClick={handleUnlink} disabled={isLocked || isLoading}>
-                <LinkIcon />
-              </IconButton>
-            )}
-            {!isLinked && (
-              <IconButton aria-label="link" onClick={handleLink} disabled={isLocked || isLoading}>
-                <LinkOffIcon />
-              </IconButton>
-            )} */}
-            <TextField
-              margin="dense"
-              id="divergent"
-              label="Divergent"
-              width="100px"
-              disabled={isLocked || isLoading}
-              value={divergent}
-              onChange={handleDivergentChange}
-            />
-            <Box my={1}>
-              <ButtonGroup variant="outlined" color="primary">
-                <Button onClick={handleResetServo} disabled={isLocked || isLoading} startIcon={<RestoreIcon />}>
-                  Reset
-                </Button>
-                <Button onClick={() => handleServo(straight)} disabled={isLoading}>
-                  Straight
-                </Button>
-                <Button onClick={() => handleServo(divergent)} disabled={isLoading}>
-                  Divergent
-                </Button>
-                <Button onClick={() => handleServo((straight + divergent) / 2)} disabled={isLoading}>
-                  Center&deg;
-                </Button>
-              </ButtonGroup>
-              
-            </Box>
+      {turnout?.config?.type === 'servo' && <>
+        <Divider />
+        <DialogTitle id="form-servo-title">
+          Configure Servo
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={1}>
+            <Grid item xs={9}>
+              <TextField
+                margin="dense"
+                id="straight"
+                label="Straight"
+                width="100px"
+                disabled={isLoading}
+                value={straight}
+                onChange={handleStraightChange}
+              />
+              {/* {isLinked && (
+                <IconButton aria-label="unlink" onClick={handleUnlink} disabled={isLoading}>
+                  <LinkIcon />
+                </IconButton>
+              )}
+              {!isLinked && (
+                <IconButton aria-label="link" onClick={handleLink} disabled={isLoading}>
+                  <LinkOffIcon />
+                </IconButton>
+              )} */}
+              <TextField
+                margin="dense"
+                id="divergent"
+                label="Divergent"
+                width="100px"
+                disabled={isLoading}
+                value={divergent}
+                onChange={handleDivergentChange}
+              />
+              <Box my={1}>
+                <ButtonGroup variant="outlined" color="primary">
+                  <Button onClick={handleResetServo} disabled={isLoading} startIcon={<RestoreIcon />}>
+                    Reset
+                  </Button>
+                  <Button onClick={() => handleServo(straight)} disabled={isLoading}>
+                    Straight
+                  </Button>
+                  <Button onClick={() => handleServo(divergent)} disabled={isLoading}>
+                    Divergent
+                  </Button>
+                  <Button onClick={() => handleServo((straight + divergent) / 2)} disabled={isLoading}>
+                    Center&deg;
+                  </Button>
+                </ButtonGroup>
+                
+              </Box>
+              </Grid>
+              {/* <Grid item xs={3}>
+                {isLoading && (<CircularProgress color="primary" className="spinner" />)}
+                {!isLoading && !isPristine && (<ErrorIcon color="action" style={{ color: green[500], fontSize: 80 }} />)}
+                {hasError && !isLoading && (<ErrorIcon color="error" style={{ fontSize: 80 }} />)}
+              </Grid> */}
             </Grid>
-            {/* <Grid item xs={3}>
-              {isLoading && (<CircularProgress color="primary" className="spinner" />)}
-              {!isLoading && !isPristine && (<ErrorIcon color="action" style={{ color: green[500], fontSize: 80 }} />)}
-              {hasError && !isLoading && (<ErrorIcon color="error" style={{ fontSize: 80 }} />)}
-            </Grid> */}
-          </Grid>
-        </DialogContent>
+          </DialogContent>
+        </>}
         <DialogActions>
           <Button onClick={handleClose}>
             Cancel

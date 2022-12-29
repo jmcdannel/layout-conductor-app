@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Colors from '@mui/material/colors';
 import { ReactComponent as TurnoutStriaghtImage } from '../Shared/Images/turnout-straight.svg';
 import { ReactComponent as TurnoutDivergentImage } from '../Shared/Images/turnout-divergent.svg';
+import Settings from './Settings';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -82,7 +83,7 @@ export const Turnout = props => {
 
   const handleSettings = () => setShowSettings(true);
 
-  // const hideSettings = () => setShowSettings(false);
+  const hideSettings = () => setShowSettings(false);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -189,12 +190,13 @@ export const Turnout = props => {
           </IconButton>
         </span>
       </CardActions>
-      {showSettings && <></>}
-      {/* <Settings 
-        open={showSettings} 
-        turnout={turnout} 
-        onClose={hideSettings}
-      /> */}
+      {showSettings && 
+        <Settings 
+          open={showSettings} 
+          turnout={turnout} 
+          onClose={hideSettings}
+        />
+      }
       <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose} message={error} />
     </Card>
 	)
