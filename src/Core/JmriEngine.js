@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import { getAppConfig } from '../config/config';
 import jmriApi from '../Shared/jmri/jmriApi';
+import log from 'loglevel';
 
 function JmriEngine(props) {
 
@@ -13,15 +13,14 @@ function JmriEngine(props) {
   useEffect(() => {
     const initJmri = async () => {
       try {
-        setInit(true);
         jmriApi.on('ready', 'TrackMaster', isReady => {
           onReady(isReady);
         });
         await jmriApi.setup(appConfig.jmri);
-        console.log('JMRI Initialized');
+        setInit(true);
       } catch (err) {
         setInit(false);
-        console.error('api initialization error', err);
+        log.error('JMRI initialization error', err);
       }
     };
     !init && initJmri();
@@ -31,7 +30,7 @@ function JmriEngine(props) {
 }
 
 JmriEngine.defaultProps = {
-  onReady: () => { console.log('JMRI Ready'); }
+  onReady: () => { log.trace('JMRI Ready'); }
 }
 
 export default JmriEngine;

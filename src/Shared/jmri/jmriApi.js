@@ -1,9 +1,10 @@
+import log from '../utils/logger';
+
 let isSetup = false;
 let isReady = false;
 var $jmri = null;
 var $debug = false;
 var $ = window.jQuery;
-var log = new window.Logger();
 var throttleCommand = '';
 // var sensros = [];
 var promises = {
@@ -118,12 +119,10 @@ const setup = (apiHost) => {
 			console.log('throttle API already setup');
 			return isSetup;
 		}
-    // const apiHost = 'ws://tamarackpi:12080/json/';
-    // const apiHost = 'ws://localhost:12080/json/';
     $jmri = $.JMRI(apiHost, {
 		//*** Callback Functions available in '$jmri' object
-		toSend: function(data) {$debug && log.log(`${new Date()} - ${document.title}\nJSONtoSend: ${data}`);},	//Nothing to do
-		fullData: function(data) {$debug && log.log(`${new Date()} - ${document.title}\nJSONreceived: ${data}`);},	//Nothing to do
+		toSend: function(data) {$debug && console.log(`${new Date()} - ${document.title}\nJSONtoSend: ${data}`);},	//Nothing to do
+		fullData: function(data) {$debug && console.log(`${new Date()} - ${document.title}\nJSONreceived: ${data}`);},	//Nothing to do
                 error: function (code, message) {
                     if (code === 0)
                         jmriLostComm(message);

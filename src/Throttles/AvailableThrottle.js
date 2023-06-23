@@ -61,9 +61,9 @@ export const AvailableThrottle = props => {
       }}
       elevation={3} 
       className="available-throttle">
-        <Avatar sx={{ m: .5, bgcolor: 'rgb(50, 125, 238)' }}>{address}</Avatar>
+        <Avatar variant="square">{address}</Avatar>
         <Button
-          variant="outlined" 
+          variant="contained" 
           size="medium"
           color="secondary"
           disabled={disabled}

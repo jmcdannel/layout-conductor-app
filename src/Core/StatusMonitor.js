@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import CallSplit from '@mui/icons-material/CallSplit';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -12,6 +12,9 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { getAppConfig, jmriHosts, apiHosts, layoutIds, updateConfig } from '../config/config';
 
+const JMRI_TIMEOUT_MS = 3000;
+const API_TIMEOUT_MS = 5000;
+
 export const StatusMonitor = ({ jmriReady,  apiReady }) => {
 
   const appConfig = getAppConfig();
@@ -23,6 +26,23 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
   const [jmriHost, setJMRIHost] = useState(appConfig.jmri);
   const [apiHost, setAPIHost] = useState(appConfig.api);
   const [layoutId, setLayoutId] = useState(appConfig.layoutId);
+
+  const [jmriTimeout, setJmriTimeout] = useState(false);
+  const [apiTimeout, setApiTimeout] = useState(false);
+
+  useEffect(() => {
+    const jmriTimer = setTimeout(() => {
+      setJmriTimeout(true);
+    }, JMRI_TIMEOUT_MS);
+    const apiTimer = setTimeout(() => {
+      setApiTimeout(true);
+    }, API_TIMEOUT_MS);
+
+    return () => {
+      clearTimeout(jmriTimer);
+      clearTimeout(apiTimer);
+    }
+  }, []);
 
   const handleJMRIUpdate = () => {
     appConfig.jmri = jmriHost;
@@ -48,13 +68,13 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
   const jmriClassName = `status-monitor--${
     hasJmri && jmriReady
       ? 'connected'
-      : 'unknown'
+      : jmriTimeout ? 'timeout' : 'unknown'
     }`;
 
   const apiClassName = `status-monitor--${
     hasApi && apiReady
       ? 'connected'
-      : 'unknown'
+      : jmriTimeout ? 'timeout' : 'unknown'
     }`;
 
   // TODO: handle jmlri disconnected
@@ -64,8 +84,8 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
     <div className="status-monitor">
       <Tooltip title="Layout ID">
         <Chip
+          className="status-monitor__layout"
           variant="outlined"
-          size="small"
           icon={<MapIcon className={apiClassName} />}
           label={`Layout ID: ${appConfig.layoutId}`}
           color="default"
@@ -74,8 +94,8 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
       </Tooltip>
       <Tooltip title="JMRI Connection Status">
         <Chip
+          className="status-monitor__jmri"
           variant="outlined"
-          size="small"
           icon={<UnfoldMoreIcon className={jmriClassName} />}
           label="JMRI"
           color="default"
@@ -84,8 +104,8 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
       </Tooltip>
       <Tooltip title="REST API Status">
         <Chip
+          className="status-monitor__api"
           variant="outlined"
-          size="small"
           icon={<CallSplit className={apiClassName} />}
           label="API"
           color="default"

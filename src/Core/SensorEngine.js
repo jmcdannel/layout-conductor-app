@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useCallback } from 'react';
 import { Context } from '../Store/Store';
 import api from '../Api';
+import log from '../Shared/utils/logger';
 
 function SensorEngine(props) {
 
@@ -24,7 +25,7 @@ function SensorEngine(props) {
   }, [sensors]);
 
   useEffect(() => {
-    console.log('watchSensors', sensors);
+    log.info('watchSensors', sensors);
     if (sensors && jmriApi) {
       jmriApi.watchSensors([...sensors]);
       jmriApi.on('sensor', 'TrackMaster', handleSensor);

@@ -6,6 +6,12 @@ const Reducer = (state, action) => {
     case 'INIT_STATE':
       return {...state, ...action.payload };
 
+    case 'UPDATE_LOCOS':
+      return {
+        ...state,
+        locos: action.payload
+      };
+
     case 'UPDATE_LOCO':
       const locos = state.locos.map(loco => 
         loco.address === action.payload.address

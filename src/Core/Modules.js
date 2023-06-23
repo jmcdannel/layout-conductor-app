@@ -10,26 +10,28 @@ import { Context } from '../Store/Store';
 function Modules(props) {
 
   const [ state ] = useContext(Context);
+  const { locos, turnouts, effects, userPreferences } = state;
   const { modules } = state;
+  const loading = (<div>Loading</div>);
 
   const getRoutedModule = module => {
     switch(module) {
       case 'locos' :
         return (
           <Route path="/throttles" key={module} element={
-            <Throttles />
+            locos ? (<Throttles />) : loading
           } />
         );
       case 'turnouts' :
         return (
           <Route path="/dispatcher" key={module} element={
-            <Dispatcher view={state.userPreferences.turnoutView} />
+            turnouts && <Dispatcher view={userPreferences.turnoutView} />
           } />
         );
       case 'effects' :
         return (
           <Route path="/effects" key={module} element={
-            <Effects />
+            effects && <Effects />
           } />
         )
       default:
@@ -39,7 +41,7 @@ function Modules(props) {
 
   return modules ? (
     <Routes>
-      <Route path="/" exact element={<Conductor />} />
+      <Route path="/" exact element={locos ? <Conductor /> : loading} />
       <Route path="/pinout" exact element={<Pinout />} />
       {modules.map(getRoutedModule)}
     </Routes>) : <></>;

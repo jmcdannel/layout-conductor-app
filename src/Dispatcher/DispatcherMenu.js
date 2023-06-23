@@ -57,20 +57,18 @@ export const DispatcherMenu = props => {
     await dispatch({ type: 'UPDATE_USER_PREFERENCES', payload: {
       turnoutView: event.target.value
     }});
-  }
+  };
 
   const hanldeLayoutClick = async event => {
     await dispatch({ type: 'UPDATE_USER_PREFERENCES', payload: { 
       dispatcherLayout: { ...dispatcherLayout, ...{[event.target.value]: event.target.checked }} 
     } });
-  }
-
-  console.log('dispatcherLayout', dispatcherLayout);
+  };
 
   return (
     <AppBar position="relative" className="menu" color="secondary">
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <ButtonGroup color="secondary">
+      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <ButtonGroup color="secondary" variant="contained">
           <Button onClick={() => handleTurnoutsAction('straight')}>All Straight</Button>
           <Button onClick={() => handleTurnoutsAction('divergent')}>All Divergent</Button>
           <Button onClick={() => handleTurnoutsAction('toggle')}>Toggle All</Button>
@@ -113,6 +111,8 @@ export const DispatcherMenu = props => {
               id="view-throttles"
               value={view}
               label="View"
+              variant="filled"
+              color="secondary"
               size="small"
               onChange={handleViewClick}
             >

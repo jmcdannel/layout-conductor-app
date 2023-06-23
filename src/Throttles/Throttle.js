@@ -1,13 +1,14 @@
 import React, { useState, useContext, useCallback } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
 
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import InputLabel from '@mui/material/InputLabel';
@@ -159,19 +160,20 @@ export const Throttle = props => {
         <CardHeader
           title={loco.name}
           avatar={
-            <Chip
-                label={`${formattedAddress()}`}
-                icon={<TrainIcon />}
-                className={roadClassName()}
-                clickable
-                onClick={handleLocoClick}
-              />
+            <Avatar onClick={handleLocoClick} variant="square">{formattedAddress()}</Avatar>
+            // <Chip
+            //     label={`${formattedAddress()}`}
+            //     icon={<TrainIcon />}
+            //     className={roadClassName()}
+            //     clickable
+            //     onClick={handleLocoClick}
+            //   />
           }
         />
         <CardContent className="throttle__content grow flex">
           {(true || loco.isAcquired) && 
             <Grid container spacing={1} className="grow">
-              <Grid item xs={5} flexGrow={1} display="flex">
+              <Grid item xs={4} flexGrow={1} display="flex">
                   {isAcquired && (
                     <JmriThrottleController 
                       speed={debouncedSpeed} 
@@ -187,54 +189,78 @@ export const Throttle = props => {
                     onChange={handleSliderSpeed} 
                   />
               </Grid>
-              <Grid item xs={7} display="flex">
-                <div className="throttle__controls">
-                  <Paper elevation={3} className="" display="flex" direction="column">
-                    {/* <pre>speed={loco.speed}</pre>
-                    <pre>uiSpeed={uiSpeed}</pre> */}
+              <Grid item xs={8} display="flex" className="throttle__controls">
+                <Grid container spacing={1} className="grow" alignContent="space-between">
+                  <Grid item xs={12}>
                     <img alt={`${loco.name}`} src={`${process.env.PUBLIC_URL}/images/tam/locos/${loco.address}.jpg`} className="throttle__locoimg" />
-                    <ThrottleSpeed speed={uiSpeed} />
-                    <ButtonGroup
-                        orientation="vertical"
-                        className="throttle__controls__group"
-                        aria-label="vertical outlined primary button group"
-                      >
-                      <IconButton 
-                        className="speed-up-btn"
-                        size="large" 
-                        disabled={uiSpeed === maxSpeed} 
-                        onClick={handleUpClick}>
-                          <AddIcon />
-                        </IconButton>
-                      <IconButton 
-                        className="speed-stop-btn"
-                        size="large" 
-                        color="primary" 
-                        onClick={handleStopClick} >
-                          <PanToolIcon />
-                        </IconButton>
-                      <IconButton 
-                        className="speed-down-btn"
-                        size="large" 
-                        disabled={uiSpeed === minSpeed} 
-                        onClick={handleDownClick}>
-                          <RemoveIcon />
-                      </IconButton>
-                    </ButtonGroup>
 
-                  </Paper>
-                  <Functions onFunctionClick={handleFunctionClick} />
-                  <div>
-                    <IconButton disabled={cruiseDisabled} size="large" onClick={handleCruiceControlClick} ><SpeedIcon /></IconButton>
-                    <IconButton size="large" onClick={handleParkClick} ><LocalParkingIcon /></IconButton>
-                    <IconButton size="large" onClick={handleThrottlePrecisionClick} ><ThermostatAutoIcon /></IconButton>
-                    <IconButton size="large" onClick={handleStickyThrottleClick} >
-                      {autoStop  ? <CompressIcon /> : <ExpandIcon/>}
-                    </IconButton>
-                  </div>
-                </div>
+                      {/* <pre>speed={loco.speed}</pre>
+                      <pre>uiSpeed={uiSpeed}</pre> */}
+                  </Grid>
+                  <Grid item xs={12}>
+
+                    <Grid container spacing={1} className="grow" alignContent="space-between" direction="row">
+                      <Grid item xs={5}>
+                        <Paper elevation={3} className="" display="flex" direction="column" square>
+                          <ThrottleSpeed speed={uiSpeed} />
+                          <ButtonGroup
+                              orientation="vertical"
+                              className="throttle__controls__group"
+                              aria-label="vertical outlined primary button group"
+                            >
+                            <IconButton 
+                              className="speed-up-btn"
+                              size="large" 
+                              disabled={uiSpeed === maxSpeed} 
+                              onClick={handleUpClick}>
+                                <AddIcon />
+                              </IconButton>
+                            <IconButton 
+                              className="speed-stop-btn"
+                              size="large" 
+                              color="primary" 
+                              onClick={handleStopClick} >
+                                <PanToolIcon />
+                              </IconButton>
+                            <IconButton 
+                              className="speed-down-btn"
+                              size="large" 
+                              disabled={uiSpeed === minSpeed} 
+                              onClick={handleDownClick}>
+                                <RemoveIcon />
+                            </IconButton>
+                          </ButtonGroup>
+                        </Paper>
+                      </Grid>
+                      <Grid item  xs={7}>
+                        <Paper elevation={3} className="" display="flex" direction="column" square>
+                          <ButtonGroup
+                              orientation="vertical" size="large"
+                              aria-label="vertical outlined primary button group"
+                            >
+                            <Button className="width100 textLeft" disabled size="large" label="Functions" variant="outlined" startIcon={<TrainIcon />}>Settings</Button>
+                            
+                            <Button className="width100 textLeft" size="large" label="Functions" variant="outlined" onClick={handleCruiceControlClick} startIcon={<TrainIcon />}>Functions</Button>
+                            
+                            <Button className="width100 textLeft" disabled={cruiseDisabled} size="large" label="Cruise Control" variant="outlined" onClick={handleCruiceControlClick} startIcon={<SpeedIcon />}>Cruise</Button>
+                              
+                              <Button className="width100 textLeft" size="large" onClick={handleParkClick} label="Park" variant="outlined" startIcon={<LocalParkingIcon />}>Park</Button>
+                              
+                              <Button className="width100 textLeft" size="large" onClick={handleThrottlePrecisionClick} label="Precision"  variant="outlined" startIcon={<ThermostatAutoIcon />} >Precision</Button>
+                              
+                              <Button className="width100 textLeft" size="large" onClick={handleStickyThrottleClick} label="Auto Stop" variant="outlined" startIcon={autoStop  ? <CompressIcon /> : <ExpandIcon/>} >Auto Stop</Button>
+                            </ButtonGroup>
+                          </Paper>
+                        {/* <Grid item>
+                          <Functions onFunctionClick={handleFunctionClick} />
+                        </Grid> */}
+                    </Grid>
+                  </Grid>
+
+                </Grid>
               </Grid>
             </Grid>
+          </Grid>
           }
         </CardContent>
         

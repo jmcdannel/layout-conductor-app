@@ -1,16 +1,14 @@
+@import "../theme";
 
 $on: rgb(118, 255, 3);
 $off: rgba(0,0,0,.4);
 
-.chip {
-  margin: 0rem 0.5rem 0.5rem 0;
-}
 
 .turnouts {
-  // display: flex;
-  // justify-content: center;
-  // align-content: flex-start;
-
+  align-content: flex-start;
+  .chip {
+    margin: 0rem 0.5rem 0.5rem 0;
+  }
   .turnout {
     display: flex;
     width: 100%;
@@ -31,8 +29,39 @@ $off: rgba(0,0,0,.4);
     }
 
     &__container {
-      padding: 0.25rem;
-      flex-basis: 33%;
+      padding: 0.5rem;
+      .MuiPaper-root {
+        background-color: rgba(23, 29 ,38, 1);
+        border-radius: 0;
+      }
+      .turnout__header {
+        background: $bg-pink-orange-1;
+        background: $bg-grad-pink-orange-1;        
+      }
+      &:nth-child(2n) .turnout__header {
+        background: $bg-blue-green-1;
+        background: $bg-grad-blue-green-1;
+      }
+      &:nth-child(3n) .turnout__header  {
+        background: $bg-red-orange-1;
+        background: $bg-grad-red-orange-1;
+      }
+      &:nth-child(4n) .turnout__header  {
+        background: $bg-purple-violet-1;
+        background: $bg-grad-purple-violet-1;
+      }
+      &:nth-child(5n) .turnout__header  {
+        background: $bg-yellow-orange-1;
+        background: $bg-grad-yellow-orange-1;
+      }
+      &:nth-child(6n) .turnout__header  {
+        background: $bg-green-blue-1;
+        background: $bg-grad-green-blue-1;
+      }
+      :nth-child(7n)  .turnout__heade {
+        background: $bg-pink-orange-1;
+        background: $bg-grad-pink-orange-1;        
+      }
     }
 
     &__desc {
@@ -42,26 +71,17 @@ $off: rgba(0,0,0,.4);
     &__link {
       padding: 0.5rem 1.5rem;
       background-color: rgba(0,0,0,.5);
-      border-radius: 0.5rem;
       margin-top: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
-
   }
 
   &.turnouts--tiny {
-
     .turnout {
-
       flex-direction: column;
       align-items: center;
-
-      &__container {
-        flex-basis: 33%;
-      }
 
       .turnout__header {
         justify-content: center;
@@ -73,7 +93,6 @@ $off: rgba(0,0,0,.4);
       .turnout__state {
         order: 1;
         display: flex;
-        // background-color: #222;
         padding: .5rem 1.5rem;
       }
 
@@ -86,10 +105,8 @@ $off: rgba(0,0,0,.4);
         &.MuiCardContent-root {
           padding: 0.25rem;
         }
-
       }
 
-      
       .svg-wrapper {
         > svg {
           width: 45px;
@@ -120,7 +137,6 @@ $off: rgba(0,0,0,.4);
         padding: .5rem 2rem;
         width: 90px;
         flex: 0 1 90px;
-        
       }
 
       .turnout__id {
@@ -128,7 +144,6 @@ $off: rgba(0,0,0,.4);
         justify-content: space-between;
         align-items: center;
         flex: 1;
-
       }
 
       .turnout__actions {
@@ -137,24 +152,18 @@ $off: rgba(0,0,0,.4);
         justify-content: space-between;
       }
     }
-  
   }
 
-
   &.turnouts--pill {
-
     .turnout {
-
       background-color: transparent;
       box-shadow: none;
       flex-direction: column;
       align-items: center;
-
       &__container {
         padding: 2px;
         flex-basis: auto;
       }
-
       .turnout__header {
         justify-content: center;
         padding: 8px 0;
@@ -163,14 +172,12 @@ $off: rgba(0,0,0,.4);
           cursor: pointer;
         }
       }
-
       .turnout__id,
       .turnout__actions,
       .turnout__state,
       .turnout__header__status {
         display: none;
       }
-
     }
   }
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import TrainIcon from '@mui/icons-material/Train';
-import navConfig from '../Shared/Config/navConfig';
+import navConfig from '../Shared/Config/Navigation';
 import { useLocation } from "react-router-dom";
 import { Context } from '../Store/Store';
 
@@ -11,8 +11,7 @@ export const Footer = () => {
 
   const [ state ] = useContext(Context);
   const { modules } = state;
-
-  let location = useLocation();
+  const location = useLocation();
 
   return (
     <BottomNavigation
@@ -21,8 +20,8 @@ export const Footer = () => {
     >
       <BottomNavigationAction 
         label="Conductor" 
-        value="conductor" 
-        to="/" 
+        value="/" 
+        to="" 
         icon={<TrainIcon />} 
         component={Link} 
       />

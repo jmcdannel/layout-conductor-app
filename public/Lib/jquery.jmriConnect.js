@@ -197,7 +197,6 @@
 				jmri.socket.send(type, lp);
 			};
 			jmri.setJMRI = function(type, name, args) {
-				console.log('setJMRI', type, name, args);
 				if (!heartbeat) {jmri.error(0, 'The JMRI WebSocket service is not ready.\nSolve the problem and refresh web page.'); return;}
 				// var lp;
 				// if (type == 'throttle') lp = (name) ? {"throttle":name} : {};
@@ -235,7 +234,6 @@
 						jmri.ready(e.data.json, e.data.JMRI, e.data.railroad);
 					},
 					throttle: function(e) {
-						console.log('throttle event', e, e.data);
 						var functions = new Array(29);
 						for (var i = 0; i < 29; i++) functions[i] = e.data['F' + i];
 						jmri.throttle(e.data.throttle, e.data.address, e.data.speed, e.data.forward, functions);

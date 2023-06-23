@@ -96,7 +96,9 @@ export const Turnout = props => {
 	return (
     <Card className={`turnout turnout--compact`}>
       <CardHeader className="turnout__header">
-        <Chip
+        <CallSplit />
+        <Typography variant="h6" >{turnout.name}</Typography>
+        {/* <Chip
             label={`${turnout.name}`}
             icon={<CallSplit />}
             variant="outlined"
@@ -104,19 +106,15 @@ export const Turnout = props => {
             size="small"
             clickable
             onClick={handleToggle}
-          />
+          /> */}
           <Box className="turnout__header__status">
             {isLoading || isPristine 
               ? <PortableWifiOffIcon style={{color: 'gray'}} /> 
-              :  <WifiTetheringIcon style={{color: 'green'}} />}
-            {/* {relay && (
-              <PowerIcon style={{ color: 'green'}}
-              />
-            )} */}
-        </Box>
+              :  <WifiTetheringIcon style={{color: 'green'}} />}            
+          </Box>
       </CardHeader>
       <CardContent className="turnout__id">
-
+        
 
         <CardActionArea className={`turnout__state ${isLoading ? 'loading' : ''}`} onClick={handleToggle}>
           <CardMedia

@@ -10,7 +10,11 @@ export const Effects = () => {
   const { effects } = state;
 
   return (
-    <Grid container className={`effects`} spacing={1}>  
+    <Grid container 
+      className={`effects`} 
+      spacing={1}
+      justifyContent="flex-start"
+      alignContent="flex-start">  
       {effects && effects.map(effect => (
         <Grid item key={`effect${effect.effectId}`} className="effects__grid-item" xs="auto">
             <Effect effect={effect} key={effect.effectId} />

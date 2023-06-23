@@ -1,4 +1,5 @@
 import * as Colors from '@mui/material/colors';
+import log from '../Shared/utils/logger';
 
 const storageKey = 'lcConfig';
 
@@ -9,7 +10,7 @@ export const getAppConfig = () => {
             ? config
             : require('./config.local.json');
     } catch (e) {
-        console.warn('Loading default config');
+        log.warn('Loading default config');
         return require('./config.default.json');
     }
 }
@@ -17,13 +18,15 @@ export const getAppConfig = () => {
 export const jmriHosts = [
     'http://tamarackpi:12080/json/',
     'http://traincontrol:12080/json/',
-    'http://localhost:12080/json/'
+    'http://localhost:12080/json/',
+    'http://tamarackjunctionmbp.local:12080/json/'
 ];
 
 export const apiHosts = [
     'http://tamarackpi:5000',
     'http://traincontrol:5000',
-    'http://localhost:5000'
+    'http://localhost:5000',
+    'http://tamarackjunctionmbp.local:5000'
 ];
 
 export const layoutIds = [

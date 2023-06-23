@@ -6,10 +6,12 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import HighlightIcon from '@mui/icons-material/Highlight';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import TrafficIcon from '@mui/icons-material/Traffic';
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import Signal from './Signal';
 import { Context } from '../Store/Store';
 import api from '../Api';
@@ -40,8 +42,8 @@ export const Effect = props => {
     }
     try {
       setIsLoading(true);
-      const newEffect = await api.effects.put(changedEffect);
-      await dispatch({ type: 'UPDATE_EFFECT', payload: newEffect });
+      const newEffect = await api.effects.put(changedEffect, 'effectId');
+      // await dispatch({ type: 'UPDATE_EFFECT', payload: newEffect });
     } catch (err) {
       console.error(err);
     } finally {
@@ -102,20 +104,21 @@ export const Effect = props => {
         return null;
       case 'sound':
         return (
-            <Button 
+            <IconButton 
               onClick={handleButtonClick} 
               color="secondary" 
-              size="small"
-              variant="outlined" 
-              startIcon={<MusicNoteIcon />}>
-                Play
-            </Button>
+              size="large"
+              variant="contained"
+              sx={{ fontSize: '2.5rem', padding: '.5rem' }}
+              ><PlayCircleFilledIcon fontSize="inherit" />
+            </IconButton>
           );
       default:
         return (
           <Switch
             checked={!!effect.state}
             onChange={handleSwitchChange}
+            color="secondary" 
             name="effectSwitch"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
@@ -129,11 +132,12 @@ export const Effect = props => {
         return (<Signal effect={effect} getMetaData={() => {}} onChange={updateEffect} view={view} />);
       default:
         return (
-        <Grid container direction="row">
+        <Grid container 
+          direction="row">
           {/* {!isSmallView && (<Grid item xs={9}>
             {getMetaData(effect)}
           </Grid>)} */}
-          <Grid item xs={12}>
+          <Grid item>
             {getAction()}
           </Grid>
         </Grid>);
@@ -141,10 +145,11 @@ export const Effect = props => {
   }
 
   return (
-    <Card className="effect">
+    <Card 
+      className="effect">
       <CardHeader
         avatar={
-          <Avatar>
+          <Avatar variant="square" sx={{ width: 56, height: 56 }}>
             {getAvatar()}
           </Avatar>}
         title={effect.name}

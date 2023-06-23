@@ -56,10 +56,10 @@ export const Conductor = props => {
       <Grid item xs={8} className="flex App-content-column">
         <Throttles />
       </Grid>
-      <Grid item xs={4} className=" App-content-column">
+      <Grid item xs={4} className=" App-content-column App-content__conductor">
         <Grid container direction="column">
-          <Grid item>
-            <Paper elevation={3} style={{ padding: '0.5rem' }}>
+          <Grid item mt={2}>
+            <Paper elevation={3} style={{ padding: '0.5rem' }} square>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs 
                   textColor="secondary"

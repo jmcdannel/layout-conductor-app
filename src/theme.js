@@ -7,14 +7,14 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: { 
-      main: '#ff0000' 
+      main: 'rgb(10, 249, 78)' 
     },
     secondary: {
-      main: 'rgb(50, 125, 238)'
+      main: 'rgb(31, 121, 255)'
     }
   },
   background: {
-    default: 'rgba(13, 17, 23, 1)'
+    default: 'rgb(12, 15, 21)'
   },
 });
 

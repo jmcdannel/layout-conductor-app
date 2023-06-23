@@ -1,35 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
 import api from '../Api';
 import { Context } from '../Store/Store';
+import log from '../Shared/utils/logger';
 
 function ApiEngine(props) {
 
   const { onReady } = props;
-  const [ , dispatch ] = useContext(Context);
+  const [ state, dispatch ] = useContext(Context);
   const [ init, setInit ] = useState(false);
+  const { layoutId } = state;
+
+  useEffect(() => {
+    layoutId && onReady();
+  }, [layoutId, onReady]);
 
   useEffect(() => {
     const initialize = async function() {
       try {
         setInit(true);
-        const apiInitState = await api.initialize();
-        await dispatch({ type: 'INIT_STATE', payload: apiInitState });
-        console.log('API Initialized');
-        onReady();
+        await api.initializeWS(dispatch);
       } catch (err) {
         setInit(false);
-        console.error('api initialization error', err);
+        log.error('api initialization error', err);
       }
     };
     
     !init && initialize();
-  }, [dispatch, onReady, init]);
+  }, [onReady, init, dispatch]);
+
 
   return (<></>);
 }
 
 ApiEngine.defaultProps = {
-  onReady: () => { console.log('API Ready'); }
+  onReady: () => { log.info('API Ready'); }
 }
 
 export default ApiEngine;

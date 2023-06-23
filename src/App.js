@@ -29,7 +29,7 @@ function App() {
         <CssBaseline />
         <BrowserRouter>
           <ApiEngine onReady={() => setApiReady(true)} />
-          <JmriEngine onReady={() => setJmriReady(true)} />
+          {apiReady && (<JmriEngine onReady={() => setJmriReady(true)} />)}
           {jmriReady && (<SensorEngine jmriApi={jmriApi} />)}
           <Box display="flex" flexDirection="column" height="100%">
             <Box>
@@ -39,7 +39,7 @@ function App() {
                 apiReady={apiReady}
               /> 
             </Box>
-            <Box flexGrow={1} display="flex" width="100%" height="100%" alignContent="center" className="App-content" mt={1}>
+            <Box flexGrow={1} display="flex" width="100%" height="100%" alignContent="center" className="App-content" mt={2}>
               {apiReady && ( <Modules /> )}
             </Box>
             <Box mt={1}>

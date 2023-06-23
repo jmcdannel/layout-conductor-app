@@ -1,30 +1,23 @@
+@import "./theme";
+
 html,
 body,
 #root {
 	height: 100%;
-  background-color: rgb(13, 17, 23);
+  background-color: $background;
 }
 
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-  color:rgb(50, 125, 238);
-}
-
 .app-header-menu.MuiAppBar-root {
-  background: rgba(120,1,1, .6);
-  // background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
-  border-bottom: 1px solid rgba(244, 67, 54, 1);
+  background: $bg-pink-orange-1;
+  background: $bg-grad-pink-orange-1;
 }
 
 .app-footer.MuiBottomNavigation-root {
-  background: rgba(120,1,1, .6);
-  // background: linear-gradient(0deg, rgba(13,17,23,1) 1%, rgba(0,0,0,1) 71%);
-  border-top: 1px solid rgba(244, 67, 54, 1);
+  background-color: $background-light-1;  
 }
 
 .title {
@@ -33,6 +26,11 @@ body,
 
 .App-content {
   overflow: auto;
+
+  .MuiPaper-root {
+    background-image: none;
+    background-color: $background-light-2;    
+  }
 }
 
 .App-content-column {
@@ -40,10 +38,10 @@ body,
   overflow: auto;
 }
 
+// Utility Classes
 .grow {
   flex: 1;
 }
-
 .flex {
   display: flex;
 }
@@ -53,10 +51,33 @@ body,
 .width100 {
   width: 100%;
 }
+.textLeft {
+  text-align: left;
+}
 
+// Status Monitor
 .status-monitor {
   .MuiChip-root {
-    margin: 0 0.5em;
+    margin: 0 1em;
+    background: $bg-blue-green-1;
+    background: $bg-grad-blue-green-1;
+    padding-right: .5rem;
+    border: 0;
+    padding-left: .5rem;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,.5));
+  }
+  &__layout.MuiChip-root {
+    background: $bg-blue-green-1;
+    background: $bg-grad-blue-green-1;
+  }
+  &__jmri.MuiChip-root {
+    background: $bg-purple-violet-1;
+    background: $bg-grad-purple-violet-1;
+  }
+  &__api.MuiChip-root {
+
+    background: $bg-yellow-orange-1;
+    background: $bg-grad-yellow-orange-1;
   }
   &--unknown.MuiChip-icon {
     animation: flickerAnimation 1s infinite;
@@ -65,6 +86,7 @@ body,
     background-color: rgb(14, 192, 14);
     border-radius: 50%;
   }
+  &--timeout.MuiChip-icon,
   &--disconnected.MuiChip-icon {
     background-color: rgb(211, 0, 0);
     border-radius: 50%;
@@ -98,7 +120,6 @@ body,
     svg.MuiSvgIcon-root {
      background-color: rgb(129, 129, 129);
     }
-
   }
 
   &-pending {

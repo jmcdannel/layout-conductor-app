@@ -29,8 +29,8 @@ export const Stop = props => {
   return (
     <Button
       onClick={handleStopClick} 
-      variant="outlined"
-      color="primary"
+      color="error"
+      variant="contained"
       disabled={!jmriReady}
       startIcon={<PanToolIcon />}
     >

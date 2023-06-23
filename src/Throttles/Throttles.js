@@ -15,7 +15,7 @@ export const Throttles = props => {
   const [ throttles, setThrottles ] = useState(defaultThrottles);
   const [ state, dispatch ] = useContext(Context);
   const { locos } = state;
-  const cruiseLocos = locos.filter(loco => loco.cruiseControl);
+  const cruiseLocos = locos?.filter(loco => loco.cruiseControl);
 
 
   const handleCruiseClick = async loco => {
@@ -58,7 +58,7 @@ export const Throttles = props => {
         ) : renderAvailableThrorttles(throttleIdx);
   }
 
-  const renderAvailableThrorttles = throttleIdx => locos.filter(loco => !loco.isAcquired).map(loco => 
+  const renderAvailableThrorttles = throttleIdx => locos?.filter(loco => !loco.isAcquired).map(loco => 
     <Box key={loco.address} className="throttles--available">
       <AvailableThrottle throttleIdx={throttleIdx} loco={loco} disabled={false}/>
     </Box>
