@@ -46,8 +46,8 @@ export const AvailableThrottle = props => {
   }
 
   useEffect(() => {
-    jmriApi.on('acquire', 'Throttles',  async (address) => {
-      await dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
+    jmriApi.on('acquire', 'Throttles',  (address) => {
+      dispatch({ type: 'UPDATE_LOCO', payload: { address, isAcquired: true, lastAcquired: new Date() } });
     });
   }, [dispatch]);
 
