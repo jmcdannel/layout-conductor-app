@@ -68,27 +68,7 @@ export const Dispatcher = props => {
         <Grid item sm={12} p={2}>
           <Grid container className={`turnouts turnouts--${view}`} spacing={2}>
             <Grid item sm={12} className="turnout__grid-item">
-              {turnouts.filter(filter).map(turnout => (
-                <div key={`turnout$${turnout.turnoutId}`} className="turnout__container">
-                    <Turnout turnout={turnout} handleTurnoutChange={handleTurnoutChange} />
-                </div>
-              ))}
-              {turnouts.filter(filter).map(turnout => (
-                <div key={`turnout$${turnout.turnoutId}`} className="turnout__container">
-                    <Turnout turnout={turnout} handleTurnoutChange={handleTurnoutChange} />
-                </div>
-              ))}
-              {turnouts.filter(filter).map(turnout => (
-                <div key={`turnout$${turnout.turnoutId}`} className="turnout__container">
-                    <Turnout turnout={turnout} handleTurnoutChange={handleTurnoutChange} />
-                </div>
-              ))}
-              {turnouts.filter(filter).map(turnout => (
-                <div key={`turnout$${turnout.turnoutId}`} className="turnout__container">
-                    <Turnout turnout={turnout} handleTurnoutChange={handleTurnoutChange} />
-                </div>
-              ))}
-              {turnouts.filter(filter).map(turnout => (
+              {turnouts?.filter(filter).map(turnout => (
                 <div key={`turnout$${turnout.turnoutId}`} className="turnout__container">
                     <Turnout turnout={turnout} handleTurnoutChange={handleTurnoutChange} />
                 </div>

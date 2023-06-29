@@ -62,7 +62,8 @@ body,
     background: $bg-blue-green-1;
     background: $bg-grad-blue-green-1;
     padding-right: .5rem;
-    border: 0;
+    border-width: 3px;
+    border-color: rgb(128, 128, 128);
     padding-left: .5rem;
     filter: drop-shadow(1px 1px 2px rgba(0,0,0,.5));
   }
@@ -79,18 +80,34 @@ body,
     background: $bg-yellow-orange-1;
     background: $bg-grad-yellow-orange-1;
   }
-  &--unknown.MuiChip-icon {
+  &__cmdex.MuiChip-root {
+    background: $bg-blue-green-1;
+    background: $bg-grad-blue-green-1;
+  }
+  &__usb.MuiChip-root {
+    background: $bg-purple-violet-1;
+    background: $bg-grad-purple-violet-1;
+  }
+  &--unknown.MuiChip-root {
     animation: flickerAnimation 1s infinite;
   }
-  &--connected.MuiChip-icon {
-    background-color: rgb(14, 192, 14);
-    border-radius: 50%;
+  &--connected.MuiChip-root {
+    border-color: rgb(14, 192, 14);
+    // border-radius: 50%;
   }
-  &--timeout.MuiChip-icon,
-  &--disconnected.MuiChip-icon {
-    background-color: rgb(211, 0, 0);
-    border-radius: 50%;
+  &--timeout.MuiChip-root,
+  &--disconnected.MuiChip-root {
+    border-color: rgb(211, 0, 0);
+    // border-radius: 50%;
   }
+}
+
+.header-button.MuiIconButton-root {
+  // border: 1px solid white;
+  border-radius: 10px;
+  background: $bg-purple-violet-1;
+  background: $bg-grad-purple-violet-1;
+  margin: 0 .25rem;
 }
 
 .power {
@@ -98,12 +115,6 @@ body,
   &-off, 
   &-unknown, 
   &-pending {
-    &.MuiButtonBase-root  {
-      margin-left: .5rem;
-    }
-    svg.MuiSvgIcon-root {
-      border-radius: 50%;
-    }
   }
   &-on {
    svg.MuiSvgIcon-root {
@@ -131,21 +142,6 @@ body,
 }
 @keyframes flickerAnimation {
   0%   { opacity:1; }
-  50%  { opacity:0; }
-  100% { opacity:1; }
-}
-@-o-keyframes flickerAnimation{
-  0%   { opacity:1; }
-  50%  { opacity:0; }
-  100% { opacity:1; }
-}
-@-moz-keyframes flickerAnimation{
-  0%   { opacity:1; }
-  50%  { opacity:0; }
-  100% { opacity:1; }
-}
-@-webkit-keyframes flickerAnimation{
-  0%   { opacity:1; }
-  50%  { opacity:0; }
+  50%  { opacity:.5; }
   100% { opacity:1; }
 }

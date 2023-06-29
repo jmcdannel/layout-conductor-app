@@ -76,6 +76,12 @@ const Reducer = (state, action) => {
         routes: action.payload
       };
 
+    case 'UPDATE_PORTS':
+      return {
+        ...state,
+        ports: action.payload
+      };
+
     case 'UPDATE_USER_PREFERENCES':
       const key = Object.keys(action.payload)[0];
       const rawValue = action.payload[key];

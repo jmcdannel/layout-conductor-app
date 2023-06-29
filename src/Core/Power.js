@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import Hidden from '@mui/material/Hidden';
+import IconButton from '@mui/material/IconButton';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
 const powerStates = {
@@ -44,19 +43,18 @@ export const Power = props => {
   }
 
   const getClassName = () => jmriApi.getState().ready && initialized
-      ? `power-${getCurrentStateKey()}`
-      : 'power-pending';
+      ? `header-button power-${getCurrentStateKey()}`
+      : 'header-button power-pending';
 
   return (
-    <Button
+    <IconButton
       onClick={handlePowerClick} 
       className={getClassName()}
-      variant="contained"
-      color="primary"
-      startIcon={<PowerSettingsNewIcon />}
+      color="inherit"
+      variant="outlined"
     >
-      <Hidden smDown>Power</Hidden>
-    </Button>)
+      <PowerSettingsNewIcon />
+    </IconButton>)
 }
 
 export default Power;

@@ -22,11 +22,18 @@ export const jmriHosts = [
     'http://tamarackjunctionmbp.local:12080/json/'
 ];
 
+// export const apiHosts = [
+//     'http://tamarackpi:5000',
+//     'http://traincontrol:5000',
+//     'http://localhost:5000',
+//     'http://tamarackjunctionmbp.local:5000'
+// ];
+
 export const apiHosts = [
-    'http://tamarackpi:5000',
-    'http://traincontrol:5000',
-    'http://localhost:5000',
-    'http://tamarackjunctionmbp.local:5000'
+    'ws://localhost:8080',
+    'ws://tamarackjunctionmbp.local:8080',
+    'ws://tamarackpi:8080',
+    'ws://traincontrol:8080'
 ];
 
 export const layoutIds = [

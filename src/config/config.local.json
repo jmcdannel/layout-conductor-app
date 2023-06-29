@@ -1,6 +1,6 @@
 {
-    "layoutId": "betatrack",
-    "name": "Beta Track",
-    "api": "http://localhost:5000",
-    "jmri": "http://localhost:12080/json/"
+    "layoutId": "tam",
+    "name": "Tamarack Junction",
+    "api": "ws://tamarackjunctionmbp.local:8080",
+    "jmri": "http://tamarackjunctionmbp:12080/json/"
 }

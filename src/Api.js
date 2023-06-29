@@ -57,6 +57,9 @@ const reduceMessage = async ({ action, payload}) => {
     case 'routes':
       await dispatch({ type: 'UPDATE_ROUTES', payload });
       break;
+    case 'ports':
+      await dispatch({ type: 'UPDATE_PORTS', payload });
+      break;
     case 'message':
       log.debug(payload);
       break;
@@ -137,7 +140,7 @@ export const api = {
   put: putWS,
   turnouts: {
     get: args => getWS('turnouts', args),
-    put: args => putWS('turnouts', args)
+    put: args => putWS('turnouts', args, 'turnoutId')
   },
   effects: {
     get: args => getWS('effects', args),
@@ -153,6 +156,12 @@ export const api = {
   },
   routes: {
     get: args => getWS('routes', args)
+  },
+  ports: {
+    get: args => getWS('ports', args)
+  },
+  interfaces: {
+    put: args => putWS('interfaces', args, 'id'),
   }
 }
 

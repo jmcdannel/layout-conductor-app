@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import Button from '@mui/material/Button';
-import Hidden from '@mui/material/Hidden';
+import IconButton from '@mui/material/IconButton';
 import PanToolIcon from '@mui/icons-material/PanTool';
 import { Context } from '../Store/Store';
 
@@ -27,15 +26,15 @@ export const Stop = props => {
   }
 
   return (
-    <Button
+    <IconButton
+      className="header-button"
       onClick={handleStopClick} 
-      color="error"
-      variant="contained"
+      color="inherit"
+      variant="outlined"
       disabled={!jmriReady}
-      startIcon={<PanToolIcon />}
     >
-      <Hidden smDown>Stop</Hidden>
-    </Button>)
+      <PanToolIcon />
+    </IconButton>)
 }
 
 export default Stop;

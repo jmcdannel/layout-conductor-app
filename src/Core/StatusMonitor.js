@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import CallSplit from '@mui/icons-material/CallSplit';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -9,19 +9,33 @@ import Autocomplete from '@mui/material/Autocomplete';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import MapIcon from '@mui/icons-material/Map';
 import IconButton from '@mui/material/IconButton';
+import UsbIcon from '@mui/icons-material/Usb';
+import UsbOffIcon from '@mui/icons-material/UsbOff';
 import Tooltip from '@mui/material/Tooltip';
 import { getAppConfig, jmriHosts, apiHosts, layoutIds, updateConfig } from '../config/config';
+import { Context } from '../Store/Store';
+import { CmdExDialog } from './CmdExDialog';
 
 const JMRI_TIMEOUT_MS = 3000;
 const API_TIMEOUT_MS = 5000;
+const CMDEX_TIMEOUT_MS = 5000;
+const USB_TIMEOUT_MS = 5000;
 
 export const StatusMonitor = ({ jmriReady,  apiReady }) => {
 
   const appConfig = getAppConfig();
 
+  const [ state, dispatch ] = useContext(Context);
+  const { interfaces } = state;
+  const cmdExInterface = interfaces?.find(i => i.type === 'cmd-ex');
+  const cmdUsbInterfaces = interfaces?.filter(i => i.type === 'serial') || [];
+  const cmdExReady = cmdExInterface?.status === 'connected';
+  const usbReady = cmdUsbInterfaces.every(i => i.status === 'connected');
+
   const [jmriConfigOpen, setJMRIConfigOpen] = useState(false);
   const [apiConfigOpen, setAPIConfigOpen] = useState(false);
   const [layoutConfigOpen, setLayoutConfigOpen] = useState(false);
+  const [cmdExConfigOpen, setCmdExConfigOpen] = useState(false);
 
   const [jmriHost, setJMRIHost] = useState(appConfig.jmri);
   const [apiHost, setAPIHost] = useState(appConfig.api);
@@ -29,6 +43,8 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
 
   const [jmriTimeout, setJmriTimeout] = useState(false);
   const [apiTimeout, setApiTimeout] = useState(false);
+  const [cmdExTimeout, setCmdExTimeout] = useState(false);
+  const [usbTimeout, setUsbTimeout] = useState(false);
 
   useEffect(() => {
     const jmriTimer = setTimeout(() => {
@@ -37,10 +53,18 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
     const apiTimer = setTimeout(() => {
       setApiTimeout(true);
     }, API_TIMEOUT_MS);
+    const cmdExTimer = setTimeout(() => {
+      setCmdExTimeout(true);
+    }, CMDEX_TIMEOUT_MS);
+    const usbTimer = setTimeout(() => {
+      setUsbTimeout(true);
+    }, USB_TIMEOUT_MS);
 
     return () => {
       clearTimeout(jmriTimer);
       clearTimeout(apiTimer);
+      clearTimeout(cmdExTimer);
+      clearTimeout(usbTimer);
     }
   }, []);
 
@@ -74,7 +98,19 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
   const apiClassName = `status-monitor--${
     hasApi && apiReady
       ? 'connected'
-      : jmriTimeout ? 'timeout' : 'unknown'
+      : apiTimeout ? 'timeout' : 'unknown'
+    }`;
+
+  const cmdExClassName = `status-monitor--${
+    apiReady && cmdExReady
+      ? 'connected'
+      : cmdExTimeout ? 'timeout' : 'unknown'
+    }`;
+
+  const usbClassName = `status-monitor--${
+    apiReady && usbReady
+      ? 'connected'
+      : usbTimeout ? 'timeout' : 'unknown'
     }`;
 
   // TODO: handle jmlri disconnected
@@ -82,36 +118,70 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
 
   return (
     <div className="status-monitor">
-      <Tooltip title="Layout ID">
+      <Tooltip title={`${apiHost}`}>
         <Chip
-          className="status-monitor__layout"
+          className={`status-monitor__api ${apiClassName}`}
           variant="outlined"
-          icon={<MapIcon className={apiClassName} />}
-          label={`Layout ID: ${appConfig.layoutId}`}
-          color="default"
-          onClick={() => setLayoutConfigOpen(true)}
-        />
-      </Tooltip>
-      <Tooltip title="JMRI Connection Status">
-        <Chip
-          className="status-monitor__jmri"
-          variant="outlined"
-          icon={<UnfoldMoreIcon className={jmriClassName} />}
-          label="JMRI"
-          color="default"
-          onClick={() => setJMRIConfigOpen(true)}
-        />
-      </Tooltip>
-      <Tooltip title="REST API Status">
-        <Chip
-          className="status-monitor__api"
-          variant="outlined"
-          icon={<CallSplit className={apiClassName} />}
+          icon={<CallSplit />}
           label="API"
+          size="small"
           color="default"
           onClick={() => setAPIConfigOpen(true)}
         />
       </Tooltip>
+      <Tooltip title="Layout ID">
+        <Chip
+          className={`status-monitor__layout ${apiClassName}`}
+          variant="outlined"
+          icon={<MapIcon />}
+          label={`Layout ID: ${appConfig.layoutId}`}
+          color="default"
+          size="small"
+          onClick={() => {}}
+        />
+      </Tooltip>
+      <Tooltip title="JMRI Connection Status">
+        <Chip
+          className={`status-monitor__jmri ${jmriClassName}`}
+          variant="outlined"
+          icon={<UnfoldMoreIcon />}
+          label="JMRI"
+          size="small"
+          color="default"
+          onClick={() => setJMRIConfigOpen(true)}
+        />
+      </Tooltip>
+      <Tooltip title="CMD-EX Status">
+        <Chip
+          className={`status-monitor__cmd-ex ${cmdExClassName}`}
+          variant="outlined"
+          icon={cmdExReady ? (<UsbIcon />) : (<UsbOffIcon />)}
+          label="CMD-EX"
+          size="small"
+          color="default"
+          onClick={() => setCmdExConfigOpen(true)}
+        />
+      </Tooltip>
+      <Tooltip title="USB">
+        <Chip
+          className={`status-monitor__usb ${usbClassName}`}
+          variant="outlined"
+          icon={usbReady ? (<UsbIcon />) : (<UsbOffIcon />)}
+          label="USB"
+          size="small"
+          color="default"
+          onClick={() => {}}
+        />
+      </Tooltip>
+
+      {cmdExInterface && (
+        <CmdExDialog 
+          onClose={() => setCmdExConfigOpen(false)} 
+          open={cmdExConfigOpen}
+          currentPort={cmdExInterface?.serial}
+          cmdExInterface={cmdExInterface}
+        />
+      )}
 
       <Dialog onClose={() => setLayoutConfigOpen(false)} open={layoutConfigOpen}>
         <DialogTitle>Layout ID</DialogTitle>
