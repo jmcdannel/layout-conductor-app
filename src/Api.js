@@ -19,10 +19,10 @@ const locoDefaults = {
 };
 
 function onOpen() {
-  log.start('onOpen');
-  ws.send(JSON.stringify({
-    action: 'initialize', payload: { layoutId }
-  }));
+  log.start('onOpen', layoutId);
+  // ws.send(JSON.stringify({
+  //   action: 'initialize', payload: { layoutId }
+  // }));
 }
 
 function onError(event) {
@@ -69,12 +69,14 @@ const reduceMessage = async ({ action, payload}) => {
   };
 }
 
-async function initializeWS(_dispatch) {
-  dispatch = _dispatch;
+async function initializeWS() {
+  // dispatch = _dispatch;
+  log.start('initializeWS', appConfig.api);
   ws = new WebSocket(appConfig.api);
   ws.onerror = onError;
   ws.addEventListener('open', onOpen);   
   ws.addEventListener('message',  onMessage);
+  return true;
 }
 
 const initializeModules = layoutConfig => {
@@ -82,29 +84,42 @@ const initializeModules = layoutConfig => {
   getModules.map(req => api[req].get());
 }
 
-// async function initialize() {
-//   const layoutConfig = await api.get();
-//   const getModules = layoutConfig.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
-//   const results = await Promise.all(
-//     getModules.map(req => api[req].get()
-//       .then(resp => api[req].initialize ? api[req].initialize(resp) : resp))
-//   );
-//   const initialState = getModules.reduce((state, module, index) => ({ 
-//     ...state, 
-//     [module]: results[index] 
-//   }), { modules: layoutConfig.modules, initialized: true });
-//   return initialState;
-// }
+async function initialize(_dispatch) {
+  dispatch = _dispatch;
+  // const payload = await api.get();
+  // log.ready('api.initialize', payload);
+  // await dispatch({ type: 'INIT_STATE', payload });
+  // initializeModules(payload);
+  // return true;
+
+
+
+  const payload = await api.get();
+  const getModules = payload.modules.reduce((reqs, module) => api[module] && api[module].get ? [...reqs, module] : [...reqs], []);
+  log.debug('getModules', getModules);
+  const results = await Promise.all(
+    getModules.map(req => api[req].get()
+      .then(resp => resp?.[0]?.[req] ? resp?.[0]?.[req] : resp?.[0])));
+  log.debug('results', results);
+  const initialState = getModules.reduce((state, module, index) => ({ 
+    ...state, 
+    [module]: results[index] 
+  }), { layout: payload });
+  log.debug('initialState', initialState);
+  await dispatch({ type: 'INIT_STATE', payload: initialState });
+  // return initialState;
+  // return true;
+}
 
 async function getWS(type = null, Id = null) {
-  try {    
-    ws.send(JSON.stringify({
-      action: type || 'initialize', payload: { Id }
-    }));
-  } catch (err) {
-    log.error('api.get', err);
-    throw new Error('Unable to read', err, type, `Id=${Id}`);
-  }
+  // try {    
+  //   ws.send(JSON.stringify({
+  //     action: type || 'initialize', payload: { Id }
+  //   }));
+  // } catch (err) {
+  //   log.error('api.get', err);
+  //   throw new Error('Unable to read', err, type, `Id=${Id}`);
+  // }
 }
 
 async function putWS(type, data, idField) {
@@ -122,6 +137,24 @@ async function putWS(type, data, idField) {
   }
 }
 
+async function get(type = null, Id = null) {
+  try {
+    const baseUri = `${appConfig.layoutApi}/${appConfig.layoutId}`;
+    const uri = type !== null
+      ? Id !== null
+        ? `${baseUri}/${type}/${Id}`
+        : `${baseUri}/${type}`
+      : `${appConfig.layoutApi}/layouts/${appConfig.layoutId}`;
+    log.debug('get', uri);
+    const response = uri ? await fetch(uri) : null;
+    return response.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error('Unable to read', type, `Id=${Id}`);
+  }
+}
+
+
 function initializeLocos(locos) {
   return locos.map(loco => ({ ...locoDefaults, ...loco }));
 }
@@ -134,31 +167,31 @@ export const apiStates = {
 }
 
 export const api = {
-  // initialize,
+  initialize,
   initializeWS,
-  get: getWS,
+  get,
   put: putWS,
   turnouts: {
-    get: args => getWS('turnouts', args),
+    get: args => get('turnouts', args),
     put: args => putWS('turnouts', args, 'turnoutId')
   },
   effects: {
-    get: args => getWS('effects', args),
+    get: args => get('effects', args),
     put: (...args) => putWS('effects', ...args)
   },
   locos: {
-    get: args => getWS('locos', args, 'address'),
+    get: args => get('locos', args, 'address'),
     put: args => putWS('locos', args, 'address'),
     initialize: initializeLocos
   },
   sensors: {
-    get: args => getWS('sensors', args)
+    get: args => get('sensors', args)
   },
   routes: {
-    get: args => getWS('routes', args)
+    get: args => get('routes', args)
   },
   ports: {
-    get: args => getWS('ports', args)
+    get: args => get('ports', args)
   },
   interfaces: {
     put: args => putWS('interfaces', args, 'id'),

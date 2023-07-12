@@ -10,7 +10,7 @@ import { Context } from '../Store/Store';
 export const Footer = () => {
 
   const [ state ] = useContext(Context);
-  const { modules } = state;
+  const { layout } = state;
   const location = useLocation();
 
   return (
@@ -25,7 +25,7 @@ export const Footer = () => {
         icon={<TrainIcon />} 
         component={Link} 
       />
-      {modules && modules.filter(module => !!navConfig[module]).map(module => (
+      {layout?.modules && layout?.modules.filter(module => !!navConfig[module]).map(module => (
         <BottomNavigationAction 
           key={module} 
           label={navConfig[module].label} 

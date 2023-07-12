@@ -8,17 +8,20 @@ function ApiEngine(props) {
   const { onReady } = props;
   const [ state, dispatch ] = useContext(Context);
   const [ init, setInit ] = useState(false);
-  const { layoutId } = state;
+  const { layout } = state;
+
+  console.log('state', state, layout);
 
   useEffect(() => {
-    layoutId && onReady();
-  }, [layoutId, onReady]);
+    layout && onReady();
+  }, [layout, onReady]);
 
   useEffect(() => {
     const initialize = async function() {
       try {
         setInit(true);
-        await api.initializeWS(dispatch);
+        const apiSuccess = await api.initialize(dispatch);
+        const wsSuccess = await api.initializeWS();
       } catch (err) {
         setInit(false);
         log.error('api initialization error', err);

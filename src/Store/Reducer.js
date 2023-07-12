@@ -4,6 +4,7 @@ const Reducer = (state, action) => {
   switch(action.type) {
 
     case 'INIT_STATE':
+      console.log('Reducer INIT_STATE', action.payload);
       return {...state, ...action.payload };
 
     case 'UPDATE_LOCOS':

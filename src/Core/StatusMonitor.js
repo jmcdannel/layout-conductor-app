@@ -15,6 +15,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { getAppConfig, jmriHosts, apiHosts, layoutIds, updateConfig } from '../config/config';
 import { Context } from '../Store/Store';
 import { CmdExDialog } from './CmdExDialog';
+import log from '../Shared/utils/logger';
 
 const JMRI_TIMEOUT_MS = 3000;
 const API_TIMEOUT_MS = 5000;
@@ -26,11 +27,13 @@ export const StatusMonitor = ({ jmriReady,  apiReady }) => {
   const appConfig = getAppConfig();
 
   const [ state, dispatch ] = useContext(Context);
-  const { interfaces } = state;
-  const cmdExInterface = interfaces?.find(i => i.type === 'cmd-ex');
-  const cmdUsbInterfaces = interfaces?.filter(i => i.type === 'serial') || [];
+  const { layout } = state;
+  const cmdExInterface = layout?.interfaces?.find(i => i.type === 'cmd-ex');
+  const cmdUsbInterfaces = layout?.interfaces?.filter(i => i.type === 'serial') || [];
   const cmdExReady = cmdExInterface?.status === 'connected';
   const usbReady = cmdUsbInterfaces.every(i => i.status === 'connected');
+
+  log.debug('cmdExInterface', cmdExInterface, layout);
 
   const [jmriConfigOpen, setJMRIConfigOpen] = useState(false);
   const [apiConfigOpen, setAPIConfigOpen] = useState(false);

@@ -10,9 +10,11 @@ import { Context } from '../Store/Store';
 function Modules(props) {
 
   const [ state ] = useContext(Context);
-  const { locos, turnouts, effects, userPreferences } = state;
-  const { modules } = state;
+  const { locos, turnouts, effects, userPreferences, layout } = state;
+  const { modules } = layout;
   const loading = (<div>Loading</div>);
+
+  console.log('Modules', state, modules);
 
   const getRoutedModule = module => {
     switch(module) {
