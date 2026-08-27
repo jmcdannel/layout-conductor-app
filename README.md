@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+> [!IMPORTANT]
+> **This project has moved.** Active development of DEJA.js and the Track & Trestle model
+> railroad platform now happens in private repositories under
+> [**Track and Trestle Technology, LLC**](https://github.com/trackandtrestle).
+> This repository stays public as a historical snapshot and is no longer maintained.
+>
+> **Current product, docs, and downloads → [dejajs.com](https://dejajs.com)**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🚦 Layout Conductor — Web App
 
-## Available Scripts
+**React control panel for a DCC++ / DCC-EX model railroad.**
 
-In the project directory, you can run:
+<p align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/Material_UI-007FFF?style=for-the-badge&logo=mui&logoColor=white" />
+  <img src="https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white" />
+</p>
 
-### `npm start`
+The operator-facing half of the **Layout Conductor** system: throttles, turnouts, sensors,
+signals, and effects in one responsive interface, backed by a swappable API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ✨ Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 🎚️ **Throttles** — speed, direction, and functions for multiple locomotives
+- 🔀 **Turnouts** — servo and relay control, individually or as routes
+- 📡 **Sensors** — live block occupancy feedback
+- 🚦 **Signals & effects** — lighting, sound, and signal aspects
+- 📱 Responsive layout intended for a tablet mounted at the fascia
 
-### `npm test`
+## 🔗 Companion services
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Layout Conductor deliberately separated the UI from the hardware bridge, and three
+backends were built against the same contract:
 
-### `npm run build`
+| Repo | Runtime | Notes |
+|------|---------|-------|
+| [`layout-conductor-api`](https://github.com/jmcdannel/layout-conductor-api) | Python / Flask | Ran on the Raspberry Pi beside the command station |
+| [`layout-conductor-node-api`](https://github.com/jmcdannel/layout-conductor-node-api) | Node / WebSocket | Push-based successor to HTTP polling |
+| [`layout-conductor-deno-api`](https://github.com/jmcdannel/layout-conductor-deno-api) | Deno | REST experiment |
+| [`layout-conductor-arduino`](https://github.com/jmcdannel/layout-conductor-arduino) | Arduino C++ | Per-area sketches for turnouts, signals, and effects |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Tech stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+React 17 · MUI 5 · Emotion · React Router 6 · Sass · Create React App · GitHub Pages
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🧑‍💻 Running it
 
-### `npm run eject`
+```bash
+npm install
+npm start        # http://localhost:3000
+npm run deploy   # publish to GitHub Pages
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 📌 Status
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Superseded by the MQTT-based
+[Track and Trestle Technology Suite](https://github.com/jmcdannel/Track-and-Trestle-Technology-Suite),
+and later by [DEJA.js](https://github.com/jmcdannel/DEJA.js).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 🧭 Where this fits
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This repo is one step in a long-running line of model railroad control software:
 
-## Learn More
+| Era | Project | What changed |
+|-----|---------|--------------|
+| 2020 | [`train-control`](https://github.com/jmcdannel/train-control) | First React throttle, JMRI + Arduino over HTTP |
+| 2021 | [`dctc`](https://github.com/jmcdannel/dctc) | Standalone Arduino DC controller (no computer required) |
+| 2022–23 | [`layout-conductor-*`](https://github.com/jmcdannel?tab=repositories&q=layout-conductor) | Split into app + API; Python, Node, and Deno backends explored |
+| 2024 | [`Track-and-Trestle-Technology-Suite`](https://github.com/jmcdannel/Track-and-Trestle-Technology-Suite) | MQTT-based monorepo: dispatcher, throttle, dashboard, action API |
+| 2024–25 | [`DEJA.js`](https://github.com/jmcdannel/DEJA.js) | TypeScript/Turborepo rewrite, Firebase realtime backbone |
+| 2025– | **[dejajs.com](https://dejajs.com)** (private) | Commercial cloud platform for DCC-EX |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<sub>Built by [Josh McDannel](https://github.com/jmcdannel) · [dejajs.com](https://dejajs.com) · [LinkedIn](https://www.linkedin.com/in/jmcdannel)</sub>
